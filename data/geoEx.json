@@ -1,0 +1,962 @@
+[
+  {
+    "name": "New Zealand New Zealand Stock Market ",
+    "abbr": "NZSX ",
+    "co": "New Zealand ",
+    "city": "Wellington ",
+    "tz": "NZST ",
+    "gmt_diff": "+12 ",
+    "dst": "Sep–Apr ",
+    "open": "10:00 ",
+    "close": "16:45 ",
+    "geo": {
+      "lon": 174.7795348,
+      "lat": -41.2898246
+    }
+  },
+  {
+    "name": "Australia Australian Securities Exchange ",
+    "abbr": "ASX ",
+    "co": "Australia ",
+    "city": "Sydney ",
+    "tz": "AEST ",
+    "gmt_diff": "+10 ",
+    "dst": "Oct–Apr ",
+    "open": "10:00 ",
+    "close": "16:00 ",
+    "geo": {
+      "lon": 151.2105585,
+      "lat": -33.8647932
+    }
+  },
+  {
+    "name": "Japan Tokyo Stock Exchange ",
+    "abbr": "TSE ",
+    "co": "Japan ",
+    "city": "Tokyo ",
+    "tz": "JST ",
+    "gmt_diff": "+9 ",
+    "dst": "",
+    "open": "09:00 ",
+    "close": "15:00[1] ",
+    "geo": {
+      "lon": 139.7787427,
+      "lat": 35.6826432
+    }
+  },
+  {
+    "name": "Malaysia Bursa Malaysia ",
+    "abbr": "MYX ",
+    "co": "Malaysia ",
+    "city": "Kuala Lumpur ",
+    "tz": "MYT ",
+    "gmt_diff": "+8 ",
+    "dst": "",
+    "open": "09:00 ",
+    "close": "17:00 ",
+    "geo": {
+      "lon": 101.7014,
+      "lat": 3.14824
+    }
+  },
+  {
+    "name": "Singapore Singapore Exchange ",
+    "abbr": "SGX ",
+    "co": "Singapore ",
+    "city": "Singapore ",
+    "tz": "SGT ",
+    "gmt_diff": "+8 ",
+    "dst": "",
+    "open": "09:00 ",
+    "close": "17:00 ",
+    "geo": {
+      "lon": 103.834287,
+      "lat": 1.288886
+    }
+  },
+  {
+    "name": "Taiwan Taiwan Stock Exchange ",
+    "abbr": "TWSE ",
+    "co": "Taiwan (Republic of China) ",
+    "city": "Taipei ",
+    "tz": "CST ",
+    "gmt_diff": "+8 ",
+    "dst": "",
+    "open": "09:00 ",
+    "close": "13:30 ",
+    "geo": {
+      "lon": 121.56481,
+      "lat": 25.033718
+    }
+  },
+  {
+    "name": "Hong Kong Hong Kong Futures Exchange ",
+    "abbr": "HKFE ",
+    "co": "Hong Kong ",
+    "city": "Hong Kong ",
+    "tz": "HKT ",
+    "gmt_diff": "+8 ",
+    "dst": "",
+    "open": "09:15 ",
+    "close": "16:00 ",
+    "geo": {
+      "lon": 114.154718,
+      "lat": 22.284617
+    }
+  },
+  {
+    "name": "Hong Kong Hong Kong Stock Exchange ",
+    "abbr": "HKEX ",
+    "co": "Hong Kong ",
+    "city": "Hong Kong ",
+    "tz": "HKT ",
+    "gmt_diff": "+8 ",
+    "dst": "",
+    "open": "09:30[3] ",
+    "close": "16:00 ",
+    "geo": {
+      "lon": 114.1586923,
+      "lat": 22.2837442
+    }
+  },
+  {
+    "name": "China Shanghai Stock Exchange ",
+    "abbr": "SSE ",
+    "co": "China ",
+    "city": "Shanghai ",
+    "tz": "CST ",
+    "gmt_diff": "+8 ",
+    "dst": "",
+    "open": "09:30 ",
+    "close": "15:00[notes 4] ",
+    "geo": {
+      "lon": 121.511388,
+      "lat": 31.236342
+    }
+  },
+  {
+    "name": "China Shenzhen Stock Exchange ",
+    "abbr": "SZSE ",
+    "co": "China ",
+    "city": "Shenzhen ",
+    "tz": "CST ",
+    "gmt_diff": "+8 ",
+    "dst": "",
+    "open": "09:30 ",
+    "close": "15:00[notes 4] ",
+    "geo": {
+      "lon": 114.084925,
+      "lat": 22.5476835
+    }
+  },
+  {
+    "name": "Philippines Philippine Stock Exchange ",
+    "abbr": "PSE ",
+    "co": "Philippines ",
+    "city": "Manila ",
+    "tz": "PHT ",
+    "gmt_diff": "+8 ",
+    "dst": "",
+    "open": "09:30 ",
+    "close": "15:30 ",
+    "geo": {
+      "lon": 121.01937,
+      "lat": 14.557541
+    }
+  },
+  {
+    "name": "Indonesia Indonesia Stock Exchange ",
+    "abbr": "IDX ",
+    "co": "Indonesia ",
+    "city": "Jakarta ",
+    "tz": "WIB ",
+    "gmt_diff": "+7 ",
+    "dst": "",
+    "open": "09:00 ",
+    "close": "16:00 ",
+    "geo": {
+      "lon": 106.8086817,
+      "lat": -6.2233717
+    }
+  },
+  {
+    "name": "Vietnam Hochiminh Stock Exchange ",
+    "abbr": "HOSE ",
+    "co": "Vietnam ",
+    "city": "Hochiminh ",
+    "tz": "ICT ",
+    "gmt_diff": "+7 ",
+    "dst": "",
+    "open": "09:00 ",
+    "close": "14:45 ",
+    "geo": {
+      "lon": 106.7018206,
+      "lat": 10.7682795
+    }
+  },
+  {
+    "name": "Thailand Stock Exchange of Thailand ",
+    "abbr": "SET ",
+    "co": "Thailand ",
+    "city": "Bangkok ",
+    "tz": "ICT ",
+    "gmt_diff": "+7 ",
+    "dst": "",
+    "open": "10:00 ",
+    "close": "16:30 ",
+    "geo": {
+      "lon": 100.5676903,
+      "lat": 13.7637191
+    }
+  },
+  {
+    "name": "India Bombay Stock Exchange[4] ",
+    "abbr": "BSE ",
+    "co": "India ",
+    "city": "Mumbai ",
+    "tz": "IST ",
+    "gmt_diff": "+5.5 ",
+    "dst": "",
+    "open": "09:15 ",
+    "close": "15:30 ",
+    "geo": {
+      "lon": 72.83340799999999,
+      "lat": 18.9299891
+    }
+  },
+  {
+    "name": "India National Stock Exchange of India[5] ",
+    "abbr": "NSE ",
+    "co": "India ",
+    "city": "Mumbai ",
+    "tz": "IST ",
+    "gmt_diff": "+5.5 ",
+    "dst": "",
+    "open": "09:15 ",
+    "close": "15:30 ",
+    "geo": {
+      "lon": 72.8598993,
+      "lat": 19.0602766
+    }
+  },
+  {
+    "name": "Sri Lanka Colombo Stock Exchange ",
+    "abbr": "CSE ",
+    "co": "Sri Lanka ",
+    "city": "Colombo ",
+    "tz": "SLST ",
+    "gmt_diff": "+5.5 ",
+    "dst": "",
+    "open": "09:30 ",
+    "close": "14:30 ",
+    "geo": {
+      "lon": 79.8436305,
+      "lat": 6.932377799999999
+    }
+  },
+  {
+    "name": "Bangladesh Chittagong Stock Exchange ",
+    "abbr": "CSE ",
+    "co": "Bangladesh ",
+    "city": "Chittagong ",
+    "tz": "BST ",
+    "gmt_diff": "+6 ",
+    "dst": "",
+    "open": "10:30 ",
+    "close": "14:30 ",
+    "geo": {
+      "lon": 91.813318,
+      "lat": 22.321079
+    }
+  },
+  {
+    "name": "Bangladesh Dhaka Stock Exchange ",
+    "abbr": "DSE ",
+    "co": "Bangladesh ",
+    "city": "Dhaka ",
+    "tz": "BST ",
+    "gmt_diff": "+6 ",
+    "dst": "",
+    "open": "10:30 ",
+    "close": "14:30 ",
+    "geo": {
+      "lon": 90.41719719999999,
+      "lat": 23.8360015
+    }
+  },
+  {
+    "name": "Pakistan Pakistan Stock Exchange ",
+    "abbr": "PSX ",
+    "co": "Pakistan ",
+    "city": "Karachi ",
+    "tz": "PKT ",
+    "gmt_diff": "+5 ",
+    "dst": "",
+    "open": "09:30 ",
+    "close": "15:30 ",
+    "geo": {
+      "lon": 66.9976953,
+      "lat": 24.8486159
+    }
+  },
+  {
+    "name": "TanzaniaDar es Salaam Stock Exchange ",
+    "abbr": "DSE ",
+    "co": "Tanzania ",
+    "city": "Dar es Salaam ",
+    "tz": "EAT ",
+    "gmt_diff": "+3 ",
+    "dst": "",
+    "open": "08:00 ",
+    "close": "17:00 ",
+    "geo": {
+      "lon": 39.2891941,
+      "lat": -6.8135936
+    }
+  },
+  {
+    "name": "Iran Tehran Stock Exchange ",
+    "abbr": "TSE ",
+    "co": "Iran ",
+    "city": "Tehran ",
+    "tz": "IRST ",
+    "gmt_diff": "+3.5 ",
+    "dst": "",
+    "open": "09:00 ",
+    "close": "12:30 ",
+    "geo": {
+      "lon": 51.4110045,
+      "lat": 35.6929645
+    }
+  },
+  {
+    "name": "Armenia Armenia Securities Exchange ",
+    "abbr": "AMX ",
+    "co": "Armenia ",
+    "city": "Yerevan ",
+    "tz": "AMT ",
+    "gmt_diff": "+4 ",
+    "dst": "",
+    "open": "10:00 ",
+    "close": "15:00 ",
+    "geo": {
+      "lon": 44.51227300000001,
+      "lat": 40.176059
+    }
+  },
+  {
+    "name": "Kenya Nairobi Securities Exchange ",
+    "abbr": "NSE ",
+    "co": "Kenya ",
+    "city": "Nairobi ",
+    "tz": "EAT ",
+    "gmt_diff": "+3 ",
+    "dst": "",
+    "open": "09:30 ",
+    "close": "15:00 ",
+    "geo": {
+      "lon": 36.810702,
+      "lat": -1.270759
+    }
+  },
+  {
+    "name": "Saudi Arabia Saudi Stock Exchange ",
+    "abbr": "TADAWUL ",
+    "co": "Saudi Arabia ",
+    "city": "Riyadh ",
+    "tz": "AST ",
+    "gmt_diff": "+3 ",
+    "dst": "",
+    "open": "10:00 ",
+    "close": "15:00 ",
+    "geo": {
+      "lon": 46.68536599999999,
+      "lat": 24.6871818
+    }
+  },
+  {
+    "name": "Turkey Borsa Istanbul ",
+    "abbr": "ISE ",
+    "co": "Turkey ",
+    "city": "Istanbul ",
+    "tz": "TRT ",
+    "gmt_diff": "+3 ",
+    "dst": "",
+    "open": "10:00 ",
+    "close": "18:00[6][7] ",
+    "geo": {
+      "lon": 29.0382368,
+      "lat": 41.1098427
+    }
+  },
+  {
+    "name": "Russia Moscow Exchange ",
+    "abbr": "MOEX ",
+    "co": "Russia ",
+    "city": "Moscow ",
+    "tz": "MSK ",
+    "gmt_diff": "+3 ",
+    "dst": "",
+    "open": "10:00 ",
+    "close": "18:45 ",
+    "geo": {
+      "lon": 37.6093958,
+      "lat": 55.752888
+    }
+  },
+  {
+    "name": "South Africa Johannesburg Stock Exchange ",
+    "abbr": "JSE ",
+    "co": "South Africa ",
+    "city": "Johannesburg ",
+    "tz": "SAST ",
+    "gmt_diff": "+2 ",
+    "dst": "",
+    "open": "09:00 ",
+    "close": "17:00 ",
+    "geo": {
+      "lon": 28.035762,
+      "lat": -26.2042424
+    }
+  },
+  {
+    "name": "Israel Tel Aviv Stock Exchange ",
+    "abbr": "TASE ",
+    "co": "Israel ",
+    "city": "Tel Aviv ",
+    "tz": "IST ",
+    "gmt_diff": "+2 ",
+    "dst": "Mar–Oct ",
+    "open": "09:00 ",
+    "close": "17:30 ",
+    "geo": {
+      "lon": 34.7703709,
+      "lat": 32.0643377
+    }
+  },
+  {
+    "name": "Germany Eurex Exchange ",
+    "abbr": "EUREX ",
+    "co": "Germany ",
+    "city": "Eschborn ",
+    "tz": "CET ",
+    "gmt_diff": "+1 ",
+    "dst": "Mar–Oct ",
+    "open": "08:00 ",
+    "close": "22:00 ",
+    "geo": {
+      "lon": 8.569857599999999,
+      "lat": 50.1358366
+    }
+  },
+  {
+    "name": "Austria Wiener Börse AG ",
+    "abbr": "VSE ",
+    "co": "Austria ",
+    "city": "Vienna ",
+    "tz": "CET ",
+    "gmt_diff": "+1 ",
+    "dst": "Mar–Oct ",
+    "open": "08:55 ",
+    "close": "17:35 ",
+    "geo": {
+      "lon": 16.3660185,
+      "lat": 48.210275
+    }
+  },
+  {
+    "name": "Egypt Egyptian Exchange ",
+    "abbr": "EGX ",
+    "co": "Egypt ",
+    "city": "Cairo ",
+    "tz": "EET ",
+    "gmt_diff": "+2 ",
+    "dst": "",
+    "open": "10:00 ",
+    "close": "14:30 ",
+    "geo": {
+      "lon": 31.2409627,
+      "lat": 30.0478386
+    }
+  },
+  {
+    "name": "Finland Helsinki Stock Exchange ",
+    "abbr": "OMX ",
+    "co": "Finland ",
+    "city": "Helsinki ",
+    "tz": "EET ",
+    "gmt_diff": "+2 ",
+    "dst": "Mar–Oct ",
+    "open": "10:00 ",
+    "close": "18:30 ",
+    "geo": {
+      "lon": 24.9536778,
+      "lat": 60.1676653
+    }
+  },
+  {
+    "name": "Latvia Riga Stock Exchange ",
+    "abbr": "OMXR ",
+    "co": "Latvia ",
+    "city": "Riga ",
+    "tz": "EET ",
+    "gmt_diff": "+2 ",
+    "dst": "Mar–Oct ",
+    "open": "10:00 ",
+    "close": "16:00 ",
+    "geo": {
+      "lon": 24.1148639,
+      "lat": 56.9435575
+    }
+  },
+  {
+    "name": "Estonia Tallinn Stock Exchange ",
+    "abbr": "OMXT ",
+    "co": "Estonia ",
+    "city": "Tallinn ",
+    "tz": "EET ",
+    "gmt_diff": "+2 ",
+    "dst": "Mar–Oct ",
+    "open": "10:00 ",
+    "close": "16:00 ",
+    "geo": {
+      "lon": 24.7669512,
+      "lat": 59.429873
+    }
+  },
+  {
+    "name": "Lithuania NASDAQ OMX Vilnius ",
+    "abbr": "OMXV ",
+    "co": "Lithuania ",
+    "city": "Vilnius ",
+    "tz": "EET ",
+    "gmt_diff": "+2 ",
+    "dst": "Mar–Oct ",
+    "open": "10:00 ",
+    "close": "16:00 ",
+    "geo": {
+      "lon": 25.2651002,
+      "lat": 54.699482
+    }
+  },
+  {
+    "name": "Romania Bucharest Stock Exchange ",
+    "abbr": "BVB ",
+    "co": "Romania ",
+    "city": "Bucharest ",
+    "tz": "EET ",
+    "gmt_diff": "+2 ",
+    "dst": "Mar–Oct ",
+    "open": "10:00 ",
+    "close": "18:00 ",
+    "geo": {
+      "lon": 26.1096243,
+      "lat": 44.4366819
+    }
+  },
+  {
+    "name": "Jordan Amman Stock Exchange ",
+    "abbr": "ASE ",
+    "co": "Jordan ",
+    "city": "Amman ",
+    "tz": "EET ",
+    "gmt_diff": "+2 ",
+    "dst": "Mar–Oct ",
+    "open": "10:00 ",
+    "close": "12:00 ",
+    "geo": {
+      "lon": 35.908598,
+      "lat": 31.977822
+    }
+  },
+  {
+    "name": "Poland Warsaw Stock Exchange ",
+    "abbr": "GPW ",
+    "co": "Poland ",
+    "city": "Warsaw ",
+    "tz": "CET ",
+    "gmt_diff": "+1 ",
+    "dst": "Mar–Oct ",
+    "open": "09:00 ",
+    "close": "17:00[8] ",
+    "geo": {
+      "lon": 21.0234149,
+      "lat": 52.2299561
+    }
+  },
+  {
+    "name": "Hungary Budapest Stock Exchange ",
+    "abbr": "BSE ",
+    "co": "Hungary ",
+    "city": "Budapest ",
+    "tz": "CET ",
+    "gmt_diff": "+1 ",
+    "dst": "Mar–Oct ",
+    "open": "09:00 ",
+    "close": "17:00[9] ",
+    "geo": {
+      "lon": 19.0521024,
+      "lat": 47.5028034
+    }
+  },
+  {
+    "name": "France Euronext Paris ",
+    "abbr": "EPA ",
+    "co": "France ",
+    "city": "Paris ",
+    "tz": "CET ",
+    "gmt_diff": "+1 ",
+    "dst": "Mar–Oct ",
+    "open": "09:00 ",
+    "close": "17:30 ",
+    "geo": {
+      "lon": 2.2468916,
+      "lat": 48.8907845
+    }
+  },
+  {
+    "name": "Switzerland Berne eXchange ",
+    "abbr": "BX ",
+    "co": "Switzerland ",
+    "city": "Berne ",
+    "tz": "CET ",
+    "gmt_diff": "+1 ",
+    "dst": "Mar–Oct ",
+    "open": "09:00 ",
+    "close": "16:30 ",
+    "geo": {
+      "lon": 7.4431642,
+      "lat": 46.948708
+    }
+  },
+  {
+    "name": "Switzerland Swiss Exchange ",
+    "abbr": "SIX ",
+    "co": "Switzerland ",
+    "city": "Zurich ",
+    "tz": "CET ",
+    "gmt_diff": "+1 ",
+    "dst": "Mar–Oct ",
+    "open": "09:00 ",
+    "close": "17:30 ",
+    "geo": {
+      "lon": 8.5066192,
+      "lat": 47.3915181
+    }
+  },
+  {
+    "name": "Italy Milan Stock Exchange ",
+    "abbr": "MTA ",
+    "co": "Italy ",
+    "city": "Milan ",
+    "tz": "CET ",
+    "gmt_diff": "+1 ",
+    "dst": "Mar–Oct ",
+    "open": "09:00 ",
+    "close": "17:35 ",
+    "geo": {
+      "lon": 9.1831757,
+      "lat": 45.4651396
+    }
+  },
+  {
+    "name": "Netherlands Euronext Amsterdam ",
+    "abbr": "AMS ",
+    "co": "Netherlands ",
+    "city": "Amsterdam ",
+    "tz": "CET ",
+    "gmt_diff": "+1 ",
+    "dst": "Mar–Oct ",
+    "open": "09:00 ",
+    "close": "17:40 ",
+    "geo": {
+      "lon": 4.896050600000001,
+      "lat": 52.3743135
+    }
+  },
+  {
+    "name": "Belgium Euronext Brussels ",
+    "abbr": "BRU ",
+    "co": "Belgium ",
+    "city": "Brussels ",
+    "tz": "CET ",
+    "gmt_diff": "+1 ",
+    "dst": "Mar–Oct ",
+    "open": "09:00 ",
+    "close": "17:30 ",
+    "geo": {
+      "lon": 4.3503697,
+      "lat": 50.8479745
+    }
+  },
+  {
+    "name": "Luxembourg Luxembourg Stock Exchange ",
+    "abbr": "LuxSE ",
+    "co": "Luxembourg ",
+    "city": "Luxembourg City ",
+    "tz": "CET ",
+    "gmt_diff": "+1 ",
+    "dst": "Mar–Oct ",
+    "open": "09:00 ",
+    "close": "17:35 ",
+    "geo": {
+      "lon": 6.120648,
+      "lat": 49.612887
+    }
+  },
+  {
+    "name": "Sweden Stockholm Stock Exchange ",
+    "abbr": "OMX ",
+    "co": "Sweden ",
+    "city": "Stockholm ",
+    "tz": "CET ",
+    "gmt_diff": "+1 ",
+    "dst": "Mar–Oct ",
+    "open": "09:00 ",
+    "close": "17:30 ",
+    "geo": {
+      "lon": 18.070686,
+      "lat": 59.3253467
+    }
+  },
+  {
+    "name": "Norway Oslo Stock Exchange ",
+    "abbr": "OSE ",
+    "co": "Norway ",
+    "city": "Oslo ",
+    "tz": "CET ",
+    "gmt_diff": "+1 ",
+    "dst": "Mar–Oct ",
+    "open": "09:00 ",
+    "close": "16:30 ",
+    "geo": {
+      "lon": 10.7477679,
+      "lat": 59.9088278
+    }
+  },
+  {
+    "name": "Denmark Copenhagen Stock Exchange ",
+    "abbr": "CSE ",
+    "co": "Denmark ",
+    "city": "Copenhagen ",
+    "tz": "CET ",
+    "gmt_diff": "+1 ",
+    "dst": "Mar–Oct ",
+    "open": "09:00 ",
+    "close": "17:00 ",
+    "geo": {
+      "lon": 12.5840128,
+      "lat": 55.6755013
+    }
+  },
+  {
+    "name": "United Kingdom London Stock Exchange ",
+    "abbr": "LSE ",
+    "co": "United Kingdom ",
+    "city": "London ",
+    "tz": "GMT ",
+    "gmt_diff": "+0 ",
+    "dst": "Mar–Oct ",
+    "open": "08:00 ",
+    "close": "16:30 ",
+    "geo": {
+      "lon": -0.099034,
+      "lat": 51.5150534
+    }
+  },
+  {
+    "name": "Portugal Euronext Lisbon ",
+    "abbr": "PSI ",
+    "co": "Portugal ",
+    "city": "Lisbon ",
+    "tz": "GMT ",
+    "gmt_diff": "+0 ",
+    "dst": "Mar–Oct ",
+    "open": "08:00 ",
+    "close": "16:30 ",
+    "geo": {
+      "lon": -9.1456241,
+      "lat": 38.7210105
+    }
+  },
+  {
+    "name": "Republic of Ireland Irish Stock Exchange ",
+    "abbr": "ISE ",
+    "co": "Ireland ",
+    "city": "Dublin ",
+    "tz": "GMT ",
+    "gmt_diff": "+0 ",
+    "dst": "Mar–Oct ",
+    "open": "08:00 ",
+    "close": "16:30 ",
+    "geo": {
+      "lon": -6.261174800000001,
+      "lat": 53.3444848
+    }
+  },
+  {
+    "name": "Morocco Casablanca Stock Exchange ",
+    "abbr": "CSE ",
+    "co": "Maroc ",
+    "city": "Casablanca ",
+    "tz": "CET ",
+    "gmt_diff": "+0 ",
+    "dst": "Mar–Oct ",
+    "open": "08:10 ",
+    "close": "15:55 ",
+    "geo": {
+      "lon": -7.6043353,
+      "lat": 33.5963283
+    }
+  },
+  {
+    "name": "Malta Malta Stock Exchange ",
+    "abbr": "MSE ",
+    "co": "Malta ",
+    "city": "Valletta ",
+    "tz": "CET ",
+    "gmt_diff": "+1 ",
+    "dst": "Mar–Oct ",
+    "open": "09:30 ",
+    "close": "12:30[10] ",
+    "geo": {
+      "lon": 14.5115916,
+      "lat": 35.8952305
+    }
+  },
+  {
+    "name": "Nigeria Nigerian Stock Exchange ",
+    "abbr": "NSE ",
+    "co": "Nigeria ",
+    "city": "Lagos ",
+    "tz": "WAT ",
+    "gmt_diff": "+1 ",
+    "dst": "",
+    "open": "10:00 ",
+    "close": "14:20 ",
+    "geo": {
+      "lon": 3.3881806,
+      "lat": 6.4526854
+    }
+  },
+  {
+    "name": "Brazil Bolsa de Valores de São Paulo ",
+    "abbr": "Bovespa ",
+    "co": "Brazil ",
+    "city": "São Paulo ",
+    "tz": "BRT ",
+    "gmt_diff": "−3 ",
+    "dst": "Suspended ",
+    "open": "10:00 ",
+    "close": "17:30 ",
+    "geo": {
+      "lon": -46.6845246,
+      "lat": -23.5674
+    }
+  },
+  {
+    "name": "Saint Vincent and the Grenadines Saint Vincent and the Grenadines Exchange ",
+    "abbr": "SVGEX ",
+    "co": "Saint Vincent and the Grenadines ",
+    "city": "Kingstown ",
+    "tz": "AST ",
+    "gmt_diff": "- 4 ",
+    "dst": "",
+    "open": "09:00 ",
+    "close": "16:00[notes 4] ",
+    "geo": {
+      "lon": -61.2259021,
+      "lat": 13.1554374
+    }
+  },
+  {
+    "name": "Argentina Buenos Aires Stock Exchange ",
+    "abbr": "BCBA ",
+    "co": "Argentina ",
+    "city": "Buenos Aires ",
+    "tz": "ART ",
+    "gmt_diff": "−3 ",
+    "dst": "",
+    "open": "11:00 ",
+    "close": "17:00 ",
+    "geo": {
+      "lon": -58.3707966,
+      "lat": -34.6041825
+    }
+  },
+  {
+    "name": "Jamaica Jamaica Stock Exchange ",
+    "abbr": "JSE ",
+    "co": "Jamaica ",
+    "city": "Kingston ",
+    "tz": "EST ",
+    "gmt_diff": "−5 ",
+    "dst": "",
+    "open": "09:00 ",
+    "close": "13:00[11] ",
+    "geo": {
+      "lon": -76.7872994,
+      "lat": 17.9649234
+    }
+  },
+  {
+    "name": "United States New York Stock Exchange ",
+    "abbr": "NYSE ",
+    "co": "United States ",
+    "city": "New York ",
+    "tz": "EST ",
+    "gmt_diff": "−5 ",
+    "dst": "Mar–Nov ",
+    "open": "09:30 ",
+    "close": "16:00[12] ",
+    "geo": {
+      "lon": -74.0112654,
+      "lat": 40.706877
+    }
+  },
+  {
+    "name": "United States NASDAQ ",
+    "abbr": "NASDAQ ",
+    "co": "United States ",
+    "city": "New York ",
+    "tz": "EST ",
+    "gmt_diff": "−5 ",
+    "dst": "Mar–Nov ",
+    "open": "09:30 ",
+    "close": "16:00[13] ",
+    "geo": {
+      "lon": -73.9857195,
+      "lat": 40.7567648
+    }
+  },
+  {
+    "name": "Canada Toronto Stock Exchange ",
+    "abbr": "TSX ",
+    "co": "Canada ",
+    "city": "Toronto ",
+    "tz": "EST ",
+    "gmt_diff": "−5 ",
+    "dst": "Mar–Nov ",
+    "open": "09:30 ",
+    "close": "16:00 ",
+    "geo": {
+      "lon": -79.38335769999999,
+      "lat": 43.6483484
+    }
+  },
+  {
+    "name": "Mexico Mexican Stock Exchange ",
+    "abbr": "BMV ",
+    "co": "Mexico ",
+    "city": "Mexico City ",
+    "tz": "CST ",
+    "gmt_diff": "−6 ",
+    "dst": "Apr–Oct ",
+    "open": "08:30 ",
+    "close": "15:00 ",
+    "geo": {
+      "lon": -99.1645446,
+      "lat": 19.4292359
+    }
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "type": "module",
+  "dependencies": {
+    "blessed-contrib": "../blessed-contrib",
+    "neo-blessed": "^0.2.0",
+    "node-fetch": "^2.6.0"
+  }
+}
