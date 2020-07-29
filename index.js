@@ -1,4 +1,4 @@
-import blessed from 'neo-blessed'
+import blessed from 'blessed'
 
 import { UI } from './src/print.js'
 import { getPrices } from './src/api.js'
@@ -8,7 +8,8 @@ import { getPrices } from './src/api.js'
  * */
 ;(async function () {
   const sym = 'tsla'
-  // const data = await getPrices(sym, { chartLast: 60 * 6.5 })
+  const data = await getPrices(sym, { chartLast: 60 * 6.5 })
+  console.log(data)
 
   // create screen
   const screen = blessed.screen({ smartCSR: true })
@@ -16,9 +17,7 @@ import { getPrices } from './src/api.js'
     this.destroy()
     console.log('exiting iexcli...')
   })
-  const screens = [new UI(0, 'default', screen)]
 
-  const curScreen = screens[0]
-  // curScreen.buildBox()
-  curScreen.buildRepl()
+  const curScreen = new UI(0, 'default', screen)
+  curScreen.print(data)
 })()

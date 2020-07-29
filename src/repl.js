@@ -1,34 +1,20 @@
-import blessed from 'neo-blessed'
+import blessed from 'blessed'
 
-export function buildRepl() {
+export function buildRepl(row, col, h, w) {
   const screen = this.screen
   const history = `{#2ea-fg}Welcome to iexcli.{/}
-  type {bold}{#cd2-fg}h{/} or {bold}{#cd2-fg}help{/} followed by {bold}{#cd2-fg}<enter>{/} or {bold}{#cd2-fg}<return>{/} for help..{bold}{blink}.{/}
-more documentation is available at <https://github.com/hp4k1h5/iexcli>`.split(
-    '\n',
-  )
+  type {bold}{#cd2-fg}h{/} or {bold}{#cd2-fg}help{/} followed by {bold}{#cd2-fg}<enter>{/} or {bold}{#cd2-fg}<return>{/} for help. 
+  more documentation is available at 
+  {underline}{#4be-fg}<https://github.com/hp4k1h5/iexcli>{/}..{bold}{blink}.{/}
+\n\n\n `.split('\n')
 
-  var form = blessed.form({
-    parent: screen,
-    keys: true,
-    right: 0,
-    bottom: 3,
-    width: 60,
-    height: 10,
-    padding: 0,
-    margin: 0,
-  })
+  const repl = this.grid.set(row, col, h, w, blessed.form, { keys: true })
 
   // console display (optional), otherwise commands just have effects and don't report
   const output = blessed.textarea({
-    parent: form,
-    top: 0,
-    left: 0,
-    width: form.width,
-    height: 10,
+    parent: repl,
+    height: '80%',
     tags: true,
-    scrollable: true,
-    alwaysScroll: true,
     style: {
       scrollbar: {
         bg: 'blue',
@@ -40,11 +26,9 @@ more documentation is available at <https://github.com/hp4k1h5/iexcli>`.split(
 
   // non-optional all interaction is handled here
   const input = blessed.textbox({
-    parent: form,
+    parent: repl,
     name: 'input',
-    bottom: -3,
-    left: output.left,
-    width: form.width,
+    top: '80%',
     height: 3,
     inputOnFocus: true,
     border: { type: 'line' },
@@ -58,9 +42,9 @@ more documentation is available at <https://github.com/hp4k1h5/iexcli>`.split(
 
   // handle submit
   input.key('enter', function () {
-    form.submit()
+    repl.submit()
   })
-  form.on('submit', function (data) {
+  repl.on('submit', function (data) {
     // parse and handle input
     let evaluation = evaluate(data.input)
 
@@ -77,7 +61,8 @@ more documentation is available at <https://github.com/hp4k1h5/iexcli>`.split(
 
   // init repl
   input.focus()
-  screen.render()
+  // screen.render()
+  return repl
 }
 
 // helpers
@@ -98,11 +83,14 @@ function evaluate(input) {
 }
 
 function help() {
-  return `available commands:
-h(help)    :prints this menu
-$          :stock ticker symbol prefix
-            changes the active symbol
-            ex: {#cd2-fg}$hlys{/}`
+  return `
+    {bold}{#2ea-fg}help menu{/} 
+{bold}available commands:{/}
+{#cd2-fg}h(elp){/}   :prints this menu
+{#cd2-fg}show{/}     :display new chart
+{#cd2-fg}\${/}        :stock ticker symbol prefix
+          changes active symbol
+          ex. {#cd2-fg}$hlys <enter>{/}`
 }
 
 function update() {}

@@ -1,4 +1,3 @@
-import blessed from 'neo-blessed'
 import contrib from 'blessed-contrib'
 
 export function graph(grid, data, label, row, col, h, w) {

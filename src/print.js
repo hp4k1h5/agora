@@ -1,36 +1,41 @@
-import blessed from 'neo-blessed'
+import blessed from 'blessed'
+import contrib from 'blessed-contrib'
 
 import { graph } from './graph.js'
 import { buildRepl } from './repl.js'
 
 /*
- * neo-blessed contrib grid controller
+ * blessed-contrib grid controller
  * */
 export class UI {
   constructor(id, name, screen) {
     this.id = id
     this.name = name
     this.screen = screen
+    this.grid = new contrib.grid({ rows: 12, cols: 12, screen: this.screen })
     // e.g. grid.set(row, col, rowSpan, colSpan, obj, opts)
   }
 
-  buildRepl() {
+  buildRepl(row, col, h, w) {
     buildRepl.apply(this, arguments)
   }
 
   // set grid items
   print(data) {
+    this.buildRepl(6, 9, 6, 3)
+
     // add line graph
-    graph(this.grid, data, 'time series', 0, 0, 10, 10)
+    graph(this.grid, data, 'time series', 0, 0, 10, 9)
+
     // add vol graph
     graph(
       this.grid,
       { x: data.x, y: data.vol, style: { line: [90, 140, 250] } },
       'volume',
-      10,
+      9,
       0,
       3,
-      10,
+      9,
     )
 
     // add stock list
@@ -54,18 +59,6 @@ export class UI {
     //   12,
     //   2,
     // )
-
-    // set valid keys
-    this.screen.key(['enter', 'escape', 'q', 'C-c'], function (ch, key) {
-      const quitters = ['C-c', 'q']
-      if (quitters.includes(key.name)) {
-        console.log(key)
-        process.exit(0)
-      }
-    })
-    // this.screen.key(["f"], function (ch, key) {
-    //   line.focus();
-    // });
 
     this.screen.render()
   }

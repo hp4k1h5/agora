@@ -1,7 +1,7 @@
 import fs from 'fs'
 import qs from 'querystring'
 import fetch from 'node-fetch'
-import blessed from 'neo-blessed'
+import blessed from 'blessed'
 import contrib from 'blessed-contrib'
 
 // req
