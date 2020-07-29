@@ -5,38 +5,11 @@ import blessed from 'neo-blessed'
 import contrib from 'blessed-contrib'
 
 // req
-function buildURL(path, options = {}) {
-  const baseURL = 'https://cloud.iexapis.com/stable'
-  const queryString = qs.encode({ ...options, token: pk })
-  return `${baseURL}/${path}?${queryString}`
-}
 
 async function quote(sym) {
   const url = buildURL(`stock/${sym}/quote`)
   let response = await fetch(url)
   return await response.json()
-}
-
-async function getPrices(sym, options) {
-  const url = buildURL(`stock/${sym}/intraday-prices`, options)
-  let response = await fetch(url)
-  response = await response.json()
-
-  // return clean data
-  let last = response.find((price) => price.average) || 0
-  return response.reduce(
-    (a, v) => {
-      if (!v.average) {
-        v.average = last.average
-      }
-      last = v
-      a.x.push(v.minute)
-      a.y.push(v.average)
-      a.vol.push(v.volume)
-      return a
-    },
-    { title: sym, x: [], y: [], vol: [] },
-  )
 }
 
 ;(async function main() {
@@ -51,82 +24,6 @@ async function getPrices(sym, options) {
 
   print(data)
 })()
-
-// blessed
-function print(data) {
-  const screen = blessed.screen()
-
-  // create grid
-  const grid = new contrib.grid({ rows: 12, cols: 12, screen: screen })
-
-  // set grid items
-  // e.g. grid.set(row, col, rowSpan, colSpan, obj, opts)
-
-  // add line graph
-  graph(grid, data, 'time series', 0, 0, 10, 10)
-  // add vol graph
-  graph(
-    grid,
-    { x: data.x, y: data.vol, style: { line: [90, 140, 250] } },
-    'volume',
-    10,
-    0,
-    3,
-    10,
-  )
-
-  // add stock list
-  table(
-    grid,
-    {
-      headers: ['stonks'],
-      data: [
-        ['msft'],
-        ['google'],
-        ['tsla'],
-        ['amzn'],
-        ['aapl'],
-        ['goog'],
-        ['spy'],
-        ['qqq'],
-      ],
-    },
-    0,
-    10,
-    12,
-    2,
-  )
-
-  //
-  screen.key(['enter', 'escape', 'q', 'C-c'], function (ch, key) {
-    console.log('ch', ch, 'key', key)
-  })
-  // screen.key(["f"], function (ch, key) {
-  //   line.focus();
-  // });
-
-  screen.render()
-}
-
-function graph(grid, data, label, row, col, h, w) {
-  const line = grid.set(row, col, h, w, contrib.line, {
-    style: {
-      line: 'green',
-      text: [180, 180, 120],
-      baseline: 'blue',
-    },
-    minY: Math.min(...data.y),
-    xLabelPadding: 0,
-    yLabelPadding: 0,
-    xPadding: 0,
-    yPadding: 0,
-    label,
-    wholeNumbersOnly: false,
-    showLegend: !!data.title,
-  })
-
-  line.setData([data])
-}
 
 function table(grid, data, row, col, h, w) {
   const table = grid.set(row, col, h, w, contrib.table, {
