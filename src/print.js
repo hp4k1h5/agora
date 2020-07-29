@@ -1,6 +1,7 @@
 import blessed from 'neo-blessed'
 
 import { graph } from './graph.js'
+import { buildRepl } from './repl.js'
 
 /*
  * neo-blessed contrib grid controller
@@ -14,138 +15,7 @@ export class UI {
   }
 
   buildRepl() {
-    const inputLine = blessed.textarea({
-      inputOnFocus: true,
-      top: '50%',
-      left: 0,
-      width: '50%',
-      height: '6%',
-      style: {
-        fg: 'white',
-        bg: 'black',
-      },
-    })
-    this.screen.append(inputLine)
-
-    this.screen.key(['enter'], function (ch, key) {
-      inputLine.sumbit()
-    })
-
-    inputLine.on('submit', () => console.log('subutut'))
-
-    inputLine.focus()
-    this.screen.render()
-  }
-
-  buildForm() {
-    const screen = this.screen
-    var form = blessed.form({
-      parent: screen,
-      keys: true,
-      left: 0,
-      top: 0,
-      width: 60,
-      height: 10,
-      padding: 0,
-      margin: 0,
-    })
-
-    const output = blessed.textarea({
-      parent: form,
-      top: 0,
-      left: 0,
-      width: form.width - 2,
-      height: 5,
-      content: `Welcome to iexcli
-      type h for help`,
-    })
-
-    const input = blessed.textbox({
-      parent: form,
-      name: 'input',
-      top: 5,
-      left: 0,
-      width: form.width,
-      height: 3,
-      inputOnFocus: true,
-      border: { type: 'line' },
-      style: {
-        scrollable: true,
-        border: { fg: 'gray' },
-        focus: {
-          border: { fg: 'blue' },
-        },
-      },
-    })
-
-    input.key('enter', function () {
-      form.submit()
-    })
-
-    form.on('submit', function (data) {
-      // mimic scroll
-      let lines = output.getLines()
-      if (lines.length >= output.height) {
-        output.shiftLine(0)
-      }
-      output.pushLine(data.input)
-
-      input.clearValue()
-      input.focus()
-      screen.render()
-    })
-
-    input.focus()
-    screen.render()
-  }
-
-  buildBox() {
-    const box = blessed.box({
-      top: 0,
-      left: 0,
-      width: '50%',
-      height: '50%',
-      content: 'CONTENT',
-      tags: true,
-      border: {
-        type: 'line',
-      },
-      style: {
-        fg: 'white',
-        bg: 'blue',
-        border: {
-          fg: '#f0f0f0',
-        },
-        focus: {
-          fg: '#00f0f0',
-        },
-      },
-    })
-
-    this.screen.append(box)
-
-    // If our box is clicked, change the content.
-    box.on('click', function (data) {
-      box.setContent(`{center}{red-fg}CONTENT{/red-fg}.{/center}`)
-      this.screen.render()
-    })
-
-    // If box is focused, handle `enter`/`return` and give us some more content.
-    box.key('enter', function (ch, key) {
-      box.setContent(
-        '{right}Even different {black-fg}content{/black-fg}.{/right}\n',
-      )
-      box.setLine(1, 'bar')
-      box.insertLine(1, 'foo')
-      this.screen.render()
-    })
-
-    // quit on escape, q, or Ctrl-c
-    this.screen.key(['escape', 'q', 'C-c'], function (ch, key) {
-      return process.exit(0)
-    })
-
-    this.screen.render()
+    buildRepl.apply(this, arguments)
   }
 
   // set grid items
