@@ -50,7 +50,7 @@ export class UI {
       margin: 0,
     })
 
-    const console = blessed.textarea({
+    const output = blessed.textarea({
       parent: form,
       top: 0,
       left: 0,
@@ -58,34 +58,44 @@ export class UI {
       height: 5,
       content: `Welcome to iexcli
       type h for help`,
-      // border: { type: 'line' },
     })
 
-    const repl = blessed.textbox({
+    const input = blessed.textbox({
       parent: form,
-      name: 'repl',
-      top: 6,
+      name: 'input',
+      top: 5,
       left: 0,
       width: form.width,
       height: 3,
       inputOnFocus: true,
       border: { type: 'line' },
-      focus: {
-        border: { fg: 'blue' },
+      style: {
+        scrollable: true,
+        border: { fg: 'gray' },
+        focus: {
+          border: { fg: 'blue' },
+        },
       },
     })
 
-    repl.key('enter', function () {
+    input.key('enter', function () {
       form.submit()
-      repl.focus()
     })
 
     form.on('submit', function (data) {
-      console.setContent(JSON.stringify(data, null, 2))
+      // mimic scroll
+      let lines = output.getLines()
+      if (lines.length >= output.height) {
+        output.shiftLine(0)
+      }
+      output.pushLine(data.input)
+
+      input.clearValue()
+      input.focus()
       screen.render()
     })
 
-    repl.focus()
+    input.focus()
     screen.render()
   }
 

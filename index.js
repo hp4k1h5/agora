@@ -1,10 +1,10 @@
+import blessed from 'neo-blessed'
+
 import { UI } from './src/print.js'
 import { getPrices } from './src/api.js'
 
-import blessed from 'neo-blessed'
-
 /*
- * main loop calls blessed-contrib and prints a gui
+ * main fn calls builds screen and inits app
  * */
 ;(async function () {
   console.log('starting iexcli...')
