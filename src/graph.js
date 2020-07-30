@@ -6,6 +6,8 @@ export function graph(grid, data, label, row, col, h, w) {
       line: 'green',
       text: [180, 180, 120],
       baseline: 'blue',
+      bold: true,
+      legend: 'gray',
     },
     minY: Math.min(...data.y),
     xLabelPadding: 0,
@@ -18,4 +20,5 @@ export function graph(grid, data, label, row, col, h, w) {
   })
 
   line.setData([data])
+  return line
 }

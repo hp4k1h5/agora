@@ -1,7 +1,8 @@
 import blessed from 'blessed'
+import { getPrices, getQuote } from './api.js'
 
 export function buildRepl(row, col, h, w) {
-  const screen = this.screen
+  const self = this
   const history = `{#2ea-fg}Welcome to iexcli.{/}
   type {bold}{#cd2-fg}h{/} or {bold}{#cd2-fg}help{/} followed by {bold}{#cd2-fg}<enter>{/} or {bold}{#cd2-fg}<return>{/} for help. 
   more documentation is available at 
@@ -44,9 +45,9 @@ export function buildRepl(row, col, h, w) {
   input.key('enter', function () {
     repl.submit()
   })
-  repl.on('submit', function (data) {
+  repl.on('submit', async function (data) {
     // parse and handle input
-    let evaluation = evaluate(data.input)
+    let evaluation = await evaluate(data.input, self)
 
     // mimic scroll
     history.push('{bold}> {/}' + data.input)
@@ -56,30 +57,33 @@ export function buildRepl(row, col, h, w) {
     // clear input and refocus
     input.clearValue()
     input.focus()
-    screen.render()
+    self.screen.render()
   })
 
-  // init repl
   input.focus()
-  // screen.render()
-  return repl
+  // add to curScreen
+  this.repl = repl
+  this.screen.render()
 }
 
 // helpers
 
-function evaluate(input) {
+function evaluate(input, self) {
   const commands = {
     h: help,
     help,
     undefined: update,
+    '"': quote,
   }
 
   let words = input.split(/\s+/g)
   let command = commands[words.find((w) => commands[w])]
-  let stock = words.find((w) => w[0] == '$')
+  let sym = words.find((w) => w[0] == '$')
+  self.sym = sym ? sym.slice(1) : self.sym
 
+  if (!command && !sym) return
   // execute command
-  return command(stock)
+  return command(self.sym, self)
 }
 
 function help() {
@@ -90,7 +94,30 @@ function help() {
 {#cd2-fg}show{/}     :display new chart
 {#cd2-fg}\${/}        :stock ticker symbol prefix
           changes active symbol
-          ex. {#cd2-fg}$hlys <enter>{/}`
+          ex. {#cd2-fg}$qqq <enter>{/}`
 }
 
-function update() {}
+async function update(sym, self) {
+  let data
+  try {
+    data = await getPrices(sym, { chartLast: 60 * 6.5 })
+  } catch (e) {
+    return `{red-fg}error: ${e.status > 400 ? '$' + sym : ''} ${
+      e.statusText
+    }{/}`
+  }
+  self.buildCharts(data)
+}
+
+async function quote(sym, self) {
+  let data
+  try {
+    data = await getQuote(sym)
+  } catch (e) {
+    return `{red-fg}error: ${e.status > 400 ? '$' + sym : ''} ${
+      e.statusText
+    }{/}`
+  }
+
+  self.buildQuote(data)
+}

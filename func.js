@@ -4,27 +4,6 @@ import fetch from 'node-fetch'
 import blessed from 'blessed'
 import contrib from 'blessed-contrib'
 
-// req
-
-async function quote(sym) {
-  const url = buildURL(`stock/${sym}/quote`)
-  let response = await fetch(url)
-  return await response.json()
-}
-
-;(async function main() {
-  const sym = 'amzn'
-  let data
-  try {
-    data = await getPrices(sym, { chartLast: 60 * 6.5 })
-  } catch (e) {
-    console.error(e)
-    return
-  }
-
-  print(data)
-})()
-
 function table(grid, data, row, col, h, w) {
   const table = grid.set(row, col, h, w, contrib.table, {
     keys: true,
