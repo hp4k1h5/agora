@@ -4,7 +4,7 @@
 
 #### !!warning unstable and in early development!!
 [contributions](./.github/CONTRIBUTING.md) and [bug
-reports](./.github/ISSUE_TEMPLATE/bug_report.md) are _welcome_
+reports](https://github.com/HP4k1h5/iexcli/issues/new?assignees=HP4k1h5&labels=bug&template=bug_report.md&title=basic) are _welcome_
 
 ![screen shot of iexcli with one price chart, one volume chart, a repl, and
 some stock quote data](img/iexcli.png)
