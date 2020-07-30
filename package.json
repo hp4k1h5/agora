@@ -1,9 +1,37 @@
 {
+  "name": "@hp4k1h45/iexcli",
+  "version": "0.0.1",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "run": "node index.js"
+  },
+  "homepage": "https://github.com/HP4k1h5/iexcli",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/HP4k1h5/iexcli"
+  },
+  "description": "stock charts in the terminal, with a blessed interface and iex data",
+  "keywords": [
+    "blessed",
+    "blessed-contrib",
+    "iex",
+    "stocks",
+    "cli",
+    "terminal",
+    "repl",
+    "markets",
+    "crypto"
+  ],
   "dependencies": {
     "blessed": "^0.1.81",
     "blessed-contrib": "^4.8.20",
-    "neo-blessed": "^0.2.0",
     "node-fetch": "^2.6.0"
+  },
+  "author": "hp4k1h5",
+  "email": "robertwalks@gmail.com",
+  "bugs": {
+    "url": "https://github.com/HP4k1h5/AQLqueryBuilder.js/issues"
   }
 }
