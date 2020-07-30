@@ -23,31 +23,37 @@ export function buildURL(path, params = {}) {
 /*
  * /intraday-prices endpoint returns minute-increment price data for a given stock @param sym: string
  * */
-export async function getPrices(sym, params) {
-  // get data
-  const url = buildURL(`stock/${sym}/intraday-prices`, params)
+export async function getPrices(self) {
+  let url
+
+  // intraday
+  if (self.series == 'intra') {
+    url = buildURL(`stock/${self.sym}/intraday-prices`, self.time)
+  } else {
+    url = buildURL(`stock/${self.sym}/chart/${self.time}`)
+  }
   let response = await fetch(url)
   if (response.ok) {
     response = await response.json()
   } else throw response
 
   // keep track of last price, which fills in for null price points
-  let last = response.find((price) => price.average) || 0
+  let last = response.find((price) => price.close) || 0
 
   // return clean shaped data
   return response.reduce(
     (a, v) => {
-      if (!v.average) {
-        v.average = last.average
+      if (!v.close) {
+        v.close = last.close
       }
       // update last
       last = v
-      a.x.push(v.minute)
-      a.y.push(v.average)
+      a.x.push(self.series == 'intra' ? v.minute : v.date)
+      a.y.push(v.close)
       a.vol.push(v.volume)
       return a
     },
-    { title: sym, x: [], y: [], vol: [] },
+    { title: self.sym, x: [], y: [], vol: [] },
   )
 }
 
@@ -64,10 +70,10 @@ export async function getQuote(sym) {
       symbol: (d) => [d[0], `${d[1]}`],
       companyName: (d) => [d[0], `{#4be-fg}${d[1]}{/}`],
       latestPrice: (d) => [d[0], `{#cc5-fg}${d[1]}{/}`],
-      change: (d) => [d[0], `{#${d[1] > 0 ? '4fb' : '#a25'}-fg}${d[1]}{/}`],
+      change: (d) => [d[0], `{#${d[1] >= 0 ? '4fb' : 'a25'}-fg}${d[1]}{/}`],
       changePercent: (d) => [
         d[0],
-        `{#${d[1] > 0 ? '4fb' : '#a25'}-fg}${d[1].toFixed(3)}%{/}`,
+        `{#${d[1] >= 0 ? '4fb' : 'a25'}-fg}${d[1].toFixed(3)}%{/}`,
       ],
       open: (d) => [d[0], '' + d[1]],
       close: (d) => [d[0], '' + d[1]],

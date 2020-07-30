@@ -4,9 +4,13 @@ import { getPrices, getQuote } from './api.js'
 export function buildRepl(row, col, h, w) {
   const self = this
   const history = `{#2ea-fg}Welcome to iexcli.{/}
-  type {bold}{#cd2-fg}h{/} or {bold}{#cd2-fg}help{/} followed by {bold}{#cd2-fg}<enter>{/} or {bold}{#cd2-fg}<return>{/} for help. 
+  Data provided by IEX Cloud 
+  {blue-fg}<https://iexcloud.io>{/}
+
+  type {bold}{#cd2-fg}h{/} or {bold}{#cd2-fg}help{/} for help. 
+
   more documentation is available at 
-  {underline}{#4be-fg}<https://github.com/hp4k1h5/iexcli>{/}..{bold}{blink}.{/}
+  {underline}{#4be-fg}<https://github.com/hp4k1h5/iexcli>{/}...
 \n\n\n `.split('\n')
 
   const repl = this.grid.set(row, col, h, w, blessed.form, { keys: true })
@@ -70,54 +74,101 @@ export function buildRepl(row, col, h, w) {
 
 function evaluate(input, self) {
   const commands = {
-    h: help,
-    help,
     undefined: update,
     '"': quote,
+    help,
+    h: help,
   }
 
   let words = input.split(/\s+/g)
   let command = commands[words.find((w) => commands[w])]
   let sym = words.find((w) => w[0] == '$')
-  self.sym = sym ? sym.slice(1) : self.sym
+  self.sym = sym ? sym.substring(1) : self.sym
+  let time = words.find((w) => w[0] == ':')
+  if (time) time = parseTime(self, time.substring(1))
+  if (time) return time
 
-  if (!command && !sym) return
+  if (!sym && !time)
+    return `{red-fg}error: no known commands entered 
+${help()}`
+
   // execute command
-  return command(self.sym, self)
+  return command(self, input)
 }
 
-function help() {
+function help(_self, words) {
+  let what = words[words.findIndex('help') + 1]
+  if (what) {
+    const whats = {
+      $: whatSym,
+      ':': whatTime,
+    }
+    const whatSym = `{bold}{#2ea-fg}help {#cd2-fg}\${/} (symbol)
+prefix stock ticker symbols with {#cd2-fg}\${/} to change the active symbol. Including a $-prefix will automatically update all charts and tables`
+    const whatTime = `{bold}{#2ea-fg}help {#cd2-fg}:{/} (time range)
+prefix valid time ranges with {#cd2-fg}:{/} to change the active time range. Including a :-prefix will automatically update all the charts and tables`
+    return whats[what]
+  }
   return `
     {bold}{#2ea-fg}help menu{/} 
 {bold}available commands:{/}
 {#cd2-fg}h(elp){/}   :prints this menu
 {#cd2-fg}show{/}     :display new chart
-{#cd2-fg}\${/}        :stock ticker symbol prefix
+{#cd2-fg}\${/}        :ticker symbol prefix
           changes active symbol
-          ex. {#cd2-fg}$qqq <enter>{/}`
+          ex. {#cd2-fg}$qqq{/}
+          try {#cd2-fg}help \${/}
+{#cd2-fg}\:{/}        :time (range) prefix
+          changes active time range
+          ex. {#cd2-fg}:6m{/}
+          try {#cd2-fg}help \:{/}`
 }
 
-async function update(sym, self) {
+async function update(self) {
   let data
   try {
-    data = await getPrices(sym, { chartLast: 60 * 6.5 })
+    data = await getPrices(self)
+    quote = await getQuote(self.sym)
   } catch (e) {
-    return `{red-fg}error: ${e.status > 400 ? '$' + sym : ''} ${
+    return `{red-fg}error: ${e.status > 400 ? '$' + self.sym : ''} ${
       e.statusText
     }{/}`
   }
+
   self.buildCharts(data)
+  self.buildQuote(quote)
 }
 
-async function quote(sym, self) {
+async function quote(self) {
   let data
   try {
-    data = await getQuote(sym)
+    data = await getQuote(self.sym)
   } catch (e) {
-    return `{red-fg}error: ${e.status > 400 ? '$' + sym : ''} ${
+    return `{red-fg}error: ${e.status > 400 ? '$' + self.sym : ''} ${
       e.statusText
     }{/}`
   }
 
   self.buildQuote(data)
+}
+
+function parseTime(self, time) {
+  // handle intraday
+  const intra = time.match(/(\d+)(min|h)/)
+  if (intra) {
+    self.series = 'intra'
+    self.time = { chartLast: +intra[1] * (intra[2] == 'h' ? 60 : 1) }
+    return
+  }
+
+  // handle historical
+  if (!self.validUnits.includes(time)) {
+    return `{bold}{red-fg}error: invalid time{/}
+  valid time units 
+  ${self.validUnits.join(',')}
+  && 1-100h, 1-1000min`
+  }
+
+  self.series = 'hist'
+  self.time = time
 }

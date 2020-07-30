@@ -5,9 +5,8 @@ export function graph(grid, data, label, row, col, h, w) {
     style: {
       line: 'green',
       text: [180, 180, 120],
-      baseline: 'blue',
+      baseline: [100, 100, 100],
       bold: true,
-      legend: 'gray',
     },
     minY: Math.min(...data.y),
     xLabelPadding: 0,
