@@ -84,31 +84,45 @@ function evaluate(input, self) {
   let command = commands[words.find((w) => commands[w])]
   let sym = words.find((w) => w[0] == '$')
   self.sym = sym ? sym.substring(1) : self.sym
-  let time = words.find((w) => w[0] == ':')
+  let time = words.find((w) => /:\S/.test(w))
   if (time) time = parseTime(self, time.substring(1))
   if (time) return time
 
-  if (!sym && !time)
+  if (!self.sym && !self.time)
     return `{red-fg}error: no known commands entered 
-${help()}`
+`
+  // ${help()}
 
   // execute command
-  return command(self, input)
+  return command(self, words)
 }
 
-function help(_self, words) {
-  let what = words[words.findIndex('help') + 1]
+function help(self, words) {
+  // handle help arguments if any
+  let what = words[words.findIndex((w) => /h(elp)?/.test(w)) + 1]
   if (what) {
+    const whatSym = `
+    {bold}{#2ea-fg}help {#cd2-fg}\${/} (symbol)
+prefix stock ticker symbols with {#cd2-fg}\${/} to change the active symbol. Including a $-prefix will automatically update all charts and tables
+ex. {#cd2-fg}$brk.b{/}
+ex. {#cd2-fg}$GOOG{/}`
+    const whatTime = `
+    {bold}{#2ea-fg}help {#cd2-fg}:{/} (time range)
+prefix valid time ranges with {#cd2-fg}:{/} to change the active time range. Including a :-prefix will automatically update all the charts and tables
+{bold}{#2ea-fg}valid time ranges:{/}
+${self.validUnits.map((u) => '{#cd2-fg}:' + u + '{/}').join(' ')}
+AND numbers with minute {#cd2-fg}min{/} or hour {#cd2-fg}h{/}
+ex. {#cd2-fg} :100min {/}{#ddd-fg} last 100 minutes of aggregated trading data{/}
+ex. {#cd2-fg} :6.5h {/}{#ddd-fg}{/}  last 6.5 hours of minute aggregated trading data`
+
     const whats = {
       $: whatSym,
       ':': whatTime,
     }
-    const whatSym = `{bold}{#2ea-fg}help {#cd2-fg}\${/} (symbol)
-prefix stock ticker symbols with {#cd2-fg}\${/} to change the active symbol. Including a $-prefix will automatically update all charts and tables`
-    const whatTime = `{bold}{#2ea-fg}help {#cd2-fg}:{/} (time range)
-prefix valid time ranges with {#cd2-fg}:{/} to change the active time range. Including a :-prefix will automatically update all the charts and tables`
-    return whats[what]
+    return whats[what] ? whats[what] : `{red-fg}error{/}: no help for ${what}`
   }
+
+  // return full help
   return `
     {bold}{#2ea-fg}help menu{/} 
 {bold}available commands:{/}
@@ -121,7 +135,11 @@ prefix valid time ranges with {#cd2-fg}:{/} to change the active time range. Inc
 {#cd2-fg}\:{/}        :time (range) prefix
           changes active time range
           ex. {#cd2-fg}:6m{/}
-          try {#cd2-fg}help \:{/}`
+          try {#cd2-fg}help \:{/}
+
+commands can be aggregated:
+    ex. {#cd2-fg}$z :10h{/}
+    ex. {#cd2-fg}:1y $GM{/}`
 }
 
 async function update(self) {
@@ -154,7 +172,7 @@ async function quote(self) {
 
 function parseTime(self, time) {
   // handle intraday
-  const intra = time.match(/(\d+)(min|h)/)
+  const intra = time.match(/(\d|\.+)(min|h)/)
   if (intra) {
     self.series = 'intra'
     self.time = { chartLast: +intra[1] * (intra[2] == 'h' ? 60 : 1) }
@@ -163,10 +181,7 @@ function parseTime(self, time) {
 
   // handle historical
   if (!self.validUnits.includes(time)) {
-    return `{bold}{red-fg}error: invalid time{/}
-  valid time units 
-  ${self.validUnits.join(',')}
-  && 1-100h, 1-1000min`
+    return `{bold}{red-fg}error: invalid time{/}; see {#cd2-fg}help :{/}`
   }
 
   self.series = 'hist'

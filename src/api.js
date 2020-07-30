@@ -2,9 +2,11 @@ import fs from 'fs'
 import qs from 'querystring'
 import fetch from 'node-fetch'
 
-const token = process.env.IEX_PRIVATE_KEY
+const token = process.env.IEX_PUB_KEY
 if (!token || !token.length) {
-  console.error('user must provide private key as env var IEX_PRIVATE_KEY')
+  console.error(`user must provide publishable key as env var IEX_PUB_KEY
+    see README to learn how to obtain one.
+    ex. export IEX_PUB_KEY=pk_your_Publishable_iex_api_key`)
   process.exit(1)
 }
 
