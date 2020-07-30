@@ -2,6 +2,10 @@
 > query and view stock charts in the terminal using a
 > [blessed](https://github.com/chjj/blessed) interface
 
+#### !!warning unstable and in early development!!
+[contributions](./.github/CONTRIBUTING.md) and [bug
+reports](./.github/ISSUE_TEMPLATE/bug_report.md) are _welcome_
+
 ![screen shot of iexcli with one price chart, one volume chart, a repl, and
 some stock quote data](img/iexcli.png)
 
