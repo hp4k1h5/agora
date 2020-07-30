@@ -47,6 +47,8 @@ help $   # show help for stock prefix command
 h :      # show help for time prefix command
 h        # show general help
 ```
+#### `quit` or `exit`
+Typing `quit` or `exit` will exit the app
 
 #### `$` stock ticker symbol prefix
 Typing `$` followed immediately by a stock ticker symbol changes the currently

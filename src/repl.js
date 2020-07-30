@@ -78,6 +78,8 @@ function evaluate(input, self) {
     '"': quote,
     help,
     h: help,
+    exit,
+    quit: exit,
   }
 
   let words = input.split(/\s+/g)
@@ -97,6 +99,14 @@ function evaluate(input, self) {
   return command(self, words)
 }
 
+function exit(self) {
+  setTimeout(() => {
+    self.screen.destroy()
+    console.log('exiting...')
+  }, 1000)
+  return '{#abf-fg}goodbye...{/}'
+}
+
 function help(self, words) {
   // handle help arguments if any
   let what = words[words.findIndex((w) => /h(elp)?/.test(w)) + 1]
@@ -114,10 +124,15 @@ ${self.validUnits.map((u) => '{#cd2-fg}:' + u + '{/}').join(' ')}
 AND numbers with minute {#cd2-fg}min{/} or hour {#cd2-fg}h{/}
 ex. {#cd2-fg} :100min {/}{#ddd-fg} last 100 minutes of aggregated trading data{/}
 ex. {#cd2-fg} :6.5h {/}{#ddd-fg}{/}  last 6.5 hours of minute aggregated trading data`
+    const whatExit = `
+    {bold}{#2ea-fg}help {#cd2-fg}exit | quit{/} (time range)
+exits iexcli`
 
     const whats = {
       $: whatSym,
       ':': whatTime,
+      exit: whatExit,
+      quit: whatExit,
     }
     return whats[what] ? whats[what] : `{red-fg}error{/}: no help for ${what}`
   }
@@ -127,7 +142,6 @@ ex. {#cd2-fg} :6.5h {/}{#ddd-fg}{/}  last 6.5 hours of minute aggregated trading
     {bold}{#2ea-fg}help menu{/} 
 {bold}available commands:{/}
 {#cd2-fg}h(elp){/}   :prints this menu
-{#cd2-fg}show{/}     :display new chart
 {#cd2-fg}\${/}        :ticker symbol prefix
           changes active symbol
           ex. {#cd2-fg}$qqq{/}
@@ -137,9 +151,11 @@ ex. {#cd2-fg} :6.5h {/}{#ddd-fg}{/}  last 6.5 hours of minute aggregated trading
           ex. {#cd2-fg}:6m{/}
           try {#cd2-fg}help \:{/}
 
-commands can be aggregated:
+these commands can be aggregated:
     ex. {#cd2-fg}$z :10h{/}
-    ex. {#cd2-fg}:1y $GM{/}`
+    ex. {#cd2-fg}:1y $GM{/}
+
+{#cd2-fg}exit / quit{/}     :quit iexcli`
 }
 
 async function update(self) {
@@ -172,7 +188,7 @@ async function quote(self) {
 
 function parseTime(self, time) {
   // handle intraday
-  const intra = time.match(/(\d|\.+)(min|h)/)
+  const intra = time.match(/([\d.]+)(min|h)/)
   if (intra) {
     self.series = 'intra'
     self.time = { chartLast: +intra[1] * (intra[2] == 'h' ? 60 : 1) }
