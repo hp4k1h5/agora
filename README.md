@@ -33,6 +33,8 @@ ex. `export IEX_PUB_KEY=pk_Y0urIeXaPipUbl15h4bLeKEY`
 
 
 ## usage
+RUN `node index.js` from the root of this directory.
+
 All interaction is through the repl emulator in the bottom right corner of the
 screen. It accepts commands and updates the charts and data windows. See
 examples below.
