@@ -83,7 +83,7 @@ async function getExchanges() {
   for (let i = 0; i < ex.length; i++) {
     const options = {
       query: `${ex[i].name}, ${ex[i].city}, ${ex[i].co}`,
-      key: 'AIzaSyDcxEtbdI8i3veZ0ZlarRrOwbTiqSOxf64',
+      key: '',
     }
     let r = await fetch(
       `https://maps.googleapis.com/maps/api/place/textsearch/json?${qs.encode(
