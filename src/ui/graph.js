@@ -1,6 +1,8 @@
 import contrib from 'blessed-contrib'
 
 export function graph(grid, data, label, row, col, h, w) {
+  const minY = data ? Math.min(...data.y) : 0
+
   const line = grid.set(row, col, h, w, contrib.line, {
     style: {
       line: 'green',
@@ -8,7 +10,7 @@ export function graph(grid, data, label, row, col, h, w) {
       baseline: [100, 100, 100],
       bold: true,
     },
-    minY: Math.min(...data.y),
+    minY,
     xLabelPadding: 0,
     yLabelPadding: 0,
     xPadding: 0,
@@ -18,6 +20,5 @@ export function graph(grid, data, label, row, col, h, w) {
     showLegend: !!data.title,
   })
 
-  line.setData([data])
-  return line
+  data && line.setData([data])
 }

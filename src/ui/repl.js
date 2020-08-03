@@ -1,5 +1,5 @@
 import blessed from 'blessed'
-import { getPrices, getQuote } from './api.js'
+import { getPrices, getQuote } from '../api/api.js'
 
 export function buildRepl(row, col, h, w) {
   const self = this

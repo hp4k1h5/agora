@@ -1,0 +1,47 @@
+{
+  "iex_publishable_key": "",
+  "watchlist": ["aapl", "msft"],
+  "workspaces": [
+    {
+      "name": "home",
+      "components": [
+        {
+          "type": "line",
+          "symbol": "goog",
+          "time": "100min",
+          "vol": true,
+          "yxhw": [0, 0, 12, 9]
+        },
+        {
+          "type": "repl",
+          "yxhw": [6, 9, 6, 3]
+        },
+        {
+          "type": "watchlist",
+          "style": "condensed",
+          "yxhw": [0, 9, 6, 3]
+        }
+      ]
+    },
+    {
+      "name": "alt",
+      "components": [
+        {
+          "type": "line",
+          "symbol": "f",
+          "time": "100min",
+          "vol": true,
+          "yxhw": [0, 0, 12, 9]
+        },
+        {
+          "type": "repl",
+          "yxhw": [6, 9, 6, 3]
+        },
+        {
+          "type": "watchlist",
+          "yxhw": [0, 9, 6, 3]
+        }
+      ]
+    }
+  ]
+}

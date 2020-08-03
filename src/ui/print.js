@@ -1,26 +1,43 @@
-import blessed from 'blessed'
 import contrib from 'blessed-contrib'
 
 import { graph } from './graph.js'
 import { buildRepl } from './repl.js'
 
+const builders = {
+  line: buildCharts,
+}
+
 /*
  * blessed-contrib grid controller
  * */
-export class UI {
-  constructor(id, name, screen, sym) {
-    this.id = id
-    this.name = name
+export class Workspace {
+  constructor(screen, options) {
     this.screen = screen
-    this.grid = new contrib.grid({ rows: 12, cols: 12, screen: this.screen })
+    this.options = options
     // e.g. this.grid.set(row, col, rowSpan, colSpan, obj, opts)
-    this.sym = sym
-    this.series = 'intra'
     this.validUnits = ['5d', '1m', '3m', '6m', 'ytd', '1y', '5y', 'max']
-    this.time = { chartLast: 60 * 6.5 } // one day
   }
 
-  buildRepl(row, col, h, w) {
+  /** called by Carousel.workspaces once per Carousel "page", or
+   * "workspace", as this package defines them. Exists to pass screen to a grid.
+   *
+   * each workspace defined in config instantiates a new grid, that
+   * is called on switch screens.
+   * */
+  init(screen) {
+    const ws = screen._ws
+    ws.grid = new contrib.grid({
+      rows: 12,
+      cols: 12,
+      screen,
+    })
+
+    ws.options.components.forEach((c) => {
+      builders[c.type] && builders[c.type]()
+    })
+  }
+
+  buildRepl(_row, _col, _h, _w) {
     buildRepl.apply(this, arguments)
   }
 
@@ -33,6 +50,8 @@ export class UI {
         keys: true,
         interactive: true,
       })
+
+    if (!data) return
 
     // set data
     this.quote.setData({ headers: data[0], data: data.slice(1) })
@@ -48,7 +67,6 @@ export class UI {
       this.screen.remove(this.priceChart)
       this.priceChart = graph(this.grid, data, 'time series', 0, 0, 10, 9)
     }
-    // this.screen.render()
 
     // add vol graph
     const volData = { x: data.x, y: data.vol, style: { line: [110, 180, 250] } }
@@ -58,6 +76,7 @@ export class UI {
       this.screen.remove(this.volChart)
       this.volChart = graph(this.grid, volData, 'volume', 10, 0, 3, 9)
     }
+
     this.screen.render()
   }
 }
