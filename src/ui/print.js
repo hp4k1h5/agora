@@ -3,10 +3,6 @@ import contrib from 'blessed-contrib'
 import { graph } from './graph.js'
 import { buildRepl } from './repl.js'
 
-const builders = {
-  line: buildCharts,
-}
-
 /*
  * blessed-contrib grid controller
  * */
@@ -25,6 +21,10 @@ export class Workspace {
    * is called on switch screens.
    * */
   init(screen) {
+    const builders = {
+      line: screen._ws.buildPriceVolCharts,
+    }
+
     const ws = screen._ws
     ws.grid = new contrib.grid({
       rows: 12,
@@ -33,51 +33,29 @@ export class Workspace {
     })
 
     ws.options.components.forEach((c) => {
-      builders[c.type] && builders[c.type]()
+      builders[c.type] && builders[c.type](ws, c, [])
     })
+
+    screen.render()
   }
 
-  buildRepl(_row, _col, _h, _w) {
-    buildRepl.apply(this, arguments)
-  }
+  buildPriceVolCharts(ws, c, data) {
+    // data = {
+    //   title: 'data',
+    //   x: [1, 2, 3, 4, 5, 6, 7],
+    //   y: [1, 2, 3, 4, 5, 6, 7],
+    //   vol: [1, 2, 3, 4, 5, 6, 7],
+    // }
+    // clear graph and add line graph
+    if (ws.priceChart) ws.screen.remove(ws.priceChart)
+    ws.priceChart = graph(ws.grid, data, 'price', ...c.yxhw)
 
-  buildQuote(data) {
-    // set contrib options
-    if (!this.quote)
-      this.quote = this.grid.set(0, 9, 6, 3, contrib.table, {
-        columnSpacing: 6,
-        columnWidth: [13, 30],
-        keys: true,
-        interactive: true,
-      })
-
-    if (!data) return
-
-    // set data
-    this.quote.setData({ headers: data[0], data: data.slice(1) })
-
-    this.screen.render()
-  }
-
-  buildCharts(data) {
-    // add line graph
-    if (!this.priceChart)
-      this.priceChart = graph(this.grid, data, 'time series', 0, 0, 10, 9)
-    else {
-      this.screen.remove(this.priceChart)
-      this.priceChart = graph(this.grid, data, 'time series', 0, 0, 10, 9)
-    }
-
-    // add vol graph
-    const volData = { x: data.x, y: data.vol, style: { line: [110, 180, 250] } }
-    if (!this.volChart)
-      this.volChart = graph(this.grid, volData, 'volume', 10, 0, 3, 9)
-    else {
-      this.screen.remove(this.volChart)
-      this.volChart = graph(this.grid, volData, 'volume', 10, 0, 3, 9)
-    }
-
-    this.screen.render()
+    // clear vol and add vol graph
+    if (ws.volChart) ws.screen.remove(ws.volChart)
+    if (!c.vol) return
+    const volData = { x: data.x, y: data.vol, style: { line: c.color } }
+    const [y, x, h, w] = c.yxhw
+    ws.volChart = graph(ws.grid, volData, 'volume', y + h, x, 12 - (y + h), w)
   }
 }
 
@@ -91,3 +69,26 @@ export class Workspace {
 //         ['spy'],
 //         ['qqq'],
 //       ]
+//
+
+//   buildRepl(_row, _col, _h, _w) {
+//     buildRepl.apply(this, arguments)
+//   }
+
+//   buildQuote(data) {
+//     // set contrib options
+//     if (!this.quote)
+//       this.quote = this.grid.set(0, 9, 6, 3, contrib.table, {
+//         columnSpacing: 6,
+//         columnWidth: [13, 30],
+//         keys: true,
+//         interactive: true,
+//       })
+
+//     if (!data) return
+
+//     // set data
+//     this.quote.setData({ headers: data[0], data: data.slice(1) })
+
+//     this.screen.render()
+//   }

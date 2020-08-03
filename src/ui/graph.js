@@ -5,8 +5,8 @@ export function graph(grid, data, label, row, col, h, w) {
 
   const line = grid.set(row, col, h, w, contrib.line, {
     style: {
-      line: 'green',
-      text: [180, 180, 120],
+      line: [100, 100, 100],
+      text: [180, 220, 180],
       baseline: [100, 100, 100],
       bold: true,
     },

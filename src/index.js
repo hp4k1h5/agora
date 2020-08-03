@@ -1,8 +1,11 @@
-// import fs from 'fs'
+import fs from 'fs'
+
 import blessed from 'blessed'
 import contrib from 'blessed-contrib'
 
-import { config } from './util/config.js'
+let _config = fs.readFileSync('./config.json', 'utf8')
+const config = JSON.parse(_config)
+
 import { Workspace } from './ui/print.js'
 import { getPrices, getQuote } from './api/api.js'
 
@@ -24,10 +27,13 @@ const main = function (sym = 'cat') {
     })(),
 
     workspaces: (function () {
-      config.workspaces.map((options) => {
-        const _ws = new Workspace(screen, options)
-        screen._ws = _ws
-        return _ws.init(screen)
+      return config.workspaces.map((options) => {
+        /** attach workspace to screen object to pass it through to
+         * contrib.carousel callback */
+        screen._ws = new Workspace(screen, options)
+        /** init is a callback function called by carousel(screens)
+         * on each screen */
+        return screen._ws.init
       })
     })(),
 
@@ -59,7 +65,4 @@ const main = function (sym = 'cat') {
 } // TODO: add sym from config
 
 const app = main()
-app.startCarousel(
-  app.uis.map((ui) => ui.init),
-  app.carouselOptions,
-)
+app.startCarousel(app.workspaces, app.carouselOptions)
