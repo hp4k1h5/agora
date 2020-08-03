@@ -17,8 +17,7 @@ export function graph(grid, data, label, row, col, h, w) {
     yPadding: 0,
     label,
     wholeNumbersOnly: false,
-    showLegend: !!data.title,
+    showLegend: data ? !!data.title : 'title',
   })
-
   data && line.setData([data])
 }

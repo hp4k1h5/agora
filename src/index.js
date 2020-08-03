@@ -33,7 +33,7 @@ const main = function (sym = 'cat') {
         screen._ws = new Workspace(screen, options)
         /** init is a callback function called by carousel(screens)
          * on each screen */
-        return screen._ws.init
+        return screen._ws
       })
     })(),
 
@@ -49,15 +49,19 @@ const main = function (sym = 'cat') {
       return carousel
     },
 
-    async initData(ui) {
+    async initData(ws) {
       // TODO: create spinner
+
       // fetch initial data
-      // const data = await getPrices(ui).catch(console.log)
-      // const quote = await getQuote(ui.sym)
-      // add elements to home screen
-      // ui.buildQuote(quote)
-      // ui.buildCharts(data)
-      // ui.buildRepl(6, 9, 6, 3)
+      for (let c = 0; c < ws.options.components.length; c++) {
+        const component = ws.options.components[c]
+        if (component.type == 'line') {
+          const data = await getPrices(ws, component).catch((e) => {})
+
+          // add elements to home screen
+          ws.buildPriceVolCharts(ws, component, data)
+        }
+      }
     },
   }
 
@@ -65,4 +69,8 @@ const main = function (sym = 'cat') {
 } // TODO: add sym from config
 
 const app = main()
-app.startCarousel(app.workspaces, app.carouselOptions)
+app.startCarousel(
+  app.workspaces.map((ws) => ws.init),
+  app.carouselOptions,
+)
+app.initData(app.workspaces[0])

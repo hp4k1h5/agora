@@ -2,11 +2,14 @@ import fs from 'fs'
 import qs from 'querystring'
 import fetch from 'node-fetch'
 
+import { shapePrices } from './shape.js'
+import { parseTime } from '../ui/repl.js'
+
 const token = process.env.IEX_PUB_KEY
 if (!token || !token.length) {
   console.error(`user must provide publishable key as env var IEX_PUB_KEY
-    see README to learn how to obtain one.
-    ex. export IEX_PUB_KEY=pk_your_Publishable_iex_api_key`)
+    see README to learn how to obtain one. e.g.     
+    export IEX_PUB_KEY=pk_your_Publishable_iex_api_key`)
   process.exit(1)
 }
 
@@ -25,38 +28,23 @@ export function buildURL(path, params = {}) {
 /*
  * /intraday-prices endpoint returns minute-increment price data for a given stock @param sym: string
  * */
-export async function getPrices(self) {
+export async function getPrices(ws, c) {
   let url
-
+  const time = parseTime(c)
   // intraday
-  if (self.series == 'intra') {
-    url = buildURL(`stock/${self.sym}/intraday-prices`, self.time)
+  if (c.series == 'intra') {
+    url = buildURL(`stock/${c.symbol}/intraday-prices`, time)
   } else {
-    url = buildURL(`stock/${self.sym}/chart/${self.time}`)
+    // daily
+    url = buildURL(`stock/${c.symbol}/chart/${time}`)
   }
   let response = await fetch(url)
   if (response.ok) {
-    response = await response.json()
-  } else throw response
-
-  // keep track of last price, which fills in for null price points
-  let last = response.find((price) => price.close) || 0
-
-  // return clean shaped data
-  return response.reduce(
-    (a, v) => {
-      if (!v.close) {
-        v.close = last.close
-      }
-      // update last
-      last = v
-      a.x.push(self.series == 'intra' ? v.minute : v.date)
-      a.y.push(v.close)
-      a.vol.push(v.volume)
-      return a
-    },
-    { title: self.sym, x: [], y: [], vol: [] },
-  )
+    const data = await response.json()
+    return shapePrices(data, c.symbol, c.series)
+  }
+  // error handled above
+  throw response
 }
 
 export async function getQuote(sym) {

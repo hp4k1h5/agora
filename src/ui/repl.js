@@ -186,20 +186,19 @@ async function quote(self) {
   self.buildQuote(data)
 }
 
-function parseTime(self, time) {
+export function parseTime(c) {
   // handle intraday
-  const intra = time.match(/([\d.]+)(min|h)/)
+  const intra = c.time.match(/([\d.]+)(min|h)/)
   if (intra) {
-    self.series = 'intra'
-    self.time = { chartLast: +intra[1] * (intra[2] == 'h' ? 60 : 1) }
-    return
+    c.series = 'intra'
+    return { chartLast: +intra[1] * (intra[2] == 'h' ? 60 : 1) }
   }
+
+  c.series = 'hist'
+  return time
 
   // handle historical
-  if (!self.validUnits.includes(time)) {
-    return `{bold}{red-fg}error: invalid time{/}; see {#cd2-fg}help :{/}`
-  }
-
-  self.series = 'hist'
-  self.time = time
+  // if (!self.validUnits.includes(time)) {
+  //   return `{bold}{red-fg}error: invalid time{/}; see {#cd2-fg}help :{/}`
+  // }
 }

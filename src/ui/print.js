@@ -3,6 +3,13 @@ import contrib from 'blessed-contrib'
 import { graph } from './graph.js'
 import { buildRepl } from './repl.js'
 
+// data = {
+//   title: 'data',
+//   x: [1, 2, 3, 4, 5, 6, 7],
+//   y: [1, 2, 3, 4, 5, 6, 7],
+//   vol: [1, 2, 3, 4, 5, 6, 7],
+// }
+
 /*
  * blessed-contrib grid controller
  * */
@@ -33,19 +40,13 @@ export class Workspace {
     })
 
     ws.options.components.forEach((c) => {
-      builders[c.type] && builders[c.type](ws, c, [])
+      builders[c.type] && builders[c.type](ws, c)
     })
 
     screen.render()
   }
 
   buildPriceVolCharts(ws, c, data) {
-    // data = {
-    //   title: 'data',
-    //   x: [1, 2, 3, 4, 5, 6, 7],
-    //   y: [1, 2, 3, 4, 5, 6, 7],
-    //   vol: [1, 2, 3, 4, 5, 6, 7],
-    // }
     // clear graph and add line graph
     if (ws.priceChart) ws.screen.remove(ws.priceChart)
     ws.priceChart = graph(ws.grid, data, 'price', ...c.yxhw)
@@ -53,9 +54,14 @@ export class Workspace {
     // clear vol and add vol graph
     if (ws.volChart) ws.screen.remove(ws.volChart)
     if (!c.vol) return
-    const volData = { x: data.x, y: data.vol, style: { line: c.color } }
+
+    const volData = data
+      ? { x: data.x, y: data.vol, style: { line: c.color } }
+      : null
     const [y, x, h, w] = c.yxhw
     ws.volChart = graph(ws.grid, volData, 'volume', y + h, x, 12 - (y + h), w)
+
+    ws.screen.render()
   }
 }
 
