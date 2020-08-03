@@ -30,6 +30,7 @@ export class Workspace {
   init(screen) {
     const builders = {
       line: screen._ws.buildPriceVolCharts,
+      repl: screen._ws.buildRepl,
     }
 
     const ws = screen._ws
@@ -42,8 +43,6 @@ export class Workspace {
     ws.options.components.forEach((c) => {
       builders[c.type] && builders[c.type](ws, c)
     })
-
-    screen.render()
   }
 
   buildPriceVolCharts(ws, c, data) {
@@ -63,6 +62,10 @@ export class Workspace {
 
     ws.screen.render()
   }
+
+  buildRepl(_ws, _c) {
+    buildRepl.apply(this, arguments)
+  }
 }
 
 // [
@@ -76,11 +79,7 @@ export class Workspace {
 //         ['qqq'],
 //       ]
 //
-
-//   buildRepl(_row, _col, _h, _w) {
-//     buildRepl.apply(this, arguments)
-//   }
-
+//
 //   buildQuote(data) {
 //     // set contrib options
 //     if (!this.quote)
