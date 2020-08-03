@@ -4,7 +4,7 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "run": "node index.js"
+    "run": "node src/index.js"
   },
   "homepage": "https://github.com/HP4k1h5/iexcli",
   "type": "module",
@@ -32,6 +32,6 @@
   "author": "hp4k1h5",
   "email": "robertwalks@gmail.com",
   "bugs": {
-    "url": "https://github.com/HP4k1h5/AQLqueryBuilder.js/issues"
+    "url": "https://github.com/HP4k1h5/iexcli/issues"
   }
 }
