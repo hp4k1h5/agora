@@ -1,4 +1,14 @@
-export function help(self, words) {
+export const intro = `{#2ea-fg}Welcome to iexcli.{/}
+  Data provided by IEX Cloud 
+  {blue-fg}<https://iexcloud.io>{/}
+
+  type {bold}{#cd2-fg}h{/} or {bold}{#cd2-fg}help{/} for help. 
+
+  more documentation is available at 
+  {underline}{#4be-fg}<https://github.com/hp4k1h5/iexcli>{/}...
+\n\n\n `.split('\n')
+
+export function help(ws, _c, words) {
   // handle help arguments if any
   let what = words[words.findIndex((w) => /h(elp)?/.test(w)) + 1]
   if (what) {
@@ -11,7 +21,7 @@ ex. {#cd2-fg}$GOOG{/}`
     {bold}{#2ea-fg}help {#cd2-fg}:{/} (time range)
 prefix valid time ranges with {#cd2-fg}:{/} to change the active time range. Including a :-prefix will automatically update all the charts and tables
 {bold}{#2ea-fg}valid time ranges:{/}
-${self.validUnits.map((u) => '{#cd2-fg}:' + u + '{/}').join(' ')}
+${ws.validUnits.map((u) => '{#cd2-fg}:' + u + '{/}').join(' ')}
 AND numbers with minute {#cd2-fg}min{/} or hour {#cd2-fg}h{/}
 ex. {#cd2-fg} :100min {/}{#ddd-fg} last 100 minutes of aggregated trading data{/}
 ex. {#cd2-fg} :6.5h {/}{#ddd-fg}{/}  last 6.5 hours of minute aggregated trading data`

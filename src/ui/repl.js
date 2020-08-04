@@ -1,22 +1,13 @@
 import blessed from 'blessed'
 
 import { getPrices, getQuote } from '../api/api.js'
-import { help } from './help.js'
-
-const history = `{#2ea-fg}Welcome to iexcli.{/}
-  Data provided by IEX Cloud 
-  {blue-fg}<https://iexcloud.io>{/}
-
-  type {bold}{#cd2-fg}h{/} or {bold}{#cd2-fg}help{/} for help. 
-
-  more documentation is available at 
-  {underline}{#4be-fg}<https://github.com/hp4k1h5/iexcli>{/}...
-\n\n\n `.split('\n')
+import { help, intro } from './help.js'
 
 export function buildRepl(ws, c) {
   const repl = ws.grid.set(...c.yxhw, blessed.form, { keys: true })
 
-  // console display (optional), otherwise commands just have effects and don't report
+  // console display (optional), otherwise commands just have effects and don't
+  // report
   const output = blessed.textarea({
     parent: repl,
     name: 'output',
@@ -28,8 +19,18 @@ export function buildRepl(ws, c) {
       },
     },
   })
+  c.output = output
+  // init repl history
+  c.history = []
+
+  // add printLines to c
+  c.printLines = function (c, text) {
+    c.history.push(...text)
+    c.output.setValue(c.history.slice(-c.output.height).join('\n'))
+  }
+
   // init welcome text
-  output.setValue(history.join('\n'))
+  c.printLines(c, intro)
 
   // all interaction is handled here
   const input = blessed.textbox({
@@ -42,7 +43,7 @@ export function buildRepl(ws, c) {
     style: {
       border: { fg: 'gray' },
       focus: {
-        border: { fg: 'blue' },
+        border: { fg: [180, 180, 255] },
       },
     },
   })
@@ -52,13 +53,20 @@ export function buildRepl(ws, c) {
     repl.submit()
   })
   repl.on('submit', async function (data) {
+    // push last command
+    c.printLines(c, ['{bold}> {/}' + data.input])
     // parse and handle input
-    let evaluation = await evaluate(data.input, ws)
+    let evaluation = await evaluate(
+      ws,
+      ws.options.components[ws.activeComponent],
+      data.input,
+    )
 
     // mimic scroll
-    history.push('{bold}> {/}' + data.input)
-    evaluation && history.push(evaluation)
-    output.setValue(history.slice(-output.height).join('\n'))
+    // push response to history
+    evaluation && c.printLines(c, evaluation.split('\n'))
+    //
+    output.setValue(c.history.slice(-output.height).join('\n'))
 
     // clear input and refocus
     input.clearValue()
@@ -74,7 +82,7 @@ export function buildRepl(ws, c) {
 
 // helpers
 
-function evaluate(input, self) {
+function evaluate(ws, c, input) {
   const commands = {
     undefined: update,
     '"': quote,
@@ -85,43 +93,43 @@ function evaluate(input, self) {
   }
 
   let words = input.split(/\s+/g)
-  let command = commands[words.find((w) => commands[w])]
-  let sym = words.find((w) => w[0] == '$')
-  self.sym = sym ? sym.substring(1) : self.sym
-  let time = words.find((w) => /:\S/.test(w))
-  if (time) time = parseTime(self, time.substring(1))
-  if (time) return time
 
-  if (!self.sym && !self.time)
-    return `{red-fg}error: no known commands entered 
-`
-  // ${help()}
+  // define command to execute
+  let command = commands[words.find((w) => commands[w])]
+
+  let symbol = words.find((w) => w[0] == '$')
+  c.symbol = symbol ? symbol.substring(1) : c.symbol
+  let time = words.find((w) => /:(?<=\S)/.test(w))
+  if (time) c.time = parseTime(c, time)
+
+  // TODO
+  // if (!c.symbol && !c.time) return `{red-fg}error: no known commands entered\n`
 
   // execute command
-  return command(self, words)
+  return command(ws, c, words)
 }
 
-function exit(self) {
+function exit(ws) {
   setTimeout(() => {
-    self.screen.destroy()
     console.log('exiting...')
-  }, 1000)
+    ws.screen.destroy()
+    process.exit(0)
+  }, 800)
   return '{#abf-fg}goodbye...{/}'
 }
 
-async function update(self) {
+async function update(ws, c, words) {
   let data
   try {
-    data = await getPrices(self)
-    quote = await getQuote(self.sym)
+    data = await getPrices(ws, c)
+    // quote = await getQuote(ws.sym)
   } catch (e) {
-    return `{red-fg}error: ${e.status > 400 ? '$' + self.sym : ''} ${
-      e.statusText
-    }{/}`
+    c.printLines(c, [
+      `{red-fg}error: ${e.status > 400 ? '$' + ws.sym : ''} ${e.statusText}{/}`,
+    ])
   }
 
-  self.buildCharts(data)
-  self.buildQuote(quote)
+  ws.buildPriceVolCharts(ws, c, data)
 }
 
 async function quote(self) {
@@ -137,15 +145,16 @@ async function quote(self) {
   self.buildQuote(data)
 }
 
-export function parseTime(c) {
+export function parseTime(c, time) {
   // handle intraday
-  const intra = c.time.match(/([\d.]+)(min|h)/)
+  const intra = time.match(/([\d.]+)(min|h)/)
   if (intra) {
     c.series = 'intra'
     return { chartLast: +intra[1] * (intra[2] == 'h' ? 60 : 1) }
   }
 
   c.series = 'hist'
+  c.time = time
   return time
 
   // handle historical

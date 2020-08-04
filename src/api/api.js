@@ -30,7 +30,7 @@ export function buildURL(path, params = {}) {
  * */
 export async function getPrices(ws, c) {
   let url
-  const time = parseTime(c)
+  const time = parseTime(c, c.time)
   // intraday
   if (c.series == 'intra') {
     url = buildURL(`stock/${c.symbol}/intraday-prices`, time)
@@ -38,9 +38,11 @@ export async function getPrices(ws, c) {
     // daily
     url = buildURL(`stock/${c.symbol}/chart/${time}`)
   }
+
   let response = await fetch(url)
   if (response.ok) {
     const data = await response.json()
+
     return shapePrices(data, c.symbol, c.series)
   }
   // error handled above

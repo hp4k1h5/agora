@@ -19,6 +19,7 @@ export class Workspace {
     this.options = options
     // e.g. this.grid.set(row, col, rowSpan, colSpan, obj, opts)
     this.validUnits = ['5d', '1m', '3m', '6m', 'ytd', '1y', '5y', 'max']
+    this.activeComponent = 0
   }
 
   /** called by Carousel.workspaces once per Carousel "page", or
