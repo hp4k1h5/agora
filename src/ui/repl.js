@@ -96,7 +96,7 @@ function evaluate(ws, c, input) {
   if (time) parseTime(ws, c, time)
 
   // execute command
-  return command(ws, c, false, words)
+  return command(ws, c, words)
 }
 
 function exit(ws) {
@@ -108,12 +108,9 @@ function exit(ws) {
   ws.printLines('{#abf-fg}goodbye...{/}')
 }
 
-export async function update(ws, component, init) {
+export async function update(ws, component) {
   if (component.type == 'line') {
-    let data
-    if (!init) {
-      data = await getPrices(ws, component)
-    }
+    let data = await getPrices(ws, component)
     buildPriceVolCharts(ws, component, data)
   } else if (component.type == 'repl') {
     buildRepl(ws, component)

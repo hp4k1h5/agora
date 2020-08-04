@@ -38,7 +38,7 @@ export class Workspace {
     ws.options.components.forEach((c) => {
       // handle options
       c.time && parseTime(ws, c, c.time)
-      update(ws, c, true)
+      update(ws, c)
     })
   }
 }
