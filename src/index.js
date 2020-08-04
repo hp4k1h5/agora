@@ -50,7 +50,7 @@ const main = function () {
   }
 
   return self
-} // TODO: add sym from config
+}
 
 const app = main()
 app.startCarousel(

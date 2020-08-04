@@ -44,7 +44,7 @@ export async function getPrices(ws, c) {
     return shapePrices(c, data)
   }
 
-  ws.printLines(c, [response])
+  ws.printLines(response.statusText)
 }
 
 export async function getQuote(sym) {

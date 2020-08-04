@@ -91,15 +91,12 @@ function evaluate(ws, c, input) {
 
   let symbol = words.find((w) => w[0] == '$')
   c.symbol = symbol ? symbol.substring(1) : c.symbol
-  let time = words.find((w) => /(?<=:)\S/.test(w))
+  let time = words.find((w) => /(?<=:)\S+/.test(w))
   // set c.time & c.series
-  if (time) parseTime(c, time)
-
-  // TODO
-  // if (!c.symbol && !c.time) return `{red-fg}error: no known commands entered\n`
+  if (time) parseTime(ws, c, time)
 
   // execute command
-  return command(ws, c, words)
+  return command(ws, c, false, words)
 }
 
 function exit(ws) {
@@ -138,15 +135,20 @@ async function quote(self) {
 
 /** time is a string, a valid number/interval combination, should not include
  * :-prefix*/
-export function parseTime(c, time) {
+export function parseTime(ws, c, time) {
   // handle intraday
   const intra = time.match(/([\d.]+)(min|h)/)
   if (intra) {
     c.series = 'intra'
     c._time = { chartLast: +intra[1] * (intra[2] == 'h' ? 60 : 1) }
   } else {
+    if (!ws.validUnits.includes(time.substring(1))) {
+      ws.printLines(`{red-fg}err:{/} invalid time`)
+      help(ws, c, ['h', ':'])
+      return
+    }
     c.series = 'hist'
-    c._time = time
+    c._time = time.substring(1)
   }
   c.time = time
 }
