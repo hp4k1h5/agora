@@ -2,8 +2,9 @@ import blessed from 'blessed'
 
 import { getPrices, getQuote } from '../api/api.js'
 import { help, intro } from './help.js'
+import { buildPriceVolCharts } from './graph.js'
 
-export function buildRepl(ws, c) {
+function buildRepl(ws, c) {
   const repl = ws.grid.set(...c.yxhw, blessed.form, { keys: true })
 
   // console display (optional), otherwise commands just have effects and don't
@@ -21,16 +22,17 @@ export function buildRepl(ws, c) {
   })
   c.output = output
   // init repl history
-  c.history = []
+  const history = []
 
   // add printLines to c
-  c.printLines = function (c, text) {
-    c.history.push(...text)
-    c.output.setValue(c.history.slice(-c.output.height).join('\n'))
+  ws.printLines = function (text) {
+    if (typeof text == 'string') text = text.split('\n')
+    history.push(...text)
+    output.setValue(history.slice(-output.height).join('\n'))
   }
 
   // init welcome text
-  c.printLines(c, intro)
+  ws.printLines(intro)
 
   // all interaction is handled here
   const input = blessed.textbox({
@@ -54,19 +56,9 @@ export function buildRepl(ws, c) {
   })
   repl.on('submit', async function (data) {
     // push last command
-    c.printLines(c, ['{bold}> {/}' + data.input])
+    ws.printLines('{bold}> {/}' + data.input)
     // parse and handle input
-    let evaluation = await evaluate(
-      ws,
-      ws.options.components[ws.activeComponent],
-      data.input,
-    )
-
-    // mimic scroll
-    // push response to history
-    evaluation && c.printLines(c, evaluation.split('\n'))
-    //
-    output.setValue(c.history.slice(-output.height).join('\n'))
+    await evaluate(ws, ws.options.components[ws.activeComponent], data.input)
 
     // clear input and refocus
     input.clearValue()
@@ -99,8 +91,9 @@ function evaluate(ws, c, input) {
 
   let symbol = words.find((w) => w[0] == '$')
   c.symbol = symbol ? symbol.substring(1) : c.symbol
-  let time = words.find((w) => /:(?<=\S)/.test(w))
-  if (time) c.time = parseTime(c, time)
+  let time = words.find((w) => /(?<=:)\S/.test(w))
+  // set c.time & c.series
+  if (time) parseTime(c, time)
 
   // TODO
   // if (!c.symbol && !c.time) return `{red-fg}error: no known commands entered\n`
@@ -115,21 +108,19 @@ function exit(ws) {
     ws.screen.destroy()
     process.exit(0)
   }, 800)
-  return '{#abf-fg}goodbye...{/}'
+  ws.printLines('{#abf-fg}goodbye...{/}')
 }
 
-async function update(ws, c, words) {
-  let data
-  try {
-    data = await getPrices(ws, c)
-    // quote = await getQuote(ws.sym)
-  } catch (e) {
-    c.printLines(c, [
-      `{red-fg}error: ${e.status > 400 ? '$' + ws.sym : ''} ${e.statusText}{/}`,
-    ])
+export async function update(ws, component, init) {
+  if (component.type == 'line') {
+    let data
+    if (!init) {
+      data = await getPrices(ws, component)
+    }
+    buildPriceVolCharts(ws, component, data)
+  } else if (component.type == 'repl') {
+    buildRepl(ws, component)
   }
-
-  ws.buildPriceVolCharts(ws, c, data)
 }
 
 async function quote(self) {
@@ -145,20 +136,17 @@ async function quote(self) {
   self.buildQuote(data)
 }
 
+/** time is a string, a valid number/interval combination, should not include
+ * :-prefix*/
 export function parseTime(c, time) {
   // handle intraday
   const intra = time.match(/([\d.]+)(min|h)/)
   if (intra) {
     c.series = 'intra'
-    return { chartLast: +intra[1] * (intra[2] == 'h' ? 60 : 1) }
+    c._time = { chartLast: +intra[1] * (intra[2] == 'h' ? 60 : 1) }
+  } else {
+    c.series = 'hist'
+    c._time = time
   }
-
-  c.series = 'hist'
   c.time = time
-  return time
-
-  // handle historical
-  // if (!self.validUnits.includes(time)) {
-  //   return `{bold}{red-fg}error: invalid time{/}; see {#cd2-fg}help :{/}`
-  // }
 }

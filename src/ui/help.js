@@ -9,7 +9,7 @@ export const intro = `{#2ea-fg}Welcome to iexcli.{/}
 \n\n\n `.split('\n')
 
 export function help(ws, _c, words) {
-  // handle help arguments if any
+  // print specific help if applicable
   let what = words[words.findIndex((w) => /h(elp)?/.test(w)) + 1]
   if (what) {
     const whatSym = `
@@ -35,11 +35,16 @@ exits iexcli`
       exit: whatExit,
       quit: whatExit,
     }
-    return whats[what] ? whats[what] : `{red-fg}error{/}: no help for ${what}`
+    ws.printLines(
+      whats[what]
+        ? whats[what].split('\n')
+        : `{red-fg}error{/}: no help for ${what}`,
+    )
   }
 
-  // return full help
-  return `
+  // print full help
+  else
+    ws.printLines(`
     {bold}{#2ea-fg}help menu{/} 
 {bold}available commands:{/}
 {#cd2-fg}h(elp){/}   :prints this menu
@@ -56,5 +61,5 @@ these commands can be aggregated:
     ex. {#cd2-fg}$z :10h{/}
     ex. {#cd2-fg}:1y $GM{/}
 
-{#cd2-fg}exit / quit{/}     :quit iexcli`
+{#cd2-fg}exit / quit{/}     :quit iexcli`)
 }

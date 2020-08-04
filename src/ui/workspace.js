@@ -1,7 +1,6 @@
 import contrib from 'blessed-contrib'
 
-import { graph } from './graph.js'
-import { buildRepl } from './repl.js'
+import { update, parseTime } from './repl.js'
 
 // data = {
 //   title: 'data',
@@ -29,11 +28,6 @@ export class Workspace {
    * is called on switch screens.
    * */
   init(screen) {
-    const builders = {
-      line: screen._ws.buildPriceVolCharts,
-      repl: screen._ws.buildRepl,
-    }
-
     const ws = screen._ws
     ws.grid = new contrib.grid({
       rows: 12,
@@ -42,30 +36,10 @@ export class Workspace {
     })
 
     ws.options.components.forEach((c) => {
-      builders[c.type] && builders[c.type](ws, c)
+      // handle options
+      c.time && parseTime(c, c.time)
+      update(ws, c, true)
     })
-  }
-
-  buildPriceVolCharts(ws, c, data) {
-    // clear graph and add line graph
-    if (ws.priceChart) ws.screen.remove(ws.priceChart)
-    ws.priceChart = graph(ws.grid, data, 'price', ...c.yxhw)
-
-    // clear vol and add vol graph
-    if (ws.volChart) ws.screen.remove(ws.volChart)
-    if (!c.vol) return
-
-    const volData = data
-      ? { x: data.x, y: data.vol, style: { line: c.color } }
-      : null
-    const [y, x, h, w] = c.yxhw
-    ws.volChart = graph(ws.grid, volData, 'volume', y + h, x, 12 - (y + h), w)
-
-    ws.screen.render()
-  }
-
-  buildRepl(_ws, _c) {
-    buildRepl.apply(this, arguments)
   }
 }
 

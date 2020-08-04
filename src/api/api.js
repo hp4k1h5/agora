@@ -3,7 +3,6 @@ import qs from 'querystring'
 import fetch from 'node-fetch'
 
 import { shapePrices } from './shape.js'
-import { parseTime } from '../ui/repl.js'
 
 const token = process.env.IEX_PUB_KEY
 if (!token || !token.length) {
@@ -30,23 +29,22 @@ export function buildURL(path, params = {}) {
  * */
 export async function getPrices(ws, c) {
   let url
-  const time = parseTime(c, c.time)
   // intraday
   if (c.series == 'intra') {
-    url = buildURL(`stock/${c.symbol}/intraday-prices`, time)
+    url = buildURL(`stock/${c.symbol}/intraday-prices`, c._time)
   } else {
     // daily
-    url = buildURL(`stock/${c.symbol}/chart/${time}`)
+    url = buildURL(`stock/${c.symbol}/chart/${c._time}`)
   }
 
   let response = await fetch(url)
   if (response.ok) {
     const data = await response.json()
 
-    return shapePrices(data, c.symbol, c.series)
+    return shapePrices(c, data)
   }
-  // error handled above
-  throw response
+
+  ws.printLines(c, [response])
 }
 
 export async function getQuote(sym) {

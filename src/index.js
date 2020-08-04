@@ -6,13 +6,12 @@ import contrib from 'blessed-contrib'
 let _config = fs.readFileSync('./config.json', 'utf8')
 const config = JSON.parse(_config)
 
-import { Workspace } from './ui/print.js'
-import { getPrices, getQuote } from './api/api.js'
+import { Workspace } from './ui/workspace.js'
 
 /**
  * main
  * */
-const main = function (sym = 'cat') {
+const main = function () {
   const screen = blessed.screen({ smartCSR: true })
 
   const self = {
@@ -48,21 +47,6 @@ const main = function (sym = 'cat') {
       carousel.start()
       return carousel
     },
-
-    async initData(ws) {
-      // TODO: create spinner
-
-      // fetch initial data
-      for (let c = 0; c < ws.options.components.length; c++) {
-        const component = ws.options.components[c]
-        if (component.type == 'line') {
-          const data = await getPrices(ws, component).catch((e) => {})
-
-          // add elements to home screen
-          ws.buildPriceVolCharts(ws, component, data)
-        }
-      }
-    },
   }
 
   return self
@@ -73,4 +57,3 @@ app.startCarousel(
   app.workspaces.map((ws) => ws.init),
   app.carouselOptions,
 )
-app.initData(app.workspaces[0])
