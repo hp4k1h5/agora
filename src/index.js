@@ -21,6 +21,7 @@ const main = function () {
       screen.key('C-c', function () {
         this.destroy()
         console.log('exiting iexcli...')
+        process.exit(0)
       })
       return screen
     })(),
@@ -39,7 +40,7 @@ const main = function () {
     carouselOptions: {
       screen,
       interval: 3000,
-      controlKeys: true,
+      controlKeys: false,
     },
 
     startCarousel(pages, carouselOptions) {

@@ -1,9 +1,10 @@
 import blessed from 'blessed'
 
-import { getPrices, getQuote } from '../api/api.js'
+import { getPrices, getQuote, getNews } from '../api/api.js'
 import { help, intro } from './help.js'
 import { buildPriceVolCharts } from './graph.js'
 import { buildQuoteList } from './quote.js'
+import { buildNewsList } from './news.js'
 
 function buildRepl(ws, c) {
   const repl = ws.grid.set(...c.yxhw, blessed.form, { keys: true })
@@ -79,6 +80,8 @@ function buildRepl(ws, c) {
 function evaluate(ws, input) {
   const commands = {
     undefined: update,
+    '#': chart,
+    '!': news,
     help,
     h: help,
     exit,
@@ -91,6 +94,7 @@ function evaluate(ws, input) {
   // define command to execute
   let command = commands[words.find((w) => commands[w])]
 
+  // define params
   let symbol = words.find((w) => w[0] == '$')
   component.symbol = symbol ? symbol.substring(1) : component.symbol
   let time = words.find((w) => /(?<=:)\S+/.test(w))
@@ -101,15 +105,6 @@ function evaluate(ws, input) {
   return command(ws, component, words)
 }
 
-function exit(ws) {
-  setTimeout(() => {
-    console.log('exiting...')
-    ws.screen.destroy()
-    process.exit(0)
-  }, 800)
-  ws.printLines('{#abf-fg}goodbye...{/}')
-}
-
 export async function update(ws, component) {
   if (component.type == 'line') {
     let data
@@ -117,7 +112,7 @@ export async function update(ws, component) {
       data = await getPrices(ws, component)
     } catch (e) {
       ws.printLines(
-        `{red-fg}error: ${e.status > 400 ? '$' + component.sym : ''} ${
+        `{red-fg}error: ${e.status > 400 ? '$' + component.symbol : ''} ${
           e.statusText
         }{/}`,
       )
@@ -132,7 +127,34 @@ export async function update(ws, component) {
       data = await getQuote(component.symbol)
     } catch (e) {
       ws.printLines(
-        `{red-fg}error: ${e.status > 400 ? '$' + component.sym : ''} ${
+        `{red-fg}error: ${e.status > 400 ? '$' + component.symbol : ''} ${
+          e.statusText || e
+        }{/}`,
+      )
+    }
+    buildQuoteList(ws, quoteList, data)
+  } else if (component.type == 'news') {
+    let data
+    try {
+      data = await getNews(component.symbol)
+    } catch (e) {
+      ws.printLines(
+        `{red-fg}error: ${e.status > 400 ? '$' + component.symbol : ''} ${
+          e.statusText || e
+        }{/}`,
+      )
+    }
+    buildNewsList(ws, component, data)
+
+    // handle quote
+    const quoteList = ws.options.components.find((c) => c.type == 'quote')
+    if (!quoteList) return
+
+    try {
+      data = await getQuote(component.symbol)
+    } catch (e) {
+      ws.printLines(
+        `{red-fg}error: ${e.status > 400 ? '$' + component.symbol : ''} ${
           e.statusText || e
         }{/}`,
       )
@@ -141,6 +163,33 @@ export async function update(ws, component) {
   } else if (component.type == 'repl') {
     buildRepl(ws, component)
   }
+}
+
+function chart(ws, component) {
+  let chartOptions = ws.options.components.find((c) =>
+    ['line'].includes(c.type),
+  )
+  chartOptions.symbol = component.symbol
+  if (component.time) parseTime(ws, chartOptions, component.time)
+
+  update(ws, chartOptions)
+}
+
+function news(ws, component) {
+  let newsOptions = ws.options.components.find((c) => c.type == 'news')
+  if (!newsOptions) {
+    newsOptions = {
+      type: 'news',
+      symbol: component.symbol,
+      yxhw: [0, 0, 12, 9],
+    }
+    ws.options.components.push(newsOptions)
+  } else {
+    newsOptions.symbol = component.symbol
+    newsOptions.time = component.time
+  }
+
+  update(ws, newsOptions)
 }
 
 /** time is a string, a valid number/interval combination, should not include
@@ -161,4 +210,13 @@ export function parseTime(ws, c, time) {
     c._time = time.substring(1)
   }
   c.time = time
+}
+
+function exit(ws) {
+  setTimeout(() => {
+    console.log('exiting...')
+    ws.screen.destroy()
+    process.exit(0)
+  }, 800)
+  ws.printLines('{#abf-fg}goodbye...{/}')
 }

@@ -3,6 +3,8 @@ import contrib from 'blessed-contrib'
 export function buildPriceVolCharts(ws, c, data) {
   // set active component
   ws.activeComponent = c
+  // remove news list
+  if (ws.newsList) ws.screen.remove(ws.newsList)
 
   // clear graph and add line graph
   if (c.priceChart) ws.screen.remove(c.priceChart)
@@ -45,6 +47,7 @@ export function graph(grid, data, label, row, col, h, w) {
     label,
     wholeNumbersOnly: false,
     showLegend: data ? !!data.title : 'title',
+    interactive: false,
   })
   data && line.setData([data])
 }

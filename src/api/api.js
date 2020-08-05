@@ -1,7 +1,7 @@
 import qs from 'querystring'
 import fetch from 'node-fetch'
 
-import { shapePrices, shapeQuote } from './shape.js'
+import { shapePrices, shapeQuote, shapeNews } from './shape.js'
 
 const token = process.env.IEX_PUB_KEY
 if (!token || !token.length) {
@@ -37,21 +37,33 @@ export async function getPrices(ws, c) {
   }
 
   let response = await fetch(url)
-  if (response.ok) {
-    const data = await response.json()
-
-    return shapePrices(c, data)
+  if (!response.ok) {
+    ws.printLines(response.statusText)
+    return
   }
 
-  ws.printLines(response.statusText)
+  const data = await response.json()
+  return shapePrices(c, data)
 }
 
 export async function getQuote(symbol) {
   const url = buildURL(`stock/${symbol}/quote`)
   let response = await fetch(url)
-  if (response.ok) {
-    response = await response.json()
-  } else throw response
+  if (!response.ok) {
+    throw response.statusText
+  }
 
+  response = await response.json()
   return shapeQuote(response)
+}
+
+export async function getNews(symbol) {
+  const url = buildURL(`stock/${symbol}/news/last/10`)
+  let response = await fetch(url)
+  if (!response.ok) {
+    throw response.statusText
+  }
+
+  response = await response.json()
+  return shapeNews(response)
 }
