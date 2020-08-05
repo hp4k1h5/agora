@@ -1,16 +1,20 @@
 import contrib from 'blessed-contrib'
 
 export function buildPriceVolCharts(ws, c, data) {
+  // set active component
+  ws.activeComponent = c
+
   // clear graph and add line graph
-  if (ws.priceChart) ws.screen.remove(ws.priceChart)
-  ws.priceChart = graph(ws.grid, data ? data.price : data, 'price', ...c.yxhw)
+  if (c.priceChart) ws.screen.remove(c.priceChart)
+  c.priceChart = graph(ws.grid, data ? data.price : data, 'price', ...c.yxhw)
 
   // clear vol and add vol graph
-  if (ws.volChart) ws.screen.remove(ws.volChart)
+  if (c.volChart) ws.screen.remove(ws.volChart)
   if (!c.vol) return
 
+  // put vol beneath price
   const [y, x, h, w] = c.yxhw
-  ws.volChart = graph(
+  c.volChart = graph(
     ws.grid,
     data ? data.vol : data,
     'volume',

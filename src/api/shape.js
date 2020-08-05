@@ -23,3 +23,26 @@ export function shapePrices(c, data) {
     vol: { x: data.x, y: data.vol, style: { line: c.color } },
   }
 }
+
+export function shapeQuote(data) {
+  data = Object.entries(data)
+  const m = {
+    symbol: (d) => [d[0], `${d[1]}`],
+    companyName: (d) => [d[0], `{#4be-fg}${d[1]}{/}`],
+    latestPrice: (d) => [d[0], `{#cc5-fg}${d[1]}{/}`],
+    volume: (d) => [d[0], `{#cc5-fg}${d[1]}{/}`],
+    change: (d) => [d[0], `{#${d[1] >= 0 ? '4fb' : 'a25'}-fg}${d[1]}{/}`],
+    changePercent: (d) => [
+      d[0],
+      `{#${d[1] >= 0 ? '4fb' : 'a25'}-fg}${d[1].toFixed(3)}%{/}`,
+    ],
+    open: (d) => [d[0], '' + d[1]],
+    close: (d) => [d[0], '' + d[1]],
+    high: (d) => [d[0], `{#2fe-fg}${d[1]}{/}`],
+    low: (d) => [d[0], `{#a25-fg}${d[1]}{/}`],
+    previousClose: (d) => [d[0], '' + d[1]],
+    week52High: (d) => [d[0], `{#2fe-fg}${d[1]}{/}`],
+    week52Low: (d) => [d[0], `{#a25-fg}${d[1]}{/}`],
+  }
+  return data.filter((d) => m[d[0]]).map((d) => m[d[0]](d))
+}

@@ -6,6 +6,10 @@
       "name": "home",
       "components": [
         {
+          "type": "repl",
+          "yxhw": [6, 9, 6, 3]
+        },
+        {
           "type": "line",
           "symbol": "goog",
           "time": "100min",
@@ -14,12 +18,7 @@
           "color": "green"
         },
         {
-          "type": "repl",
-          "yxhw": [6, 9, 6, 3]
-        },
-        {
-          "type": "watchlist",
-          "style": "condensed",
+          "type": "quote",
           "yxhw": [0, 9, 6, 3]
         }
       ]

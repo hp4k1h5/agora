@@ -1,8 +1,7 @@
-import fs from 'fs'
 import qs from 'querystring'
 import fetch from 'node-fetch'
 
-import { shapePrices } from './shape.js'
+import { shapePrices, shapeQuote } from './shape.js'
 
 const token = process.env.IEX_PUB_KEY
 if (!token || !token.length) {
@@ -47,31 +46,12 @@ export async function getPrices(ws, c) {
   ws.printLines(response.statusText)
 }
 
-export async function getQuote(sym) {
-  const url = buildURL(`stock/${sym}/quote`)
+export async function getQuote(symbol) {
+  const url = buildURL(`stock/${symbol}/quote`)
   let response = await fetch(url)
   if (response.ok) {
     response = await response.json()
   } else throw response
 
-  function clean(data) {
-    data = Object.entries(data)
-    const m = {
-      symbol: (d) => [d[0], `${d[1]}`],
-      companyName: (d) => [d[0], `{#4be-fg}${d[1]}{/}`],
-      latestPrice: (d) => [d[0], `{#cc5-fg}${d[1]}{/}`],
-      change: (d) => [d[0], `{#${d[1] >= 0 ? '4fb' : 'a25'}-fg}${d[1]}{/}`],
-      changePercent: (d) => [
-        d[0],
-        `{#${d[1] >= 0 ? '4fb' : 'a25'}-fg}${d[1].toFixed(3)}%{/}`,
-      ],
-      open: (d) => [d[0], '' + d[1]],
-      close: (d) => [d[0], '' + d[1]],
-      high: (d) => [d[0], `{#2fe-fg}${d[1]}{/}`],
-      low: (d) => [d[0], `{#a25-fg}${d[1]}{/}`],
-    }
-    return data.filter((d) => m[d[0]]).map((d) => m[d[0]](d))
-  }
-
-  return clean(response)
+  return shapeQuote(response)
 }
