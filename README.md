@@ -104,7 +104,12 @@ $de !          # show news and update active stock to DE
 #### `=` watchlist command
 Typing `=` brings up the watchlist display. Use arrow keys `up` and `down` to
 navigate the table. Use `tab` or `esc` to return to repl.  
-![watchlist display for iexcli](img/watchlist.png)
+![watchlist display for iexcli](img/watchlist.png) Key values `open high low
+close` are only available during market hours.
+
+If the table headers are wrapping, and data is truncated, try reducing
+terminal font-size. While a fix is in the works, it may require forking
+blessed and/or blessed-contrib.
 **examples**
 ```bash
 =
