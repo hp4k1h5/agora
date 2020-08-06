@@ -1,5 +1,5 @@
 {
-  "iex_publishable_key": "",
+  "IEX_PUB_KEY": "",
   "workspaces": [
     {
       "name": "home",

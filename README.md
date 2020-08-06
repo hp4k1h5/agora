@@ -23,14 +23,14 @@ some stock quote data](img/iexcli.png)
 run `yarn` in this directory  
 or `npm install`
 
-3) add a **publishable** iex api key as ENV var.
-register for a free [iex account](https://iexcloud.io/cloud-login#/register)  
-copy the **publishable** api key. These typically start with `pk`  
-export it as an environment variable either locally in your shell, or globally
-in your `.bashrc`
-
+3) add a **publishable** iex api key  
+- either export an ENV var named IEX_PUB_KEY  
 ex. `export IEX_PUB_KEY=pk_Y0urIeXaPipUbl15h4bLeKEY`
-
+- or set the IEX_PUB_KEY in config.json  
+register for a free [iex account](https://iexcloud.io/cloud-login#/register)
+copy the **publishable** api key. These typically start with `pk`  export it
+as an environment variable either locally in your shell, or globally in your
+`.bashrc`
 
 ## usage
 RUN `node index.js` from the root of this directory.

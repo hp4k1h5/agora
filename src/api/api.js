@@ -2,14 +2,8 @@ import qs from 'querystring'
 import fetch from 'node-fetch'
 
 import { shapePrices, shapeQuote, shapeNews, shapeWatchlist } from './shape.js'
-
-const token = process.env.IEX_PUB_KEY
-if (!token || !token.length) {
-  console.error(`user must provide publishable key as env var IEX_PUB_KEY
-    see README to learn how to obtain one. e.g.     
-    export IEX_PUB_KEY=pk_your_Publishable_iex_api_key`)
-  process.exit(1)
-}
+import { config } from '../util/config.js'
+const token = config.IEX_PUB_KEY
 
 /*
  * create a url from path: string, and params: any, a flat object that can be

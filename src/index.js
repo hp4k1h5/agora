@@ -1,10 +1,8 @@
-import fs from 'fs'
-
 import blessed from 'blessed'
 import contrib from 'blessed-contrib'
 
-let _config = fs.readFileSync('./config.json', 'utf8')
-const config = JSON.parse(_config)
+// CONFIG
+import { config } from './util/config.js'
 
 import { Workspace } from './ui/workspace.js'
 
@@ -19,8 +17,7 @@ const main = function () {
 
     screen: (function () {
       screen.key('C-c', function () {
-        // this.destroy()
-        // console.log('exiting iexcli...')
+        this.destroy()
         process.exit(0)
       })
       return screen
