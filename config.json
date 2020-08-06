@@ -1,0 +1,43 @@
+{
+  "IEX_PUB_KEY": "",
+  "workspaces": [
+    {
+      "name": "home",
+      "watchlist": [
+        "tsla",
+        "amzn",
+        "aapl",
+        "msft",
+        "goog",
+        "fb",
+        "twtr",
+        "brk.a",
+        "aa",
+        "xom",
+        "de",
+        "cat",
+        "c",
+        "gs",
+        "x"
+      ],
+      "components": [
+        {
+          "type": "repl",
+          "yxhw": [6, 9, 6, 3]
+        },
+        {
+          "type": "line",
+          "symbol": "goog",
+          "time": "100min",
+          "vol": true,
+          "yxhw": [0, 0, 9, 9],
+          "color": "green"
+        },
+        {
+          "type": "quote",
+          "yxhw": [0, 9, 6, 3]
+        }
+      ]
+    }
+  ]
+}
