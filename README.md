@@ -1,8 +1,10 @@
 # iexcli
-> query and view stock charts in the terminal using a
-> [blessed](https://github.com/chjj/blessed) interface
 
-#### !!warning unstable and in early development!!
+> query and view stock charts in the terminal using a
+> [blessed](https://github.com/chjj/blessed) widgets and a
+> [blessed-contrib](https://github.com/yaronn/blessed-contrib) interface
+
+#### !!warning unstable and in early development ⚠
 [contributions](./.github/CONTRIBUTING.md) and [bug
 reports](https://github.com/HP4k1h5/iexcli/issues/new?assignees=HP4k1h5&labels=bug&template=bug_report.md&title=basic) are _welcome_
 
@@ -12,6 +14,15 @@ some stock quote data](img/iexcli.png)
 ##### Terms of Service for IEX data
 [Data provided by IEX Cloud](https://iexcloud.io)
 
+## CHANGELOG
+
+## v0.0.1
+- config.json allows user to set a number of variables. please be careful as
+    very few configurations have been tested.
+- 📰 news, command `!` will fetch latest 20 news results related to the active
+    symbol. can be combined with stock prefix commands. work-in-progress
+- 📔 watchlist, command `=` will refresh and focus the watchlist.
+    work-in-progress
 ## installation
 ### requirements
 - [nodeJs](https://nodeJs.org) v10.0+
@@ -26,11 +37,11 @@ or `npm install`
 3) add a **publishable** iex api key  
 - either export an ENV var named IEX_PUB_KEY  
 ex. `export IEX_PUB_KEY=pk_Y0urIeXaPipUbl15h4bLeKEY`
-- or set the IEX_PUB_KEY in config.json  
-register for a free [iex account](https://iexcloud.io/cloud-login#/register)
-copy the **publishable** api key. These typically start with `pk`  export it
-as an environment variable either locally in your shell, or globally in your
-`.bashrc`
+- or set the `IEX_PUB_KEY` in `config.json` in this repo
+
+**register for a free [iex
+account](https://iexcloud.io/cloud-login#/register)**
+copy the **publishable** api key. These typically start with `pk`
 
 ## usage
 RUN `node index.js` from the root of this directory.
@@ -40,6 +51,7 @@ screen. It accepts commands and updates the charts and data windows. See
 examples below.
 
 ### commands
+
 #### `help` or `h`
 Typing `help` or `h` brings up a help menu. If you include another command
 name after, command-specific help is returned.  
@@ -49,6 +61,7 @@ help $   # show help for stock prefix command
 h :      # show help for time prefix command
 h        # show general help
 ```
+
 #### `quit` or `exit`
 Typing `quit` or `exit` will exit the app
 
@@ -74,4 +87,25 @@ Can be combined with time prefix to update multiple values at the same time
 :100min        # update time to last 100 minutes
 :6.5h          # update time to last trading day
 :5d  $x        # update time to last 5 days and update stock to X
+```
+
+#### `!` news command
+Typing `!` brings up the news display with the latest 20 results relevant to
+the active symbol. Use arrow keys `up` and `down` to navigate the table. Use
+`tab` or `esc` to return to repl. Can be combined with stock prefix to update
+multiple values at the same time  
+![news display for iexcli](img/news.png)  
+**examples**
+```bash
+$de !          # show news and update active stock to DE
+! $ibm         # show news and update stock to ibm
+```
+
+#### `=` watchlist command
+Typing `=` brings up the watchlist display. Use arrow keys `up` and `down` to
+navigate the table. Use `tab` or `esc` to return to repl.  
+![watchlist display for iexcli](img/watchlist.png)
+**examples**
+```bash
+=
 ```
