@@ -44,7 +44,7 @@ account](https://iexcloud.io/cloud-login#/register)**
 copy the **publishable** api key. These typically start with `pk`
 
 ## usage
-RUN `node index.js` from the root of this directory.
+RUN `node src/index.js` from the root of this directory, or `yarn run run`
 
 All interaction is through the repl emulator in the bottom right corner of the
 screen. It accepts commands and updates the charts and data windows. See
