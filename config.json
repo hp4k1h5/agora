@@ -1,9 +1,25 @@
 {
   "iex_publishable_key": "",
-  "watchlist": ["aapl", "msft"],
   "workspaces": [
     {
       "name": "home",
+      "watchlist": [
+        "tsla",
+        "amzn",
+        "aapl",
+        "msft",
+        "goog",
+        "fb",
+        "twtr",
+        "brk.a",
+        "aa",
+        "xom",
+        "de",
+        "cat",
+        "c",
+        "gs",
+        "x"
+      ],
       "components": [
         {
           "type": "repl",

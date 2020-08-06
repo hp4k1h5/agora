@@ -14,24 +14,36 @@ export function help(ws, _c, words) {
   if (what) {
     const whatSym = `
     {bold}{#2ea-fg}help {#cd2-fg}\${/} (symbol)
-prefix stock ticker symbols with {#cd2-fg}\${/} to change the active symbol. Including a $-prefix will update the active component.
-ex. {#cd2-fg}$brk.b{/}
-ex. {#cd2-fg}$GOOG{/}`
+Prefix stock ticker symbols with {#cd2-fg}\${/} to change the active symbol. Including a $-prefix will update the active component.
+ex. {#cd2-fg}$brk.b{/}`
     const whatTime = `
     {bold}{#2ea-fg}help {#cd2-fg}:{/} (time range)
-prefix valid time ranges with {#cd2-fg}:{/} to change the active time range. Including a :-prefix will update the active component
+Prefix valid time ranges with {#cd2-fg}:{/} to change the active time range. Including a :-prefix will update the active component
     {bold}{#2ea-fg}valid time ranges:{/}
 ${ws.validUnits.map((u) => '{#cd2-fg}:' + u + '{/}').join(' ')}
 AND numbers with minute {#cd2-fg}min{/} or hour {#cd2-fg}h{/}
-ex. {#cd2-fg} :100min {/}{#ddd-fg} 
 ex. {#cd2-fg} :6.5h {/}{#ddd-fg}{/}`
+    const whatChart = `
+    {bold}{#2ea-fg}help {#cd2-fg}#{/} chart
+Display chart. Can be combined with time and stock prefixes to update multiple fields at once, or used by itself to switch from news or watchlist views to chart view.
+ex. {#2ea-fg}$r :6.5h #`
+    const whatNews = `
+    {bold}{#2ea-fg}help {#cd2-fg}!{/} news
+Display news. Can be combined with stock prefixes to update the active symbol and swith to news view
+ex. {#2ea-fg}! $c{/}`
+    const whatWatch = `
+    {bold}{#2ea-fg}help {#cd2-fg}={/} watchlist
+Display watchlist.`
     const whatExit = `
     {bold}{#2ea-fg}help {#cd2-fg}exit | quit{/} (time range)
-exits iexcli`
+Exits iexcli`
 
     const whats = {
       $: whatSym,
       ':': whatTime,
+      '!': whatNews,
+      '=': whatWatch,
+      '#': whatChart,
       exit: whatExit,
       quit: whatExit,
     }
@@ -44,22 +56,18 @@ exits iexcli`
 
   // print full help
   else
-    ws.printLines(`
-    {bold}{#2ea-fg}help menu{/} 
+    ws.printLines(`   {bold}{#2ea-fg}help menu{/} 
+try {#cd2-fg}help <command>{/} i.e. {#cd2-fg}help :{/}
 {bold}available commands:{/}
 {#cd2-fg}h(elp){/}   :prints this menu
 {#cd2-fg}\${/}        :ticker symbol prefix
-          changes active symbol
-          ex. {#cd2-fg}$qqq{/}
-          try {#cd2-fg}help \${/}
-{#cd2-fg}\:{/}        :time (range) prefix
-          changes active time range
-          ex. {#cd2-fg}:6m{/}
-          try {#cd2-fg}help \:{/}
-
-these commands can be aggregated:
-    ex. {#cd2-fg}$z :10h{/}
-    ex. {#cd2-fg}:1y $GM{/}
-
-{#cd2-fg}exit / quit{/}     :quit iexcli`)
+{#cd2-fg}:{/}        :time (range) prefix
+{#cd2-fg}!{/}        :news
+{#cd2-fg}={/}        :watchlist
+{#cd2-fg}#{/}        :chart
+{#cd2-fg}exit / quit{/}     :quit iexcli)
+{#fcc-fg}-----------------------------{/}
+commands can be aggregated:
+ex. {#cd2-fg}$z :10h{/}  -> 10 hour chart for Z 
+ex. {#cd2-fg}$GM !{/}  -> news for GM`)
 }

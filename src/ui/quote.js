@@ -5,6 +5,7 @@ export function buildQuoteList(ws, component, data) {
   // set contrib options
   if (!ws.quote) {
     ws.quote = ws.grid.set(...component.yxhw, contrib.table, {
+      label: 'quote',
       columnSpacing: 3,
       columnWidth: [13, 30],
       keys: true,

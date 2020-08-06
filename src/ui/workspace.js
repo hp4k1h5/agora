@@ -1,6 +1,7 @@
 import contrib from 'blessed-contrib'
 
-import { update, parseTime } from './repl.js'
+import { parseTime } from './repl.js'
+import { update } from './update.js'
 
 /*
  * blessed-contrib grid controller

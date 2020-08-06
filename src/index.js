@@ -19,8 +19,8 @@ const main = function () {
 
     screen: (function () {
       screen.key('C-c', function () {
-        this.destroy()
-        console.log('exiting iexcli...')
+        // this.destroy()
+        // console.log('exiting iexcli...')
         process.exit(0)
       })
       return screen

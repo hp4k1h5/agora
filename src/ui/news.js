@@ -32,7 +32,6 @@ export function buildNewsList(ws, component, data) {
 
   // set data
   if (!data) return
-  data = Object.values(data)
   ws.newsList.setData({
     headers: [
       'News',

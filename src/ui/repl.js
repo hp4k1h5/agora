@@ -1,12 +1,9 @@
 import blessed from 'blessed'
 
-import { getPrices, getQuote, getNews } from '../api/api.js'
 import { help, intro } from './help.js'
-import { buildPriceVolCharts } from './graph.js'
-import { buildQuoteList } from './quote.js'
-import { buildNewsList } from './news.js'
+import { update } from './update.js'
 
-function buildRepl(ws, c) {
+export function buildRepl(ws, c) {
   const repl = ws.grid.set(...c.yxhw, blessed.form, { keys: true })
 
   // console display (optional), otherwise commands just have effects and don't
@@ -82,6 +79,7 @@ function evaluate(ws, input) {
     undefined: update,
     '#': chart,
     '!': news,
+    '=': watchlist,
     help,
     h: help,
     exit,
@@ -100,69 +98,28 @@ function evaluate(ws, input) {
   let time = words.find((w) => /(?<=:)\S+/.test(w))
   // set c.time & c.series
   if (time) parseTime(ws, component, time)
+  if (command == commands[undefined] && !symbol && !time) {
+    ws.printLines(`{red-fg}err:{/} no valid command found\r`)
+    help(ws, component, ['help'])
+    return
+  }
 
   // execute command
   return command(ws, component, words)
 }
 
-export async function update(ws, component) {
-  if (component.type == 'line') {
-    let data
-    try {
-      data = await getPrices(ws, component)
-    } catch (e) {
-      ws.printLines(
-        `{red-fg}error: ${e.status > 400 ? '$' + component.symbol : ''} ${
-          e.statusText
-        }{/}`,
-      )
+function watchlist(ws, component) {
+  let listOptions = ws.options.components.find((c) => c.type == 'watchlist')
+  if (!listOptions) {
+    listOptions = {
+      type: 'watchlist',
+      yxhw: [0, 0, 12, 9],
+      symbol: component.symbol,
     }
-    buildPriceVolCharts(ws, component, data)
-
-    // handle quote
-    const quoteList = ws.options.components.find((c) => c.type == 'quote')
-    if (!quoteList) return
-
-    try {
-      data = await getQuote(component.symbol)
-    } catch (e) {
-      ws.printLines(
-        `{red-fg}error: ${e.status > 400 ? '$' + component.symbol : ''} ${
-          e.statusText || e
-        }{/}`,
-      )
-    }
-    buildQuoteList(ws, quoteList, data)
-  } else if (component.type == 'news') {
-    let data
-    try {
-      data = await getNews(component.symbol)
-    } catch (e) {
-      ws.printLines(
-        `{red-fg}error: ${e.status > 400 ? '$' + component.symbol : ''} ${
-          e.statusText || e
-        }{/}`,
-      )
-    }
-    buildNewsList(ws, component, data)
-
-    // handle quote
-    const quoteList = ws.options.components.find((c) => c.type == 'quote')
-    if (!quoteList) return
-
-    try {
-      data = await getQuote(component.symbol)
-    } catch (e) {
-      ws.printLines(
-        `{red-fg}error: ${e.status > 400 ? '$' + component.symbol : ''} ${
-          e.statusText || e
-        }{/}`,
-      )
-    }
-    buildQuoteList(ws, quoteList, data)
-  } else if (component.type == 'repl') {
-    buildRepl(ws, component)
+    ws.options.components.push(listOptions)
   }
+
+  update(ws, listOptions)
 }
 
 function chart(ws, component) {

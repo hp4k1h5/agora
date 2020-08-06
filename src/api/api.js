@@ -1,7 +1,7 @@
 import qs from 'querystring'
 import fetch from 'node-fetch'
 
-import { shapePrices, shapeQuote, shapeNews } from './shape.js'
+import { shapePrices, shapeQuote, shapeNews, shapeWatchlist } from './shape.js'
 
 const token = process.env.IEX_PUB_KEY
 if (!token || !token.length) {
@@ -26,7 +26,7 @@ export function buildURL(path, params = {}) {
 /*
  * /intraday-prices endpoint returns minute-increment price data for a given stock @param sym: string
  * */
-export async function getPrices(ws, c) {
+export async function getPrices(_ws, c) {
   let url
   // intraday
   if (c.series == 'intra') {
@@ -38,8 +38,7 @@ export async function getPrices(ws, c) {
 
   let response = await fetch(url)
   if (!response.ok) {
-    ws.printLines(response.statusText)
-    return
+    throw response.statusText
   }
 
   const data = await response.json()
@@ -66,4 +65,19 @@ export async function getNews(symbol) {
 
   response = await response.json()
   return shapeNews(response)
+}
+
+export async function getWatchlist(list) {
+  const url = buildURL('stock/market/batch', {
+    symbols: list.join(','),
+    types: 'quote',
+  })
+  let response = await fetch(url)
+
+  if (!response.ok) {
+    throw response
+  }
+
+  response = await response.json()
+  return shapeWatchlist(response)
 }
