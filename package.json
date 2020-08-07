@@ -10,7 +10,7 @@
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/HP4k1h5/iexcli"
+    "url": "git+ssh://git@github.com/HP4k1h5/iexcli.git"
   },
   "description": "stock charts in the terminal, with a blessed interface and iex data",
   "keywords": [
@@ -33,5 +33,6 @@
   "email": "robertwalks@gmail.com",
   "bugs": {
     "url": "https://github.com/HP4k1h5/iexcli/issues"
-  }
+  },
+  "devDependencies": {}
 }
