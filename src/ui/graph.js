@@ -26,6 +26,7 @@ export function buildPriceVolCharts(ws, c, data) {
     w,
   )
 
+  ws.repl.focus()
   ws.screen.render()
 }
 

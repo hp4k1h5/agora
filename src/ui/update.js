@@ -4,85 +4,61 @@ import { buildQuoteList } from './quote.js'
 import { buildNewsList } from './news.js'
 import { buildWatchlist } from './watchlist.js'
 import { buildRepl } from './repl.js'
+import { handleErr } from '../util/error.js'
 
 export async function update(ws, component) {
+  // CHARTS
   if (component.type == 'line') {
-    // CHARTS
-
-    let data
+    // find associated quotelist if any
+    const quoteList = ws.options.components.find((c) => c.type == 'quote')
+    let pData
+    let qData
     try {
-      data = await getPrices(ws, component)
+      pData = await getPrices(ws, component)
+      if (quoteList) qData = await getQuote(component.symbol)
     } catch (e) {
-      ws.printLines(
-        `{red-fg}error: ${e.status > 400 ? '$' + component.symbol : ''} ${
-          e.statusText
-        }{/}`,
-      )
-      return
+      handleErr(ws, e)
     }
-    buildPriceVolCharts(ws, component, data)
+
+    // build charts
+    if (pData) buildPriceVolCharts(ws, component, pData)
 
     // handle quote
-    const quoteList = ws.options.components.find((c) => c.type == 'quote')
-    if (!quoteList) return
+    if (quoteList && qData) buildQuoteList(ws, quoteList, qData)
 
-    try {
-      data = await getQuote(component.symbol)
-    } catch (e) {
-      ws.printLines(
-        `{red-fg}error: ${e.status > 400 ? '$' + component.symbol : ''} ${
-          e.statusText || e
-        }{/}`,
-      )
-      return
-    }
-    buildQuoteList(ws, quoteList, data)
-  } else if (component.type == 'news') {
     // NEWS
+  } else if (component.type == 'news') {
+    const quoteList = ws.options.components.find((c) => c.type == 'quote')
 
-    let data
+    let nData
+    let qData
     try {
-      data = await getNews(component.symbol)
+      nData = await getNews(component.symbol)
+      qData = await getQuote(component.symbol)
     } catch (e) {
-      ws.printLines(
-        `{red-fg}error: ${
-          e.status > 400 ? '$' + component.symbol : ''
-        } ${e}{/}`,
-      )
-      return
+      handleErr(ws, e)
     }
-    buildNewsList(ws, component, data)
+
+    // build news
+    if (nData) buildNewsList(ws, component, nData)
 
     // handle quote
-    const quoteList = ws.options.components.find((c) => c.type == 'quote')
-    if (!quoteList) return
+    if (quoteList && qData) buildQuoteList(ws, quoteList, qData)
 
-    try {
-      data = await getQuote(component.symbol)
-    } catch (e) {
-      ws.printLines(
-        `{red-fg}error: ${
-          e.status > 400 ? '$' + component.symbol : ''
-        } ${e}{/}`,
-      )
-      return
-    }
-    buildQuoteList(ws, quoteList, data)
-  } else if (component.type == 'watchlist') {
     // WATCHLIST
-
+  } else if (component.type == 'watchlist') {
     let data
     try {
       data = await getWatchlist(ws.options.watchlist)
     } catch (e) {
-      ws.printLines(`{red-fg}error:{/} ${e}`)
-      return
+      handleErr(ws, e)
     }
 
+    // build list
     buildWatchlist(ws, component, data)
-  } else if (component.type == 'repl') {
-    // REPL
 
+    // REPL
+  } else if (component.type == 'repl') {
     buildRepl(ws, component)
   }
 }

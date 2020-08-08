@@ -56,13 +56,13 @@ export function buildRepl(ws, c) {
   repl.on('submit', async function (data) {
     // push last command
     ws.printLines('{bold}> {/}' + data.input)
+    // clear input and refocus
+    input.clearValue()
+    input.focus()
 
     // parse and handle input
     await evaluate(ws, data.input)
 
-    // clear input and refocus
-    input.clearValue()
-    input.focus()
     ws.screen.render()
   })
 
@@ -74,7 +74,7 @@ export function buildRepl(ws, c) {
 
 // helpers
 
-function evaluate(ws, input) {
+async function evaluate(ws, input) {
   const commands = {
     undefined: update,
     '#': chart,
@@ -98,6 +98,10 @@ function evaluate(ws, input) {
   let time = words.find((w) => /(?<=:)\S+/.test(w))
   // set c.time & c.series
   if (time) parseTime(ws, component, time)
+
+  // if no command has been issued to change the components, run
+  // update with new values if any have been provided, else error
+  // with help
   if (command == commands[undefined] && !symbol && !time) {
     ws.printLines(`{red-fg}err:{/} no valid command found\r`)
     help(ws, component, ['help'])
@@ -105,10 +109,10 @@ function evaluate(ws, input) {
   }
 
   // execute command
-  return command(ws, component, words)
+  await command(ws, component, words)
 }
 
-function watchlist(ws, component) {
+async function watchlist(ws, component) {
   let listOptions = ws.options.components.find((c) => c.type == 'watchlist')
   if (!listOptions) {
     listOptions = {
@@ -119,20 +123,20 @@ function watchlist(ws, component) {
     ws.options.components.push(listOptions)
   }
 
-  update(ws, listOptions)
+  await update(ws, listOptions)
 }
 
-function chart(ws, component) {
+async function chart(ws, component) {
   let chartOptions = ws.options.components.find((c) =>
     ['line'].includes(c.type),
   )
   chartOptions.symbol = component.symbol
   if (component.time) parseTime(ws, chartOptions, component.time)
 
-  update(ws, chartOptions)
+  await update(ws, chartOptions)
 }
 
-function news(ws, component) {
+async function news(ws, component) {
   let newsOptions = ws.options.components.find((c) => c.type == 'news')
   if (!newsOptions) {
     newsOptions = {
@@ -146,7 +150,7 @@ function news(ws, component) {
     newsOptions.time = component.time
   }
 
-  update(ws, newsOptions)
+  await update(ws, newsOptions)
 }
 
 /** time is a string, a valid number/interval combination, should not include
@@ -171,7 +175,6 @@ export function parseTime(ws, c, time) {
 
 function exit(ws) {
   setTimeout(() => {
-    console.log('exiting...')
     ws.screen.destroy()
     process.exit(0)
   }, 800)

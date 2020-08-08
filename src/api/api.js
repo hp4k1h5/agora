@@ -32,7 +32,7 @@ export async function getPrices(_ws, c) {
 
   let response = await fetch(url)
   if (!response.ok) {
-    throw response.statusText
+    throw response
   }
 
   const data = await response.json()
@@ -43,7 +43,7 @@ export async function getQuote(symbol) {
   const url = buildURL(`stock/${symbol}/quote`)
   let response = await fetch(url)
   if (!response.ok) {
-    throw response.statusText
+    throw response
   }
 
   response = await response.json()
@@ -54,7 +54,7 @@ export async function getNews(symbol) {
   const url = buildURL(`stock/${symbol}/news/last/10`)
   let response = await fetch(url)
   if (!response.ok) {
-    throw response.statusText
+    throw response
   }
 
   response = await response.json()
