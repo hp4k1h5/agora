@@ -4,21 +4,34 @@
     {
       "name": "home",
       "watchlist": [
-        "tsla",
         "amzn",
         "aapl",
         "msft",
         "goog",
         "fb",
         "twtr",
+        "z",
+        "r",
+        "tsla",
+        "f",
+        "gm",
         "brk.a",
         "aa",
-        "xom",
         "de",
         "cat",
+        "xom",
         "c",
         "gs",
-        "x"
+        "v",
+        "x",
+        "qqq",
+        "spy",
+        "oil",
+        "gld",
+        "l",
+        "hd",
+        "t",
+        "s"
       ],
       "components": [
         {

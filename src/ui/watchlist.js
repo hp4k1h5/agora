@@ -8,10 +8,8 @@ export function buildWatchlist(ws, component, data) {
 
   // set contrib options
   ws.watchlist = ws.grid.set(...component.yxhw, blessed.table, {
-    // label: 'watchlist',
-    //         sym nam ope clo hi lo lat pre cha %
-    // columnWidth: [5, 10, 7, 7, 7, 7, 7, 7, 12, 12, 20, 20],
     keys: true,
+    mouse: true,
     tags: true,
     interactive: true,
     scrollable: true,

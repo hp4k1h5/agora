@@ -82,8 +82,8 @@ export function shapeNews(data) {
 export function shapeWatchlist(data) {
   const m = {
     symbol: (d) => d,
-    latestPrice: (d) => ['latest', '' + d[1]],
-    volume: (d) => [d[0], d[1].toLocaleString()],
+    latestPrice: (d) => ['latest', `{#cc5-fg}${d[1]}{/}`],
+    volume: (d) => [d[0], abbrevNum(d[1])],
     change: (d) => [d[0], `{#${d[1] >= 0 ? '4fb' : 'a25'}-fg}${d[1]}{/}`],
     changePercent: (d) => [
       '%',
@@ -91,7 +91,7 @@ export function shapeWatchlist(data) {
     ],
     open: (d) => [d[0], '' + d[1]],
     close: (d) => [d[0], '' + d[1]],
-    high: (d) => [d[0], '' + d[1]],
+    high: (d) => [d[0], `{#2fe-fg}${d[1]}{/}`],
     low: (d) => [d[0], '' + d[1]],
     previousClose: (d) => ['prev', '' + d[1]],
     week52High: (d) => ['52hi', '' + d[1]],
@@ -101,7 +101,7 @@ export function shapeWatchlist(data) {
       `{#${d[1] >= 0 ? '4fb' : 'a25'}-fg}${(d[1] * 100).toFixed(2)}%{/}`,
     ],
     peRatio: (d) => ['p/e', '' + d[1]],
-    marketCap: (d) => ['mktCap', (+d[1]).toLocaleString()],
+    marketCap: (d) => ['mktCap', abbrevNum(d[1])],
   }
   let shapedList = []
   Object.keys(data).forEach((d) => {
@@ -118,3 +118,14 @@ export function shapeWatchlist(data) {
 
   return shapedList
 }
+
+function abbrevNum(num) {
+  const l = ' KMBT'
+  let c = 0
+  while (num > 1e3) {
+    num = num / 1000
+    c++
+  }
+  return num.toFixed(1) + l[c] || ''
+}
+console.log(abbrevNum(345))
