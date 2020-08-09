@@ -82,27 +82,26 @@ export function shapeNews(data) {
 export function shapeWatchlist(data) {
   const m = {
     symbol: (d) => d,
-    companyName: (d) => ['name', d[1].substring(0, 10)],
-    latestPrice: (d) => ['latest', d[1]],
+    latestPrice: (d) => ['latest', '' + d[1]],
     volume: (d) => [d[0], d[1].toLocaleString()],
     change: (d) => [d[0], `{#${d[1] >= 0 ? '4fb' : 'a25'}-fg}${d[1]}{/}`],
     changePercent: (d) => [
       '%',
       `{#${d[1] >= 0 ? '4fb' : 'a25'}-fg}${(d[1] * 100).toFixed(2)}{/}`,
     ],
-    open: (d) => d,
-    close: (d) => d,
-    high: (d) => [d[0], d[1]],
-    low: (d) => [d[0], d[1]],
-    previousClose: (d) => ['prev', d[1]],
-    week52High: (d) => ['52hi', d[1]],
-    week52Low: (d) => ['52lo', d[1]],
+    open: (d) => [d[0], '' + d[1]],
+    close: (d) => [d[0], '' + d[1]],
+    high: (d) => [d[0], '' + d[1]],
+    low: (d) => [d[0], '' + d[1]],
+    previousClose: (d) => ['prev', '' + d[1]],
+    week52High: (d) => ['52hi', '' + d[1]],
+    week52Low: (d) => ['52lo', '' + d[1]],
     ytdChange: (d) => [
       'ytd',
       `{#${d[1] >= 0 ? '4fb' : 'a25'}-fg}${(d[1] * 100).toFixed(2)}%{/}`,
     ],
-    peRatio: (d) => d,
-    marketCap: (d) => [d[0], (+d[1]).toLocaleString()],
+    peRatio: (d) => ['p/e', '' + d[1]],
+    marketCap: (d) => ['mktCap', (+d[1]).toLocaleString()],
   }
   let shapedList = []
   Object.keys(data).forEach((d) => {
@@ -111,7 +110,6 @@ export function shapeWatchlist(data) {
       .filter((q) => m[q[0]])
       .map((q) => [q[0], q[1] || ''])
       .map((q) => m[q[0]](q))
-      .slice(0, 12)
     shapedList.push(quote)
   })
   const keys = shapedList[0].map((s) => s[0])

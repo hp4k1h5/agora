@@ -1,5 +1,5 @@
-import contrib from 'blessed-contrib'
-
+// import contrib from 'blessed-contrib'
+import blessed from 'blessed'
 export function buildWatchlist(ws, component, data) {
   // set active component
   ws.activeComponent = component
@@ -7,13 +7,15 @@ export function buildWatchlist(ws, component, data) {
   ws.screen.saveFocus()
 
   // set contrib options
-  ws.watchlist = ws.grid.set(...component.yxhw, contrib.table, {
-    label: 'watchlist',
-    columnSpacing: 2,
+  ws.watchlist = ws.grid.set(...component.yxhw, blessed.table, {
+    // label: 'watchlist',
     //         sym nam ope clo hi lo lat pre cha %
-    columnWidth: [5, 10, 7, 7, 7, 7, 7, 7, 18, 18, 10, 20],
+    // columnWidth: [5, 10, 7, 7, 7, 7, 7, 7, 12, 12, 20, 20],
     keys: true,
+    tags: true,
     interactive: true,
+    scrollable: true,
+    alwaysScroll: true,
   })
 
   // set keys for screen
@@ -24,11 +26,8 @@ export function buildWatchlist(ws, component, data) {
 
   // set data
   if (!data) return
-  ws.watchlist.setData({
-    headers: data[0],
-    data: data.slice(1),
-  })
-  ws.watchlist.focus()
+  ws.watchlist.setData(data)
 
+  ws.watchlist.focus()
   ws.screen.render()
 }
