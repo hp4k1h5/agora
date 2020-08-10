@@ -37,9 +37,11 @@ export function buildRepl(ws, c) {
   const input = blessed.textbox({
     parent: repl,
     name: 'input',
+    // inputs
+    inputOnFocus: true,
+    // styles
     bottom: 0,
     height: 3,
-    inputOnFocus: true,
     border: { type: 'line' },
     style: {
       border: { fg: 'gray' },
@@ -75,17 +77,20 @@ export function buildRepl(ws, c) {
 // helpers
 
 async function evaluate(ws, input) {
+  const component = ws.activeComponent
+  if (input == '') return update(ws, component)
+
   const commands = {
     undefined: update,
     '#': chart,
     '!': news,
     '=': watchlist,
+    '&': profile,
     help,
     h: help,
     exit,
     quit: exit,
   }
-  const component = ws.activeComponent
 
   let words = input.split(/\s+/g)
 
@@ -110,6 +115,20 @@ async function evaluate(ws, input) {
 
   // execute command
   await command(ws, component, words)
+}
+
+async function profile(ws, component) {
+  let profileOptions = ws.options.components.find((c) => c.type == 'profile')
+  if (!profileOptions) {
+    profileOptions = {
+      type: 'profile',
+      yxhw: [0, 0, 12, 9],
+      symbol: component.symbol,
+    }
+    ws.options.components.push(profileOptions)
+  }
+
+  await update(ws, profileOptions)
 }
 
 async function watchlist(ws, component) {

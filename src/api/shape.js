@@ -49,11 +49,12 @@ export function shapeQuote(data) {
     ],
     peRatio: (d) => d,
     marketCap: (d) => [d[0], (+d[1]).toLocaleString()],
+    avgTotalVolume: (d) => ['avgVol', '' + d[1]],
   }
   return (
     data
       .filter((d) => m[d[0]])
-      // remove nulls before blessed-contrib table calls toString()
+      // replace nulls before blessed-contrib table calls toString()
       .map((d) => [d[0], d[1] || ''])
       .map((d) => m[d[0]](d))
   )
@@ -94,7 +95,7 @@ export function shapeWatchlist(data) {
     high: (d) => [d[0], `{#2fe-fg}${d[1]}{/}`],
     low: (d) => [d[0], '' + d[1]],
     previousClose: (d) => ['prev', '' + d[1]],
-    week52High: (d) => ['52hi', '' + d[1]],
+    week52High: (d) => ['52hi', '' + `{#2fe-fg}${d[1]}{/}`],
     week52Low: (d) => ['52lo', '' + d[1]],
     ytdChange: (d) => [
       'ytd',
@@ -119,7 +120,25 @@ export function shapeWatchlist(data) {
   return shapedList
 }
 
+export function shapeProfile(data) {
+  const rows = []
+
+  // first datum is from `/company`
+  let company = data[0]
+  rows.push([
+    company.symbol,
+    company.companyName,
+    company.exchange,
+    company.industry,
+  ])
+  rows.push(...company.description.match(/.{0,50}/g).map((d) => [d]))
+  rows.push([company.sector, '' + company.primarySicCode, company.issueType])
+
+  return rows
+}
+
 function abbrevNum(num) {
+  if (!num) return ''
   const l = ' KMBT'
   let c = 0
   while (num > 1e3) {
@@ -128,4 +147,3 @@ function abbrevNum(num) {
   }
   return num.toFixed(1) + l[c] || ''
 }
-console.log(abbrevNum(345))

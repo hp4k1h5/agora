@@ -1,8 +1,15 @@
-import { getPrices, getQuote, getNews, getWatchlist } from '../api/api.js'
+import {
+  getPrices,
+  getQuote,
+  getNews,
+  getWatchlist,
+  getProfile,
+} from '../api/api.js'
 import { buildPriceVolCharts } from './graph.js'
 import { buildQuoteList } from './quote.js'
 import { buildNewsList } from './news.js'
 import { buildWatchlist } from './watchlist.js'
+import { buildProfile } from './profile.js'
 import { buildRepl } from './repl.js'
 import { handleErr } from '../util/error.js'
 
@@ -56,6 +63,19 @@ export async function update(ws, component) {
 
     // build list
     buildWatchlist(ws, component, data)
+
+    // PROFILE
+  } else if (component.type == 'profile') {
+    let data
+    try {
+      data = await getProfile(component.symbol)
+    } catch (e) {
+      handleErr(ws, e)
+    }
+    ws.screen.log(data)
+
+    // build profile
+    buildProfile(ws, component, data)
 
     // REPL
   } else if (component.type == 'repl') {

@@ -1,7 +1,13 @@
 import qs from 'querystring'
 import fetch from 'node-fetch'
 
-import { shapePrices, shapeQuote, shapeNews, shapeWatchlist } from './shape.js'
+import {
+  shapePrices,
+  shapeQuote,
+  shapeNews,
+  shapeWatchlist,
+  shapeProfile,
+} from './shape.js'
 import { config } from '../util/config.js'
 const token = config.IEX_PUB_KEY
 
@@ -74,4 +80,22 @@ export async function getWatchlist(list) {
 
   response = await response.json()
   return shapeWatchlist(response)
+}
+
+export async function getProfile(symbol) {
+  let urls = [buildURL(`stock/${symbol}/company`)]
+
+  const data = await Promise.all(
+    urls.map(async (url) => {
+      let response = await fetch(url)
+      if (!response.ok) {
+        throw response
+      }
+
+      response = await response.json()
+      return response
+    }),
+  )
+
+  return shapeProfile(data)
 }
