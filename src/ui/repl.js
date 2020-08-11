@@ -8,25 +8,23 @@ export function buildRepl(ws, c) {
 
   // console display (optional), otherwise commands just have effects and don't
   // report
-  const output = blessed.textarea({
+  const output = blessed.text({
     parent: repl,
     name: 'output',
+    // inputs
     keys: false,
-    mouse: false,
+    mouse: true,
+    scrollable: true,
+    // display
     tags: true,
-    input: false,
-    scrollable: false,
     height: '75%',
   })
   c.output = output
-  // init repl history
-  const history = []
 
   // add printLines to c
   ws.printLines = function (text) {
-    if (typeof text == 'string') text = text.split('\n')
-    history.push(...text)
-    output.setValue(history.slice(-output.height).join('\n'))
+    c.output.pushLine(text)
+    c.output.setScrollPerc(100)
   }
 
   // init welcome text

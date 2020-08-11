@@ -18,8 +18,11 @@ export function buildProfile(ws, component, data) {
     parent: ws.profile,
     name: 'company',
     label: 'company',
+    // inputs
+    mouse: true,
+    scrollable: true,
     width,
-    height: heightHalf,
+    height: heightHalf + 3,
     tags: true,
     border: { type: 'line' },
     style: {
@@ -31,6 +34,10 @@ export function buildProfile(ws, component, data) {
     parent: ws.profile,
     name: 'stats',
     label: 'stats',
+    // inputs
+    mouse: true,
+    scrollable: true,
+    // style
     width,
     left: width,
     tags: true,
@@ -44,9 +51,13 @@ export function buildProfile(ws, component, data) {
     parent: ws.profile,
     name: 'earnings',
     label: 'earnings',
+    // inputs
+    mouse: true,
+    scrollable: true,
+    // style
     width,
-    top: heightHalf,
-    height: heightHalf,
+    top: heightHalf + 3,
+    height: heightHalf - 3,
     tags: true,
     border: { type: 'line' },
     style: {

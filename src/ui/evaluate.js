@@ -4,16 +4,18 @@ import { defaults } from '../util/defaults.js'
 
 export async function evaluate(ws, input) {
   const component = ws.activeComponent
+
+  // update when empty is submitted
   if (input == '') return update(ws, component)
 
   const commands = {
+    help,
+    h: help,
     undefined: update,
     '#': chart,
     '!': news,
     '=': watchlist,
     '&': profile,
-    help,
-    h: help,
     exit,
     quit: exit,
   }
@@ -24,7 +26,7 @@ export async function evaluate(ws, input) {
   let command = commands[words.find((w) => commands[w])]
 
   // define params
-  let symbol = words.find((w) => w[0] == '$')
+  let symbol = words.find((w) => /(?<=\$)[\w.]+/.test(w))
   component.symbol = symbol ? symbol.substring(1) : component.symbol
   let time = words.find((w) => /(?<=:)\S+/.test(w))
   // set c.time & c.series
@@ -43,6 +45,29 @@ export async function evaluate(ws, input) {
   await command(ws, component, words)
 }
 
+async function profile(ws, activeComponent) {
+  const componentOptions = findOrMakeAndUpdate(ws, 'profile', activeComponent)
+  await update(ws, componentOptions)
+}
+
+async function watchlist(ws, activeComponent) {
+  const componentOptions = findOrMakeAndUpdate(ws, 'watchlist', activeComponent)
+  await update(ws, componentOptions)
+}
+
+async function chart(ws, activeComponent) {
+  const chartType = ws.options.components.find((c) => ['line'].includes(c.type))
+    .type
+  const componentOptions = findOrMakeAndUpdate(ws, chartType, activeComponent)
+
+  await update(ws, componentOptions)
+}
+
+async function news(ws, activeComponent) {
+  const componentOptions = findOrMakeAndUpdate(ws, 'news', activeComponent)
+  await update(ws, componentOptions)
+}
+
 // helpers
 function findOrMakeAndUpdate(ws, type, activeComponent) {
   let componentOptions = ws.options.components.find((c) => c.type == type)
@@ -59,55 +84,12 @@ function findOrMakeAndUpdate(ws, type, activeComponent) {
   ;['symbol', 'time'].forEach((key) => {
     componentOptions[key] = activeComponent[key]
   })
+  if (activeComponent.time)
+    parseTime(ws, componentOptions, activeComponent.time)
+
   ws.activeComponent = componentOptions
 
   return componentOptions
-}
-
-async function profile(ws, activeComponent) {
-  const componentOptions = findOrMakeAndUpdate(ws, 'profile', activeComponent)
-  await update(ws, componentOptions)
-}
-
-async function watchlist(ws, component) {
-  let listOptions = ws.options.components.find((c) => c.type == 'watchlist')
-  if (!listOptions) {
-    listOptions = {
-      type: 'watchlist',
-      yxhw: [0, 0, 12, 9],
-      symbol: component.symbol,
-    }
-    ws.options.components.push(listOptions)
-  }
-
-  await update(ws, listOptions)
-}
-
-async function chart(ws, component) {
-  let chartOptions = ws.options.components.find((c) =>
-    ['line'].includes(c.type),
-  )
-  chartOptions.symbol = component.symbol
-  if (component.time) parseTime(ws, chartOptions, component.time)
-
-  await update(ws, chartOptions)
-}
-
-async function news(ws, component) {
-  let newsOptions = ws.options.components.find((c) => c.type == 'news')
-  if (!newsOptions) {
-    newsOptions = {
-      type: 'news',
-      symbol: component.symbol,
-      yxhw: [0, 0, 12, 9],
-    }
-    ws.options.components.push(newsOptions)
-  } else {
-    newsOptions.symbol = component.symbol
-    newsOptions.time = component.time
-  }
-
-  await update(ws, newsOptions)
 }
 
 /** time is a string, a valid number/interval combination, should not include
@@ -118,6 +100,9 @@ export function parseTime(ws, c, time) {
   if (intra) {
     c.series = 'intra'
     c._time = { chartLast: +intra[1] * (intra[2] == 'h' ? 60 : 1) }
+  } else if (time == '1d') {
+    c.series = 'intra'
+    c._time = { chartLast: 6.5 * 60 }
   } else {
     if (!ws.validUnits.includes(time.substring(1))) {
       ws.printLines(`{red-fg}err:{/} invalid time`)

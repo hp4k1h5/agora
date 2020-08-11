@@ -68,16 +68,22 @@ export async function update(ws, component) {
 
     // PROFILE
   } else if (component.type == 'profile') {
-    let data
+    const quoteList = ws.options.components.find((c) => c.type == 'quote')
+
+    let pData
+    let qData
     try {
-      data = await getProfile(component.symbol)
+      pData = await getProfile(component.symbol)
+      qData = await getQuote(component.symbol)
     } catch (e) {
       handleErr(ws, e)
     }
-    ws.screen.log(data)
 
     // build profile
-    buildProfile(ws, component, data)
+    buildProfile(ws, component, pData)
+
+    // handle quote
+    if (quoteList && qData) buildQuoteList(ws, quoteList, qData)
 
     // REPL
   } else if (component.type == 'repl') {

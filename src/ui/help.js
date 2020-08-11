@@ -6,7 +6,7 @@ export const intro = `{#2ea-fg}Welcome to iexcli.{/}
 
   more documentation is available at 
   {underline}{#4be-fg}<https://github.com/hp4k1h5/iexcli>{/}...
-\n\n\n `.split('\n')
+\n\n\n `
 
 export function help(ws, _c, words) {
   // print specific help if applicable
@@ -22,20 +22,23 @@ Prefix valid time ranges with {#cd2-fg}:{/} to change the active time range. Inc
     {bold}{#2ea-fg}valid time ranges:{/}
 ${ws.validUnits.map((u) => '{#cd2-fg}:' + u + '{/}').join(' ')}
 AND numbers with minute {#cd2-fg}min{/} or hour {#cd2-fg}h{/}
-ex. {#cd2-fg} :6.5h {/}{#ddd-fg}{/}`
+ex. {#cd2-fg} :6.5h {/}`
     const whatChart = `
     {bold}{#2ea-fg}help {#cd2-fg}#{/} chart
 Display chart. Can be combined with time and stock prefixes to update multiple fields at once, or used by itself to switch from news or watchlist views to chart view.
-ex. {#2ea-fg}$r :6.5h #`
+ex. {#2ea-fg}$r :6.5h #{/}`
     const whatNews = `
     {bold}{#2ea-fg}help {#cd2-fg}!{/} news
 Display news. Can be combined with stock prefixes to update the active symbol and switch to news view
 ex. {#2ea-fg}! $c{/}`
     const whatWatch = `
     {bold}{#2ea-fg}help {#cd2-fg}={/} watchlist
-Display watchlist`
+Display watchlist. Watchlist symbols can be set in config.json`
+    const whatProfile = `
+    {bold}{#2ea-fg}help {#cd2-fg}&{/} profile
+Display profile`
     const whatExit = `
-    {bold}{#2ea-fg}help {#cd2-fg}exit | quit{/}
+    {bold}{#2ea-fg}help {#cd2-fg}exit{/} | {#cd2-fg}quit{/}
 Exits iexcli`
 
     const whats = {
@@ -44,6 +47,7 @@ Exits iexcli`
       '!': whatNews,
       '=': whatWatch,
       '#': whatChart,
+      '&': whatProfile,
       exit: whatExit,
       quit: whatExit,
     }
@@ -65,6 +69,7 @@ try {#cd2-fg}help <command>{/} i.e. {#cd2-fg}help :{/}
 {#cd2-fg}!{/}        :news
 {#cd2-fg}={/}        :watchlist
 {#cd2-fg}#{/}        :chart
+{#cd2-fg}&{/}        :profile
 {#cd2-fg}exit / quit{/}     :quit iexcli)
 {#fcc-fg}-----------------------------{/}
 commands can be aggregated:

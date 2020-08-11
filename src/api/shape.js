@@ -122,6 +122,8 @@ export function shapeWatchlist(data) {
 
 /** data is an array of json responses from a series of profile related calls */
 export function shapeProfile(data) {
+  if (!data || !data.length) return 'no data for symbol'
+
   // first datum is from `/company`
   let company = data[0]
   // second is `/stats`
@@ -146,17 +148,22 @@ export function shapeProfile(data) {
     }
     return v
   }
-  keyStats = Object.entries(keyStats)
-    .map((e) => {
-      return `{#4be-fg}${e[0]}{/}: ${treat(e[1])}`
-    })
-    .join('\n')
 
-  earnings = Object.entries(earnings.earnings[0])
-    .map((e) => {
-      return `{#4be-fg}${e[0]}{/}: ${treat(e[1])}`
-    })
-    .join('\n')
+  if (keyStats)
+    keyStats = Object.entries(keyStats)
+      .map((e) => {
+        return `{#4be-fg}${e[0]}{/}: ${treat(e[1])}`
+      })
+      .join('\n')
+  else keyStats = ''
+
+  if (earnings && earnings.earnings)
+    earnings = Object.entries(earnings.earnings[0])
+      .map((e) => {
+        return `{#4be-fg}${e[0]}{/}: ${treat(e[1])}`
+      })
+      .join('\n')
+  else earnings = ''
 
   return { company, keyStats, earnings }
 }
