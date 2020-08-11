@@ -11,7 +11,7 @@ export class Workspace {
     this.screen = screen
     this.options = options
     // e.g. this.grid.set(row, col, rowSpan, colSpan, obj, opts)
-    this.validUnits = ['5d', '1m', '3m', '6m', 'ytd', '1y', '5y', 'max']
+    this.validUnits = ['1d', '5d', '1m', '3m', '6m', 'ytd', '1y', '5y', 'max']
   }
 
   /** called by Carousel.workspaces once per Carousel "page", or
