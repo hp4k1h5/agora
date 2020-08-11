@@ -31,6 +31,7 @@ export function shapeQuote(data) {
     companyName: (d) => ['name', d[1].substring(0, 20)],
     latestPrice: (d) => ['latest', `{#cc5-fg}${d[1]}{/}`],
     volume: (d) => [d[0], `{#cc5-fg}${d[1].toLocaleString()}{/}`],
+    avgTotalVolume: (d) => ['avgVol', `{#bbb-fg}${d[1].toLocaleString()}{/}`],
     change: (d) => [d[0], `{#${d[1] >= 0 ? '4fb' : 'a25'}-fg}${d[1]}{/}`],
     changePercent: (d) => [
       '%',
@@ -49,7 +50,6 @@ export function shapeQuote(data) {
     ],
     peRatio: (d) => d,
     marketCap: (d) => [d[0], (+d[1]).toLocaleString()],
-    avgTotalVolume: (d) => ['avgVol', '' + d[1]],
   }
   return (
     data

@@ -1,6 +1,6 @@
 import contrib from 'blessed-contrib'
 
-import { parseTime } from './repl.js'
+import { parseTime } from './evaluate.js'
 import { update } from './update.js'
 
 /*

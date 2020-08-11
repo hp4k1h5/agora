@@ -29,13 +29,13 @@ Display chart. Can be combined with time and stock prefixes to update multiple f
 ex. {#2ea-fg}$r :6.5h #`
     const whatNews = `
     {bold}{#2ea-fg}help {#cd2-fg}!{/} news
-Display news. Can be combined with stock prefixes to update the active symbol and swith to news view
+Display news. Can be combined with stock prefixes to update the active symbol and switch to news view
 ex. {#2ea-fg}! $c{/}`
     const whatWatch = `
     {bold}{#2ea-fg}help {#cd2-fg}={/} watchlist
-Display watchlist.`
+Display watchlist`
     const whatExit = `
-    {bold}{#2ea-fg}help {#cd2-fg}exit | quit{/} (time range)
+    {bold}{#2ea-fg}help {#cd2-fg}exit | quit{/}
 Exits iexcli`
 
     const whats = {

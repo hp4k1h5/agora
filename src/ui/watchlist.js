@@ -13,6 +13,8 @@ export function buildWatchlist(ws, component, data) {
   // set contrib options
   ws.watchlist = ws.grid.set(...component.yxhw, blessed.listtable, {
     // inputs
+    input: true,
+    focused: false,
     keys: true,
     mouse: true,
     scrollable: true,
@@ -23,9 +25,9 @@ export function buildWatchlist(ws, component, data) {
     invertSelected: false,
     style: {
       fg: '#ccd',
-      border: { fg: '#77abee' },
+      border: { fg: '#00cece' },
       cell: {
-        selected: { bg: '#00ff55', fg: '#101010' },
+        selected: { bg: '#00cc55', fg: '#707070' },
       },
     },
   })
@@ -38,7 +40,6 @@ export function buildWatchlist(ws, component, data) {
   ws.screen.key(['up', 'down'], function (_ch, key) {
     if (key.name == 'up') ws.watchlist.up(1)
     else if (key.name == 'down') ws.watchlist.down(1)
-    ws.watchlist.focus()
   })
 
   // set data

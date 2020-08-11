@@ -26,7 +26,6 @@ export function buildPriceVolCharts(ws, c, data) {
     w,
   )
 
-  ws.repl.focus()
   ws.screen.render()
 }
 
@@ -47,7 +46,7 @@ export function graph(grid, data, label, row, col, h, w) {
     yPadding: 0,
     label,
     wholeNumbersOnly: false,
-    showLegend: data ? !!data.title : 'title',
+    showLegend: data ? !!data.title : false,
     interactive: false,
   })
   data && line.setData([data])

@@ -7,17 +7,12 @@ export function buildProfile(ws, component, data) {
   ws.screen.saveFocus()
 
   // set contrib options
-  ws.watchlist = ws.grid.set(...component.yxhw, blessed.table, {
-    keys: true,
-    mouse: true,
+  ws.watchlist = ws.grid.set(...component.yxhw, blessed.box, {
+    keys: false,
+    mouse: false,
     tags: true,
-    input: true,
-    scrollable: true,
-    style: {
-      fg: 'blue',
-      border: { fg: '#77abee' },
-      // focus: { bg: '#77eeab' },
-    },
+    input: false,
+    scrollable: false,
   })
 
   // set keys for screen
