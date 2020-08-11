@@ -5,12 +5,14 @@ import {
   getWatchlist,
   getProfile,
 } from '../api/api.js'
+
 import { buildPriceVolCharts } from './graph.js'
 import { buildQuoteList } from './quote.js'
 import { buildNewsList } from './news.js'
 import { buildWatchlist } from './watchlist.js'
 import { buildProfile } from './profile.js'
 import { buildRepl } from './repl.js'
+
 import { handleErr } from '../util/error.js'
 
 export async function update(ws, component) {

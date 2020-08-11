@@ -1,5 +1,6 @@
 import { update } from './update.js'
 import { help } from './help.js'
+import { defaults } from '../util/defaults.js'
 
 export async function evaluate(ws, input) {
   const component = ws.activeComponent
@@ -43,19 +44,29 @@ export async function evaluate(ws, input) {
 }
 
 // helpers
+function findOrMakeAndUpdate(ws, type, activeComponent) {
+  let componentOptions = ws.options.components.find((c) => c.type == type)
 
-async function profile(ws, component) {
-  let profileOptions = ws.options.components.find((c) => c.type == 'profile')
-  if (!profileOptions) {
-    profileOptions = {
-      type: 'profile',
-      yxhw: [0, 0, 12, 9],
-      symbol: component.symbol,
+  if (!componentOptions) {
+    if (!defaults[type]) {
+      ws.printLines('{red-fg}err: no such component type{/}')
+      return
     }
-    ws.options.components.push(profileOptions)
+    componentOptions = defaults[type]
+    ws.options.components.push(componentOptions)
   }
 
-  await update(ws, profileOptions)
+  ;['symbol', 'time'].forEach((key) => {
+    componentOptions[key] = activeComponent[key]
+  })
+  ws.activeComponent = componentOptions
+
+  return componentOptions
+}
+
+async function profile(ws, activeComponent) {
+  const componentOptions = findOrMakeAndUpdate(ws, 'profile', activeComponent)
+  await update(ws, componentOptions)
 }
 
 async function watchlist(ws, component) {

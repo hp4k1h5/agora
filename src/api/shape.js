@@ -120,21 +120,45 @@ export function shapeWatchlist(data) {
   return shapedList
 }
 
+/** data is an array of json responses from a series of profile related calls */
 export function shapeProfile(data) {
-  const rows = []
-
   // first datum is from `/company`
   let company = data[0]
-  rows.push([
-    company.symbol,
-    company.companyName,
-    company.exchange,
-    company.industry,
-  ])
-  rows.push(...company.description.match(/.{0,50}/g).map((d) => [d]))
-  rows.push([company.sector, '' + company.primarySicCode, company.issueType])
+  // second is `/stats`
+  let keyStats = data[1]
+  // third is `/earnings`
+  let earnings = data[2]
 
-  return rows
+  company = `{#afa-fg}${company.symbol}{/}  ${company.companyName}
+
+{#4be-fg}exchange{/}: ${company.exchange}
+{#4be-fg}industry{/}: ${company.industry}
+{#4be-fg}sector{/}: ${company.sector}
+{#4be-fg}primary sic code{/}: ${company.primarySicCode}  
+{#4be-fg}issue type{/}: ${company.issueType}
+{#4be-fg}description{/}: {#eb4-fg}${company.description}{/}`
+
+  const treat = (v) => {
+    if (!v) return ''
+    if (typeof v == 'number') {
+      const color = v >= 0 ? '{#4ea-fg}' : '{#eaa-fg}'
+      return color + v.toLocaleString() + '{/}'
+    }
+    return v
+  }
+  keyStats = Object.entries(keyStats)
+    .map((e) => {
+      return `{#4be-fg}${e[0]}{/}: ${treat(e[1])}`
+    })
+    .join('\n')
+
+  earnings = Object.entries(earnings.earnings[0])
+    .map((e) => {
+      return `{#4be-fg}${e[0]}{/}: ${treat(e[1])}`
+    })
+    .join('\n')
+
+  return { company, keyStats, earnings }
 }
 
 function abbrevNum(num) {

@@ -11,13 +11,12 @@ export function buildRepl(ws, c) {
   const output = blessed.textarea({
     parent: repl,
     name: 'output',
-    height: '75%',
+    keys: false,
+    mouse: false,
     tags: true,
-    style: {
-      scrollbar: {
-        bg: 'blue',
-      },
-    },
+    input: false,
+    scrollable: false,
+    height: '75%',
   })
   c.output = output
   // init repl history

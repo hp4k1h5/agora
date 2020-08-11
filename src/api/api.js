@@ -83,7 +83,11 @@ export async function getWatchlist(list) {
 }
 
 export async function getProfile(symbol) {
-  let urls = [buildURL(`stock/${symbol}/company`)]
+  let urls = [
+    buildURL(`stock/${symbol}/company`),
+    buildURL(`stock/${symbol}/stats`),
+    buildURL(`stock/${symbol}/earnings/1`, { period: 'quarter' }),
+  ]
 
   const data = await Promise.all(
     urls.map(async (url) => {
