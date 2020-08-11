@@ -17,10 +17,14 @@ some stock quote data](img/iexcli.png)
 
 ## CHANGELOG
 
+## v0.0.2
+- 📖 profile view displays information about the active symbol
+- 📔 improved watchlist display and scroll
+
 ## v0.0.1
 - config.json allows user to set a number of variables. please be careful as
     very few configurations have been tested.
-- 📰 news, command `!` will fetch latest 20 news results related to the active
+- 📰 news, command `!` will fetch latest 10 news results related to the active
     symbol. can be combined with stock prefix commands. work-in-progress
 - 📔 watchlist, command `=` will refresh and focus the watchlist.
     work-in-progress
@@ -115,7 +119,8 @@ $de !          # show news and update active stock to DE
 Typing `=` brings up the watchlist display. Use arrow keys `up` and `down` to
 navigate the table. Use `tab` or `esc` to return to repl.  
 ![watchlist display for iexcli](img/watchlist.png) Key values `open high low
-close` are only available during market hours.  
+close` are only available to iex premium data subscribers and during
+non-market hours to other api consumers.  
 **examples**
 ```bash
 =
@@ -123,7 +128,16 @@ close` are only available during market hours.
 
 #### `#` chart command
 Typing `#` brings up the price/volume chart display.
+**examples**
+```bash
+# :1d $t
+```
 
-### `&` profile command
-Typing `&` brings up a profile of the active symbol.
-
+#### `&` profile command
+Typing `&` brings up a profile of the active symbol. Use mouse to scroll
+components.
+![profile display](img/profile.png)  
+**examples**
+```bash
+$qcom &
+```
