@@ -27,6 +27,7 @@
   "dependencies": {
     "blessed": "^0.1.81",
     "blessed-contrib": "^4.8.20",
+    "fuzzysort": "^1.1.4",
     "node-fetch": "^2.6.0"
   },
   "author": "hp4k1h5",
