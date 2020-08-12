@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v0.0.4
+- bin fix
+
 ## v0.0.3
 - 🔍 fuzzy search for symbols by symbol or company name. thanks to farzher's
    [fuzzysort](https://github.com/farzher/fuzzysort), users can now use `?`
