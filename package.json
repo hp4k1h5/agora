@@ -2,7 +2,10 @@
   "name": "@hp4k1h5/iexcli",
   "version": "0.0.3",
   "license": "MIT",
-  "main": "index.js",
+  "main": "src/index.js",
+  "bin": {
+    "iexcli": "src/cli.bash"
+  },
   "scripts": {
     "run": "node src/index.js"
   },
