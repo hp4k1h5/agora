@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v0.0.3
+- 🔍 fuzzy search for symbols by symbol or company name. thanks to farzher's
+   [fuzzysort](https://github.com/farzher/fuzzysort), users can now use `?`
+  command to print possible matches. see [](#fuzzysort)
+- 💻 new shell alias `iexcli` should run from anywhere, if you have iexcli
+     installed globally.
+
 ## v0.0.2
 - 📖 profile view displays information about the active symbol
 - 📔 improved watchlist display and scroll
