@@ -1,8 +1,15 @@
 import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 import fuzzysort from 'fuzzysort'
 
-let symbolFile = fs.readFileSync('data/sym-name.json', 'utf8')
+const __dirname = import.meta.url
+
+let symbolFile = fs.readFileSync(
+  path.resolve(fileURLToPath(__dirname), '../../util/sym-name.json'),
+  'utf8',
+)
 symbolFile = JSON.parse(symbolFile)
 
 export function search(what) {

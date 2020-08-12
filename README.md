@@ -49,13 +49,12 @@ some stock quote data](img/iexcli.png)
 2) add a **publishable** iex api key
     1) either export an ENV var named IEX_PUB_KEY  
     ex. `export IEX_PUB_KEY=pk_Y0urIeXaPipUbl15h4bLeKEY`
-    2) or set the `IEX_PUB_KEY` in `config.json` in this repo. If you
-    installed globally through yarn or npm =, you will have to find the
-    package at its global install location. By default on a mac, this may be
-    `~/.config/yarn/global/node_modules/@hp4k1h5/iexcli`
+    2) or set the `IEX_PUB_KEY` in `config.json` in this repo, or the default
+    config location, on a mac, this will be `~/.config/iexcli/config.json`
 
 **register for a free [iex
-account](https://iexcloud.io/cloud-login#/register)** and copy the **publishable** api key. These typically start with `pk`
+account](https://iexcloud.io/cloud-login#/register)** and copy the
+**publishable** api key. These typically start with `pk`
 
 ## usage
 
@@ -70,7 +69,7 @@ Most interaction is through the repl emulator in the bottom right corner of the
 screen. It accepts commands and updates the charts and data windows. If a
 component has more data than fits on the screen, try scrolling it with the
 mouse. Some components also accept, `up` and `down` keys to scroll through
-items, such as the watchlist.
+items, such as the news.
 
 Use `tab` or `esc` to return to repl. Hit `enter` to update the components.
 
