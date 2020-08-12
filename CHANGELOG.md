@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.0.2
+- 📖 profile view displays information about the active symbol
+- 📔 improved watchlist display and scroll
+
 ## v0.0.1
 - config.json allows user to set a number of variables. please be careful as
     very few configurations have been tested.

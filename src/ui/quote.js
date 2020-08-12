@@ -8,7 +8,7 @@ export function buildQuoteList(ws, component, data) {
       label: 'quote',
       columnSpacing: 3,
       columnWidth: [13, 30],
-      keys: true,
+      keys: false,
       interactive: false,
     })
   }

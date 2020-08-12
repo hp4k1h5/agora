@@ -31,6 +31,7 @@ export function shapeQuote(data) {
     companyName: (d) => ['name', d[1].substring(0, 20)],
     latestPrice: (d) => ['latest', `{#cc5-fg}${d[1]}{/}`],
     volume: (d) => [d[0], `{#cc5-fg}${d[1].toLocaleString()}{/}`],
+    avgTotalVolume: (d) => ['avgVol', `{#bbb-fg}${d[1].toLocaleString()}{/}`],
     change: (d) => [d[0], `{#${d[1] >= 0 ? '4fb' : 'a25'}-fg}${d[1]}{/}`],
     changePercent: (d) => [
       '%',
@@ -53,7 +54,7 @@ export function shapeQuote(data) {
   return (
     data
       .filter((d) => m[d[0]])
-      // remove nulls before blessed-contrib table calls toString()
+      // replace nulls before blessed-contrib table calls toString()
       .map((d) => [d[0], d[1] || ''])
       .map((d) => m[d[0]](d))
   )
@@ -82,27 +83,26 @@ export function shapeNews(data) {
 export function shapeWatchlist(data) {
   const m = {
     symbol: (d) => d,
-    companyName: (d) => ['name', d[1].substring(0, 10)],
-    latestPrice: (d) => ['latest', d[1]],
-    volume: (d) => [d[0], d[1].toLocaleString()],
+    latestPrice: (d) => ['latest', `{#cc5-fg}${d[1]}{/}`],
+    volume: (d) => [d[0], abbrevNum(d[1])],
     change: (d) => [d[0], `{#${d[1] >= 0 ? '4fb' : 'a25'}-fg}${d[1]}{/}`],
     changePercent: (d) => [
       '%',
       `{#${d[1] >= 0 ? '4fb' : 'a25'}-fg}${(d[1] * 100).toFixed(2)}{/}`,
     ],
-    open: (d) => d,
-    close: (d) => d,
-    high: (d) => [d[0], d[1]],
-    low: (d) => [d[0], d[1]],
-    previousClose: (d) => ['prev', d[1]],
-    week52High: (d) => ['52hi', d[1]],
-    week52Low: (d) => ['52lo', d[1]],
+    open: (d) => [d[0], '' + d[1]],
+    close: (d) => [d[0], '' + d[1]],
+    high: (d) => [d[0], `{#2fe-fg}${d[1]}{/}`],
+    low: (d) => [d[0], '' + d[1]],
+    previousClose: (d) => ['prev', '' + d[1]],
+    week52High: (d) => ['52hi', '' + `{#2fe-fg}${d[1]}{/}`],
+    week52Low: (d) => ['52lo', '' + d[1]],
     ytdChange: (d) => [
       'ytd',
       `{#${d[1] >= 0 ? '4fb' : 'a25'}-fg}${(d[1] * 100).toFixed(2)}%{/}`,
     ],
-    peRatio: (d) => d,
-    marketCap: (d) => [d[0], (+d[1]).toLocaleString()],
+    peRatio: (d) => ['p/e', '' + d[1]],
+    marketCap: (d) => ['mktCap', abbrevNum(d[1])],
   }
   let shapedList = []
   Object.keys(data).forEach((d) => {
@@ -111,7 +111,6 @@ export function shapeWatchlist(data) {
       .filter((q) => m[q[0]])
       .map((q) => [q[0], q[1] || ''])
       .map((q) => m[q[0]](q))
-      .slice(0, 12)
     shapedList.push(quote)
   })
   const keys = shapedList[0].map((s) => s[0])
@@ -119,4 +118,63 @@ export function shapeWatchlist(data) {
   shapedList.unshift(keys)
 
   return shapedList
+}
+
+/** data is an array of json responses from a series of profile related calls */
+export function shapeProfile(data) {
+  if (!data || !data.length) return 'no data for symbol'
+
+  // first datum is from `/company`
+  let company = data[0]
+  // second is `/stats`
+  let keyStats = data[1]
+  // third is `/earnings`
+  let earnings = data[2]
+
+  company = `{#afa-fg}${company.symbol}{/}  ${company.companyName}
+
+{#4be-fg}exchange{/}: ${company.exchange}
+{#4be-fg}industry{/}: ${company.industry}
+{#4be-fg}sector{/}: ${company.sector}
+{#4be-fg}primary sic code{/}: ${company.primarySicCode}  
+{#4be-fg}issue type{/}: ${company.issueType}
+{#4be-fg}description{/}: {#eb4-fg}${company.description}{/}`
+
+  const treat = (v) => {
+    if (!v) return ''
+    if (typeof v == 'number') {
+      const color = v >= 0 ? '{#4ea-fg}' : '{#eaa-fg}'
+      return color + v.toLocaleString() + '{/}'
+    }
+    return v
+  }
+
+  if (keyStats)
+    keyStats = Object.entries(keyStats)
+      .map((e) => {
+        return `{#4be-fg}${e[0]}{/}: ${treat(e[1])}`
+      })
+      .join('\n')
+  else keyStats = ''
+
+  if (earnings && earnings.earnings)
+    earnings = Object.entries(earnings.earnings[0])
+      .map((e) => {
+        return `{#4be-fg}${e[0]}{/}: ${treat(e[1])}`
+      })
+      .join('\n')
+  else earnings = ''
+
+  return { company, keyStats, earnings }
+}
+
+function abbrevNum(num) {
+  if (!num) return ''
+  const l = ' KMBT'
+  let c = 0
+  while (num > 1e3) {
+    num = num / 1000
+    c++
+  }
+  return num.toFixed(1) + l[c] || ''
 }

@@ -10,7 +10,7 @@ import { Workspace } from './ui/workspace.js'
  * main
  * */
 const main = function () {
-  const screen = blessed.screen({ smartCSR: true })
+  const screen = blessed.screen({ smartCSR: true, log: 'log.txt' })
 
   const self = {
     config,

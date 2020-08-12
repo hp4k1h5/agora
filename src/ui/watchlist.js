@@ -1,34 +1,51 @@
-import contrib from 'blessed-contrib'
+import blessed from 'blessed'
 
 export function buildWatchlist(ws, component, data) {
   // set active component
+  if (ws.activeComponent) ws.screen.remove(ws.activeComponent)
   ws.activeComponent = component
+
   // restored by tab/esc
-  ws.screen.saveFocus()
+  // ws.screen.saveFocus()
+
+  if (ws.watchlist) ws.screen.remove(ws.watchlist)
 
   // set contrib options
-  ws.watchlist = ws.grid.set(...component.yxhw, contrib.table, {
-    label: 'watchlist',
-    columnSpacing: 2,
-    //         sym nam ope clo hi lo lat pre cha %
-    columnWidth: [5, 10, 7, 7, 7, 7, 7, 7, 18, 18, 10, 20],
+  ws.watchlist = ws.grid.set(...component.yxhw, blessed.listtable, {
+    // inputs
+    input: true,
+    focused: false,
     keys: true,
+    mouse: true,
+    scrollable: true,
     interactive: true,
+    // styles
+    tags: true,
+    noCellBorders: true,
+    invertSelected: false,
+    style: {
+      fg: '#ccd',
+      border: { fg: '#00cece' },
+      cell: {
+        selected: { bg: '#00cc55', fg: '#707070' },
+      },
+    },
   })
 
   // set keys for screen
-  ws.screen.key(['escape', 'tab'], function () {
+  ws.screen.onceKey(['escape', 'tab'], function () {
     // saved above
-    ws.screen.restoreFocus()
+    // ws.screen.restoreFocus()
+  })
+  ws.screen.key(['up', 'down'], function (_ch, key) {
+    if (key.name == 'up') ws.watchlist.up(1)
+    else if (key.name == 'down') ws.watchlist.down(1)
   })
 
   // set data
   if (!data) return
-  ws.watchlist.setData({
-    headers: data[0],
-    data: data.slice(1),
-  })
-  ws.watchlist.focus()
+  ws.watchlist.setData(data)
 
+  ws.watchlist.focus()
   ws.screen.render()
 }
