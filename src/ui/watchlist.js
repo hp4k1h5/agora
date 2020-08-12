@@ -1,19 +1,14 @@
 import blessed from 'blessed'
 
 export function buildWatchlist(ws, component, data) {
-  // set active component
-  if (ws.activeComponent) ws.screen.remove(ws.activeComponent)
-  ws.activeComponent = component
-
   // restored by tab/esc
-  // ws.screen.saveFocus()
+  ws.screen.saveFocus()
 
   if (ws.watchlist) ws.screen.remove(ws.watchlist)
 
   // set contrib options
   ws.watchlist = ws.grid.set(...component.yxhw, blessed.listtable, {
     // inputs
-    input: true,
     focused: false,
     keys: true,
     mouse: true,
@@ -35,7 +30,7 @@ export function buildWatchlist(ws, component, data) {
   // set keys for screen
   ws.screen.onceKey(['escape', 'tab'], function () {
     // saved above
-    // ws.screen.restoreFocus()
+    ws.screen.restoreFocus()
   })
   ws.screen.key(['up', 'down'], function (_ch, key) {
     if (key.name == 'up') ws.watchlist.up(1)

@@ -87,6 +87,7 @@ function findOrMakeAndUpdate(ws, type, activeComponent) {
   if (activeComponent.time)
     parseTime(ws, componentOptions, activeComponent.time)
 
+  if (ws.activeComponent) ws.screen.remove(ws.activeComponent)
   ws.activeComponent = componentOptions
 
   return componentOptions
