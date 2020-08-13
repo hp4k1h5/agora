@@ -1,8 +1,11 @@
 {
   "name": "@hp4k1h5/iexcli",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "license": "MIT",
-  "main": "index.js",
+  "main": "src/index.js",
+  "bin": {
+    "iexcli": "src/bin/cli.js"
+  },
   "scripts": {
     "run": "node src/index.js"
   },
@@ -27,6 +30,7 @@
   "dependencies": {
     "blessed": "^0.1.81",
     "blessed-contrib": "^4.8.20",
+    "fuzzysort": "^1.1.4",
     "node-fetch": "^2.6.0"
   },
   "author": "hp4k1h5",

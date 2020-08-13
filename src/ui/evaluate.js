@@ -1,6 +1,7 @@
-import { update } from './update.js'
-import { help } from './help.js'
 import { defaults } from '../util/defaults.js'
+import { update } from './update.js'
+import { search as fuzzySearch } from './search.js'
+import { help } from './help.js'
 
 export async function evaluate(ws, input) {
   const component = ws.activeComponent
@@ -16,6 +17,7 @@ export async function evaluate(ws, input) {
     '!': news,
     '=': watchlist,
     '&': profile,
+    '?': search,
     exit,
     quit: exit,
   }
@@ -43,6 +45,16 @@ export async function evaluate(ws, input) {
 
   // execute command
   await command(ws, component, words)
+}
+
+function search(ws, _activeComponent, words) {
+  words = words.filter((w) => w != '?').join(' ')
+  let results = fuzzySearch(words)
+  results = results
+    .map((r) => `{bold}{#ce4-fg}${r.obj.symbol}{/} ${r.obj.name}`)
+    .join('\n')
+
+  ws.printLines(results)
 }
 
 async function profile(ws, activeComponent) {

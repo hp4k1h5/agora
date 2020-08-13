@@ -17,11 +17,18 @@ some stock quote data](img/iexcli.png)
 
 ## CHANGELOG
 
-## v0.0.2
+### v0.0.3
+- 🔍 fuzzy search for symbols by symbol or company name. thanks to farzher's
+   [fuzzysort](https://github.com/farzher/fuzzysort), users can now use `?`
+  command to print possible matches for their search terms. see [](#fuzzysort)
+- 💻 new shell alias `iexcli` should run from anywhere, if you have iexcli
+     installed globally.
+
+### v0.0.2
 - 📖 profile view displays information about the active symbol
 - 📔 improved watchlist display and scroll
 
-## v0.0.1
+### v0.0.1
 - config.json allows user to set a number of variables. please be careful as
     very few configurations have been tested.
 - 📰 news, command `!` will fetch latest 10 news results related to the active
@@ -34,30 +41,35 @@ some stock quote data](img/iexcli.png)
 ### requirements
 - [nodeJs](https://nodeJs.org) v10.0+
 
-1) download or clone this repo  
-`git clone https://github.com/HP4k1h5/iexcli.git`
+1) download or clone this repo
+    1) either `git clone https://github.com/HP4k1h5/iexcli.git` and get
+      dependencies by running `yarn` in this directory
+    2) or run `yarn global add @hp4k1h5/iexcli`  OR  `npm i -g @hp4k1h5/iexcli`
 
-2) get dependencies  
-run `yarn` in this directory  
-or `npm install`
-
-3) add a **publishable** iex api key  
-- either export an ENV var named IEX_PUB_KEY  
-ex. `export IEX_PUB_KEY=pk_Y0urIeXaPipUbl15h4bLeKEY`
-- or set the `IEX_PUB_KEY` in `config.json` in this repo
+2) add a **publishable** iex api key
+    1) either export an ENV var named IEX_PUB_KEY  
+    ex. `export IEX_PUB_KEY=pk_Y0urIeXaPipUbl15h4bLeKEY`
+    2) or set the `IEX_PUB_KEY` in `config.json` in this repo, or the default
+    config location, on a mac, this will be `~/.config/iexcli/config.json`
 
 **register for a free [iex
-account](https://iexcloud.io/cloud-login#/register)**
-copy the **publishable** api key. These typically start with `pk`
+account](https://iexcloud.io/cloud-login#/register)** and copy the
+**publishable** api key. These typically start with `pk`
 
 ## usage
-RUN `node src/index.js` from the root of this directory, or `yarn run run`
+
+If you installed globally, you should be able to use the bash alias `iexcli`
+from anywhere. Be sure to refresh your terminal or start a new terminal window
+after installing so that the alias can be found. If you still cannot find an
+alias, try running `yarn link` form this project directory root. Otherwise, if
+you downloaded with git or to a local directory, RUN
+`node src/index.js` from the root of this directory, or `yarn run run`.
 
 Most interaction is through the repl emulator in the bottom right corner of the
 screen. It accepts commands and updates the charts and data windows. If a
 component has more data than fits on the screen, try scrolling it with the
 mouse. Some components also accept, `up` and `down` keys to scroll through
-items, such as the watchlist.
+items, such as the news.
 
 Use `tab` or `esc` to return to repl. Hit `enter` to update the components.
 
@@ -78,6 +90,19 @@ h        # show general help
 
 #### `quit` or `exit`
 Typing `quit` or `exit` will exit the app
+
+#### `?` search
+Typing `?` followed by search terms will query stock symbols and company names
+for approximate (fuzzy) matches. Capitalization and spacing is ignored as are
+quotes and most other non word symbols.
+If you are searching by key word like "solar", consider adding more words to
+narrow down the result set  
+exampless  
+```bash
+? electric
+   tlsa    ?  
+?   "american Motor" company
+```
 
 #### `$` stock ticker symbol prefix
 Typing `$` followed immediately by a stock ticker symbol changes the currently

@@ -12,10 +12,13 @@
         "fb",
         "twtr",
         "z",
+        "t",
+        "s",
         "r",
         "tsla",
         "f",
         "gm",
+        "tm",
         "brk.a",
         "aa",
         "ge",
@@ -31,9 +34,7 @@
         "oil",
         "gld",
         "l",
-        "hd",
-        "t",
-        "s"
+        "hd"
       ],
       "components": [
         {
