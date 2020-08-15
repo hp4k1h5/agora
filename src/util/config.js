@@ -13,10 +13,9 @@ function parseConfig() {
 
   let configLocation
   possibleLocations.forEach((loc) => {
-    if (fs.existsSync(loc)) {
+    if (!configLocation && fs.existsSync(loc)) {
       configLocation = loc
-      console.log('config.json found at ', configLocation)
-      return
+      // console.log('config.json found at ', configLocation)
     }
   })
 

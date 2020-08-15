@@ -2,6 +2,7 @@ import blessed from 'blessed'
 
 import { evaluate } from './evaluate.js'
 import { intro } from './help.js'
+import { exit } from './evaluate.js'
 
 export function buildRepl(ws, c) {
   const repl = ws.grid.set(...c.yxhw, blessed.form, { keys: true })
@@ -23,6 +24,7 @@ export function buildRepl(ws, c) {
 
   // add printLines to c
   ws.printLines = function (text) {
+    // accepts a array or string
     c.output.pushLine(text)
     c.output.setScrollPerc(100)
   }
@@ -49,6 +51,10 @@ export function buildRepl(ws, c) {
   })
 
   input.unkey(['up', 'down'])
+
+  input.key('C-c', function () {
+    exit(ws)
+  })
   // handle submit
   input.key('enter', function () {
     repl.submit()

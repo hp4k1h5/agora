@@ -10,6 +10,8 @@ export async function evaluate(ws, input) {
   if (input == '') return update(ws, component)
 
   const commands = {
+    exit,
+    quit: exit,
     help,
     h: help,
     undefined: update,
@@ -18,8 +20,6 @@ export async function evaluate(ws, input) {
     '=': watchlist,
     '&': profile,
     '?': search,
-    exit,
-    quit: exit,
   }
 
   let words = input.split(/\s+/g)
@@ -115,8 +115,9 @@ export function parseTime(ws, c, time) {
     c._time = { chartLast: +intra[1] * (intra[2] == 'h' ? 60 : 1) }
   } else if (time == '1d') {
     c.series = 'intra'
-    c._time = { chartLast: 6.5 * 60 }
+    c._time = { chartLast: 1000 }
   } else {
+    // handle historical
     if (!ws.validUnits.includes(time.substring(1))) {
       ws.printLines(`{red-fg}err:{/} invalid time`)
       help(ws, c, ['h', ':'])
@@ -128,10 +129,10 @@ export function parseTime(ws, c, time) {
   c.time = time
 }
 
-function exit(ws) {
+export function exit(ws) {
+  ws.printLines('{#abf-fg}goodbye...{/}')
   setTimeout(() => {
     ws.screen.destroy()
     process.exit(0)
   }, 800)
-  ws.printLines('{#abf-fg}goodbye...{/}')
 }
