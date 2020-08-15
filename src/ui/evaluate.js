@@ -90,6 +90,7 @@ function findOrMakeAndUpdate(ws, type, activeComponent) {
       return
     }
     componentOptions = defaults[type]
+    componentOptions.id = ws.id()
     ws.options.components.push(componentOptions)
   }
 

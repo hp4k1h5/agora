@@ -1,6 +1,7 @@
 import contrib from 'blessed-contrib'
 
 export function buildNewsList(ws, component, data) {
+  ws.printLines(component.id + ' news')
   // remove active component
   if (ws.activeComponent) ws.screen.remove(ws.activeComponent)
   // set active component

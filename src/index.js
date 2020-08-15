@@ -1,7 +1,6 @@
 import blessed from 'blessed'
 import contrib from 'blessed-contrib'
 
-// CONFIG
 import { config } from './util/config.js'
 
 import { Workspace } from './ui/workspace.js'
@@ -20,6 +19,10 @@ export const main = function () {
         this.destroy()
         process.exit(0)
       })
+
+      screen.key(['tab'], function () {
+        screen.focusNext()
+      })
       return screen
     })(),
 
@@ -36,7 +39,7 @@ export const main = function () {
 
     carouselOptions: {
       screen,
-      interval: 3000,
+      interval: 0,
       controlKeys: false,
     },
 

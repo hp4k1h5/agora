@@ -12,13 +12,22 @@ export class Workspace {
     this.options = options
     // e.g. this.grid.set(row, col, rowSpan, colSpan, obj, opts)
     this.validUnits = ['1d', '5d', '1m', '3m', '6m', 'ytd', '1y', '5y', 'max']
+    // incrementing unique id for components
+    this.id = (function () {
+      let _id = 0
+      const incId = function () {
+        return _id++
+      }
+      return incId
+    })()
   }
 
-  /** called by Carousel.workspaces once per Carousel "page", or
-   * "workspace", as this package defines them. Exists to pass screen to a grid.
+  /** called by Carousel.workspaces once per Carousel "page", or "workspace",
+   * as this package defines them. Exists to pass screen to each grid.
    *
    * each workspace defined in config instantiates a new grid, that
    * is called on switch screens.
+   * TODO: handle switch workspace input
    * */
   init(screen) {
     const ws = screen._ws
@@ -29,6 +38,8 @@ export class Workspace {
     })
 
     ws.options.components.forEach((c) => {
+      // set id
+      c.id = ws.id()
       // handle options
       c.time && parseTime(ws, c, c.time)
       update(ws, c)
