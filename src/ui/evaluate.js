@@ -1,15 +1,17 @@
 import { defaults } from '../util/defaults.js'
+import { validUnits } from '../util/config.js'
 import { update } from './update.js'
 import { search as fuzzySearch } from './search.js'
 import { help } from './help.js'
 
 export async function evaluate(ws, input) {
-  const component = ws.activeComponent
+  // update when empty return is submitted
+  if (input == '') return update(ws)
 
-  // update when empty is submitted
-  if (input == '') return update(ws, component)
+  // parse input
   let words = input.split(/\s+/g)
 
+  // define command to execute
   const commands = {
     exit,
     quit: exit,
@@ -21,47 +23,43 @@ export async function evaluate(ws, input) {
     '=': watchlist,
     '&': profile,
     '?': search,
-    _h: () => {
-      ws.printLines('helpppp')
-      // ws.printLines(help(ws, component, words))
-    },
+    '"': quote,
   }
-
-  // define command to execute
+  // find first command entered and ignore other potentially
+  // conflicting ones. Command-prefixes are also handled separately
+  // since they can be combined with regular commands
   let command = commands[words.find((w) => commands[w])]
-
-  // define params
-  let symbol = words.find((w) => /(?<=\$)[\w.]+/.test(w))
-  component.symbol = symbol ? symbol.substring(1) : component.symbol
-  let time = words.find((w) => /(?<=:)\S+/.test(w))
-  // set c.time & c.series
-  if (time) parseTime(ws, component, time)
 
   // if no command has been issued to change the components, run
   // update with new values if any have been provided, else error
   // with help
-  if (command == commands[undefined] && !symbol && !time) {
-    ws.printLines(`{red-fg}err:{/} no valid command found\r`)
-    help(ws, component, ['help'])
-    return
-  }
+  // if (command == commands[undefined] && !symbol && !time) {
+  //   help(ws, component, ['help'])
+  //   ws.printLines(`{red-fg}err:{/} no valid command found\rScroll help above`)
+  //   return
+  // }
 
   // execute command
-  await command(ws, component, words)
+  await command(ws, words)
 }
 
-function search(ws, _activeComponent, words) {
+function search(ws, words) {
   words = words.filter((w) => w != '?').join(' ')
   let results = fuzzySearch(words)
   results = results
     .map((r) => `{bold}{#ce4-fg}${r.obj.symbol}{/} ${r.obj.name}`)
     .join('\n')
-
   ws.printLines(results)
 }
 
-async function profile(ws, activeComponent) {
-  const componentOptions = findOrMakeAndUpdate(ws, 'profile', activeComponent)
+async function quote(ws) {
+  const componentOptions = findOrMakeAndUpdate(ws, 'quote')
+  setSymbol(words, componentOptions)
+  parseTime(ws, componentOptions, words)
+}
+
+async function profile(ws) {
+  const componentOptions = findOrMakeAndUpdate(ws, 'profile')
   await update(ws, componentOptions)
 }
 
@@ -84,7 +82,7 @@ async function news(ws, activeComponent) {
 }
 
 // helpers
-function findOrMakeAndUpdate(ws, type, activeComponent) {
+function findOrMakeAndUpdate(ws, type) {
   let componentOptions = ws.options.components.find((c) => c.type == type)
 
   if (!componentOptions) {
@@ -97,12 +95,9 @@ function findOrMakeAndUpdate(ws, type, activeComponent) {
     ws.options.components.push(componentOptions)
   }
 
-  // set activeComponent
-  ;['symbol', 'time'].forEach((key) => {
-    componentOptions[key] = activeComponent[key]
-  })
-  if (activeComponent.time)
-    parseTime(ws, componentOptions, activeComponent.time)
+  componentOptions.symbol = ws.activeSymbol
+  componentOptions.time = ws.activeTime
+  parseTime(ws, componentOptions, activeComponent.time)
 
   ws.activeComponent = componentOptions
 
@@ -111,26 +106,31 @@ function findOrMakeAndUpdate(ws, type, activeComponent) {
 
 /** time is a string, a valid number/interval combination, should not include
  * :-prefix*/
-export function parseTime(ws, c, time) {
+export function parseTime(ws, componentOptions, words) {
+  // find time
+  let time = words.find((w) => /(?<=:)\S+/.test(w))
+
   // handle intraday
   const intra = time.match(/([\d.]+)(min|h)/)
   if (intra) {
-    c.series = 'intra'
-    c._time = { chartLast: +intra[1] * (intra[2] == 'h' ? 60 : 1) }
+    componentOptions.series = 'intra'
+    componentOptions._time = {
+      chartLast: +intra[1] * (intra[2] == 'h' ? 60 : 1),
+    }
   } else if (time == '1d') {
-    c.series = 'intra'
-    c._time = { chartLast: 1000 }
+    componentOptions.series = 'intra'
+    componentOptions._time = { chartLast: 1000 }
   } else {
     // handle historical
-    if (!ws.validUnits.includes(time.substring(1))) {
+    if (!validUnits.includes(time.substring(1))) {
       ws.printLines(`{red-fg}err:{/} invalid time`)
       help(ws, c, ['h', ':'])
       return
     }
-    c.series = 'hist'
-    c._time = time.substring(1)
+    componentOptions.series = 'hist'
+    componentOptions._time = time.substring(1)
   }
-  c.time = time
+  componentOptions.time = time
 }
 
 export function exit(ws) {
@@ -139,4 +139,10 @@ export function exit(ws) {
     ws.screen.destroy()
     process.exit(0)
   }, 800)
+}
+
+function setSymbol(words, componentOptions) {
+  // find symbol
+  const symbol = words.find((w) => /(?<=\$)[\w.]+/.test(w))
+  if (symbol) componentOptions.symbol = symbol
 }

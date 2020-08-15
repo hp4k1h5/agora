@@ -65,9 +65,11 @@ export function buildRepl(ws, c) {
     ws.printLines('{bold}> {/}' + data.input)
     // clear input and refocus
     input.clearValue()
-    input.focus()
 
     // parse and handle input
     await evaluate(ws, data.input)
+
+    // wait to focus until evaluation completes
+    input.focus()
   })
 }

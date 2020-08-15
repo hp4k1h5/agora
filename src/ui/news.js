@@ -14,6 +14,7 @@ export function buildNewsList(ws, component, data) {
     // styles
     columnSpacing: 2,
     columnWidth: [9, 200],
+    border: { type: 'line' },
   })
   // add to focus stack
   ws.screen.focusPush(ws.newsList)

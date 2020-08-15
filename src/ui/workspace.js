@@ -10,8 +10,6 @@ export class Workspace {
   constructor(screen, options) {
     this.screen = screen
     this.options = options
-    // e.g. this.grid.set(row, col, rowSpan, colSpan, obj, opts)
-    this.validUnits = ['1d', '5d', '1m', '3m', '6m', 'ytd', '1y', '5y', 'max']
     // incrementing unique id for components
     this.id = (function () {
       let _id = 0
@@ -20,6 +18,7 @@ export class Workspace {
       }
       return incId
     })()
+    this.activeComponentIds = []
   }
 
   /** called by Carousel.workspaces once per Carousel "page", or "workspace",
@@ -37,12 +36,21 @@ export class Workspace {
       screen,
     })
 
-    ws.options.components.forEach((c) => {
+    ws.options.components.forEach((componentOptions) => {
       // set id
-      c.id = ws.id()
+      componentOptions.id = ws.id()
       // handle options
-      c.time && parseTime(ws, c, c.time)
-      update(ws, c)
+      componentOptions.time &&
+        parseTime(ws, componentOptions, [':' + componentOptions.time])
+
+      // update workspace active references
+      if (componentOptions.symbol) this.activeSymbol = componentOptions.symbol
+
+      const activeComponentTypes = ['line', 'quote', 'news', 'profile']
+      if (activeComponentTypes.includes(componentOptions.type)) {
+        ws.activeComponentIds.push(componentOptions.id)
+      }
+      update(ws, componentOptions)
     })
   }
 }

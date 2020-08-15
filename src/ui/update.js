@@ -12,83 +12,76 @@ import { buildNewsList } from './news.js'
 import { buildWatchlist } from './watchlist.js'
 import { buildProfile } from './profile.js'
 import { buildRepl } from './repl.js'
-
 import { handleErr } from '../util/error.js'
 
-export async function update(ws, component) {
+const updateMap = {
+  quote: { apiFn: getQuote, uiFn: buildQuoteList },
+}
+
+export async function update(ws, componentOptions)
+
+export async function updateOLD(ws, componentOptions) {
+  // QUOTE
+  if (componentOptions.type == 'quote') {
+    let qData
+    try {
+      qData = await getQuote(ws, componentOptions)
+    } catch (e) {
+      return handleErr(e)
+    }
+    buildQuoteList(ws, componentOptions, qData)
+  }
+
   // CHARTS
-  if (component.type == 'line') {
-    // find associated quotelist if any
-    const quoteList = ws.options.components.find((c) => c.type == 'quote')
+  else if (componentOptions.type == 'line') {
     let pData
-    let qData
     try {
-      pData = await getPrices(ws, component)
-      if (quoteList) qData = await getQuote(component.symbol)
+      pData = await getPrices(ws, componentOptions)
     } catch (e) {
-      handleErr(ws, e)
+      return handleErr(ws, e)
     }
+    buildPriceVolCharts(ws, componentOptions, pData)
+  }
 
-    // build charts
-    if (pData) buildPriceVolCharts(ws, component, pData)
-
-    // handle quote
-    if (quoteList && qData) buildQuoteList(ws, quoteList, qData)
-
-    // NEWS
-  } else if (component.type == 'news') {
-    const quoteList = ws.options.components.find((c) => c.type == 'quote')
-
+  // NEWS
+  else if (componentOptions.type == 'news') {
     let nData
-    let qData
     try {
-      nData = await getNews(component.symbol)
-      qData = await getQuote(component.symbol)
+      nData = await getNews(componentOptions.symbol)
     } catch (e) {
-      handleErr(ws, e)
+      return handleErr(ws, e)
     }
+    buildNewsList(ws, componentOptions, nData)
+  }
 
-    // build news
-    if (nData) buildNewsList(ws, component, nData)
-
-    // handle quote
-    if (quoteList && qData) buildQuoteList(ws, quoteList, qData)
-
-    // WATCHLIST
-  } else if (component.type == 'watchlist') {
+  // WATCHLIST
+  else if (componentOptions.type == 'watchlist') {
     let data
     try {
       data = await getWatchlist(ws.options.watchlist)
     } catch (e) {
-      handleErr(ws, e)
+      return handleErr(ws, e)
     }
-
     // build list
-    buildWatchlist(ws, component, data)
-
-    // PROFILE
-  } else if (component.type == 'profile') {
-    const quoteList = ws.options.components.find((c) => c.type == 'quote')
-
-    let pData
-    let qData
-    try {
-      pData = await getProfile(component.symbol)
-      qData = await getQuote(component.symbol)
-    } catch (e) {
-      handleErr(ws, e)
-    }
-
-    // build profile
-    buildProfile(ws, component, pData)
-
-    // handle quote
-    if (quoteList && qData) buildQuoteList(ws, quoteList, qData)
-
-    // REPL
-  } else if (component.type == 'repl') {
-    buildRepl(ws, component)
+    buildWatchlist(ws, componentOptions, data)
   }
 
+  // PROFILE
+  else if (componentOptions.type == 'profile') {
+    let pData
+    try {
+      pData = await getProfile(componentOptions.symbol)
+    } catch (e) {
+      return handleErr(ws, e)
+    }
+    buildProfile(ws, componentOptions, pData)
+  }
+
+  // REPL
+  else if (componentOptions.type == 'repl') {
+    buildRepl(ws, componentOptions)
+  }
+
+  // render() is not called in any of the dependent functions
   ws.screen.render()
 }
