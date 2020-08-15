@@ -8,6 +8,7 @@ export async function evaluate(ws, input) {
 
   // update when empty is submitted
   if (input == '') return update(ws, component)
+  let words = input.split(/\s+/g)
 
   const commands = {
     exit,
@@ -20,9 +21,11 @@ export async function evaluate(ws, input) {
     '=': watchlist,
     '&': profile,
     '?': search,
+    _h: () => {
+      ws.printLines('helpppp')
+      // ws.printLines(help(ws, component, words))
+    },
   }
-
-  let words = input.split(/\s+/g)
 
   // define command to execute
   let command = commands[words.find((w) => commands[w])]
@@ -94,13 +97,13 @@ function findOrMakeAndUpdate(ws, type, activeComponent) {
     ws.options.components.push(componentOptions)
   }
 
+  // set activeComponent
   ;['symbol', 'time'].forEach((key) => {
     componentOptions[key] = activeComponent[key]
   })
   if (activeComponent.time)
     parseTime(ws, componentOptions, activeComponent.time)
 
-  if (ws.activeComponent) ws.screen.remove(ws.activeComponent)
   ws.activeComponent = componentOptions
 
   return componentOptions

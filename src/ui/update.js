@@ -89,4 +89,6 @@ export async function update(ws, component) {
   } else if (component.type == 'repl') {
     buildRepl(ws, component)
   }
+
+  ws.screen.render()
 }

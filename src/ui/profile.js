@@ -1,6 +1,7 @@
 import blessed from 'blessed'
 
 export function buildProfile(ws, component, data) {
+  // TODO: remove component first if necessary
   // set options
   ws.profile = ws.grid.set(...component.yxhw, blessed.box, {
     name: 'profile',
@@ -70,6 +71,4 @@ export function buildProfile(ws, component, data) {
   company.setContent(data.company)
   keyStats.setContent(data.keyStats)
   earnings.setContent(data.earnings)
-
-  ws.screen.render()
 }

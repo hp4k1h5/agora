@@ -5,12 +5,12 @@ import { intro } from './help.js'
 import { exit } from './evaluate.js'
 
 export function buildRepl(ws, c) {
-  const repl = ws.grid.set(...c.yxhw, blessed.form, { keys: true })
+  ws.repl = ws.grid.set(...c.yxhw, blessed.form, { keys: true })
 
   // console display (optional), otherwise commands just have effects and don't
   // report
-  const output = blessed.text({
-    parent: repl,
+  c.output = blessed.text({
+    parent: ws.repl,
     name: 'output',
     // inputs
     keys: false,
@@ -20,21 +20,22 @@ export function buildRepl(ws, c) {
     tags: true,
     height: '75%',
   })
-  c.output = output
 
-  // add printLines to c
+  // add printLines to ws
   ws.printLines = function (text) {
     // accepts a array or string
     c.output.pushLine(text)
     c.output.setScrollPerc(100)
+    // TODO: find less intensive way of rendering terminal output
+    ws.screen.render()
   }
 
   // init welcome text
   ws.printLines(intro)
 
-  // all interaction is handled here
+  // all repl function & interaction is handled here and in evaluate()
   const input = blessed.textbox({
-    parent: repl,
+    parent: ws.repl,
     name: 'input',
     // inputs
     inputOnFocus: true,
@@ -57,9 +58,9 @@ export function buildRepl(ws, c) {
   })
   // handle submit
   input.key('enter', function () {
-    repl.submit()
+    ws.repl.submit()
   })
-  repl.on('submit', async function (data) {
+  ws.repl.on('submit', async function (data) {
     // push last command
     ws.printLines('{bold}> {/}' + data.input)
     // clear input and refocus
@@ -68,12 +69,5 @@ export function buildRepl(ws, c) {
 
     // parse and handle input
     await evaluate(ws, data.input)
-
-    ws.screen.render()
   })
-
-  input.focus()
-  // add to curScreen
-  ws.repl = repl
-  ws.screen.render()
 }

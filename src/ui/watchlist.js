@@ -1,9 +1,6 @@
 import blessed from 'blessed'
 
 export function buildWatchlist(ws, component, data) {
-  // restored by tab/esc
-  ws.screen.saveFocus()
-
   if (ws.watchlist) ws.screen.remove(ws.watchlist)
 
   // set contrib options
@@ -27,20 +24,12 @@ export function buildWatchlist(ws, component, data) {
     },
   })
 
-  // set keys for screen
-  ws.screen.onceKey(['escape', 'tab'], function () {
-    // saved above
-    ws.screen.restoreFocus()
-  })
-  ws.screen.key(['up', 'down'], function (_ch, key) {
-    if (key.name == 'up') ws.watchlist.up(1)
-    else if (key.name == 'down') ws.watchlist.down(1)
-  })
+  // ws.screen.key(['up', 'down'], function (_ch, key) {
+  //   if (key.name == 'up') ws.watchlist.up(1)
+  //   else if (key.name == 'down') ws.watchlist.down(1)
+  // })
 
   // set data
   if (!data) return
   ws.watchlist.setData(data)
-
-  ws.watchlist.focus()
-  ws.screen.render()
 }

@@ -1,15 +1,6 @@
 import contrib from 'blessed-contrib'
 
 export function buildNewsList(ws, component, data) {
-  ws.printLines(component.id + ' news')
-  // remove active component
-  if (ws.activeComponent) ws.screen.remove(ws.activeComponent)
-  // set active component
-  ws.activeComponent = component
-
-  // restored by tab/esc
-  ws.screen.saveFocus()
-
   // clear screen
   if (ws.newsList) ws.screen.remove(ws.newsList)
 
@@ -24,12 +15,8 @@ export function buildNewsList(ws, component, data) {
     columnSpacing: 2,
     columnWidth: [9, 200],
   })
-
-  // set keys for screen
-  ws.screen.onceKey(['escape', 'tab'], function () {
-    // saved above
-    ws.screen.restoreFocus()
-  })
+  // add to focus stack
+  ws.screen.focusPush(ws.newsList)
 
   // set data
   if (!data) return
@@ -41,7 +28,4 @@ export function buildNewsList(ws, component, data) {
     ],
     data,
   })
-  ws.newsList.focus()
-
-  ws.screen.render()
 }

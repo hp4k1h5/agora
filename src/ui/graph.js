@@ -1,11 +1,6 @@
 import contrib from 'blessed-contrib'
 
 export function buildPriceVolCharts(ws, c, data) {
-  // remove active component
-  if (ws.activeComponent) ws.screen.remove(ws.activeComponent)
-  // set active component
-  ws.activeComponent = c
-
   // clear graph and add line graph
   if (c.priceChart) ws.screen.remove(c.priceChart)
   c.priceChart = graph(ws.grid, data ? data.price : data, 'price', ...c.yxhw)
@@ -25,8 +20,6 @@ export function buildPriceVolCharts(ws, c, data) {
     12 - (y + h),
     w,
   )
-
-  ws.screen.render()
 }
 
 export function graph(grid, data, label, row, col, h, w) {
