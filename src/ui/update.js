@@ -18,9 +18,9 @@ const updateMap = {
   quote: { apiFn: getQuote, uiFn: buildQuoteList },
 }
 
-export async function update(ws, componentOptions)
+// export async function update(ws, componentOptions) {}
 
-export async function updateOLD(ws, componentOptions) {
+export async function update(ws, componentOptions) {
   // QUOTE
   if (componentOptions.type == 'quote') {
     let qData

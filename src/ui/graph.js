@@ -1,9 +1,14 @@
+import blessed from 'blessed'
 import contrib from 'blessed-contrib'
 
 export function buildPriceVolCharts(ws, c, data) {
+  const chartBox = ws.grid.set(...c.yxhw, blessed.box, { keys: true })
+
   // clear graph and add line graph
   if (c.priceChart) ws.screen.remove(c.priceChart)
-  c.priceChart = graph(ws.grid, data ? data.price : data, 'price', ...c.yxhw)
+  c.priceChart = graph(chartBox, data ? data.price : data, 'price', ...c.yxhw)
+
+  ws.screen.focusPush(c.priceChart)
 
   // clear vol and add vol graph
   if (c.volChart) ws.screen.remove(ws.volChart)
@@ -12,7 +17,7 @@ export function buildPriceVolCharts(ws, c, data) {
   // put vol beneath price
   const [y, x, h, w] = c.yxhw
   c.volChart = graph(
-    ws.grid,
+    chartBox,
     data ? data.vol : data,
     'volume',
     y + h,
@@ -22,16 +27,11 @@ export function buildPriceVolCharts(ws, c, data) {
   )
 }
 
-export function graph(grid, data, label, row, col, h, w) {
+export function graph(chartBox, data, label, row, col, h, w) {
   const minY = data ? Math.min(...data.y) : 0
 
-  const line = grid.set(row, col, h, w, contrib.line, {
-    style: {
-      line: [100, 100, 100],
-      text: [180, 220, 180],
-      baseline: [100, 100, 100],
-      bold: true,
-    },
+  const line = contrib.line({
+    parent: chartBox,
     minY,
     xLabelPadding: 0,
     yLabelPadding: 0,
@@ -40,7 +40,19 @@ export function graph(grid, data, label, row, col, h, w) {
     label,
     wholeNumbersOnly: false,
     showLegend: data ? !!data.title : false,
-    interactive: false,
+    input: true,
+    keys: true,
+    height: '50%',
+    style: {
+      border: { type: 'line', fg: '#4ac' },
+      line: [100, 100, 100],
+      text: [180, 220, 180],
+      baseline: [100, 100, 100],
+      bold: true,
+      focus: { border: { fg: '#ccc' } },
+    },
   })
   data && line.setData([data])
+
+  return line
 }

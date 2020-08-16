@@ -15,14 +15,16 @@ export const main = function () {
     config,
 
     screen: (function () {
+      // app-wide exit
       screen.key('C-c', function () {
         this.destroy()
         process.exit(0)
       })
-
+      // tab through components
       screen.key(['tab'], function () {
         screen.focusNext()
       })
+
       return screen
     })(),
 

@@ -4,12 +4,12 @@ import { evaluate } from './evaluate.js'
 import { intro } from './help.js'
 import { exit } from './evaluate.js'
 
-export function buildRepl(ws, c) {
-  ws.repl = ws.grid.set(...c.yxhw, blessed.form, { keys: true })
+export function buildRepl(ws, options) {
+  ws.repl = ws.grid.set(...options.yxhw, blessed.form, { keys: true })
 
   // console display (optional), otherwise commands just have effects and don't
   // report
-  c.output = blessed.text({
+  options.output = blessed.text({
     parent: ws.repl,
     name: 'output',
     // inputs
@@ -24,8 +24,8 @@ export function buildRepl(ws, c) {
   // add printLines to ws
   ws.printLines = function (text) {
     // accepts a array or string
-    c.output.pushLine(text)
-    c.output.setScrollPerc(100)
+    options.output.pushLine(text)
+    options.output.setScrollPerc(100)
     // TODO: find less intensive way of rendering terminal output
     ws.screen.render()
   }
@@ -50,6 +50,15 @@ export function buildRepl(ws, c) {
       },
     },
   })
+  // add to focus stack
+  ws.screen.focusPush(input)
+
+  // handle keys
+
+  input.key('tab', function () {
+    ws.printLines('tab;')
+    ws.screen.focusNext()
+  })
 
   input.unkey(['up', 'down'])
 
@@ -60,10 +69,11 @@ export function buildRepl(ws, c) {
   input.key('enter', function () {
     ws.repl.submit()
   })
+
+  // handle submit
   ws.repl.on('submit', async function (data) {
-    // push last command
+    // print last command
     ws.printLines('{bold}> {/}' + data.input)
-    // clear input and refocus
     input.clearValue()
 
     // parse and handle input

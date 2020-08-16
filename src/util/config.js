@@ -52,13 +52,15 @@ function vetConfig(config, location) {
           errors.push(`component type ${component.type} not supported
 valid component types are ${validComponentTypes.join(' ')}`)
 
-        // vet time
-        if (
-          ['line'].includes(component.type) &&
-          (!component.time || !validUnits.includes(component.time))
-        )
-          errors.push(`component needs a valid time
-vaild component times are ${validUnits.join(' ')}`)
+        // // vet time
+        // if (
+        //   ['line'].includes(component.type) &&
+        //   (!component.time ||
+        //     !validUnits.includes(component.time) ||
+        //     !/[\d.]+(min|h)$/.test(component.time))
+        // )
+        //   errors.push(`component needs a valid time
+        // vaild component times are ${validUnits.join(' ')}`)
       })
     })
 
@@ -75,6 +77,7 @@ vaild component times are ${validUnits.join(' ')}`)
   // print errors and exit
   console.log(`err: the following errors were found with your config, which was found at ${location}
 ${errors.join('\n')}`)
+  process.exit(1)
 }
 
 function loadConfig(location) {
