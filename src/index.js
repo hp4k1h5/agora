@@ -2,39 +2,33 @@ import blessed from 'blessed'
 import contrib from 'blessed-contrib'
 
 import { config } from './util/config.js'
-
 import { Workspace } from './ui/workspace.js'
 
 /**
  * main
  * */
 export const main = function () {
-  const screen = blessed.screen({ smartCSR: true })
+  const screen = blessed.screen({ title: 'iexcli', smartCSR: true })
+  // set app-wide screen keys
+  // app-wide exit
+  screen.key('C-c', function () {
+    this.destroy()
+    process.exit(0)
+  })
+  // tab through components
+  screen.key(['tab'], function () {
+    screen.focusNext()
+  })
+  screen.key(['S-tab'], function () {
+    screen.focusPrevious()
+  })
 
   const self = {
-    config,
-
-    screen: (function () {
-      // app-wide exit
-      screen.key('C-c', function () {
-        this.destroy()
-        process.exit(0)
-      })
-      // tab through components
-      screen.key(['tab'], function () {
-        screen.focusNext()
-      })
-
-      return screen
-    })(),
-
     workspaces: (function () {
       return config.workspaces.map((options) => {
         /** attach workspace to screen object to pass it through to
          * contrib.carousel callback */
         screen._ws = new Workspace(screen, options)
-        /** init is a callback function called by carousel(screens)
-         * on each screen */
         return screen._ws
       })
     })(),
@@ -42,7 +36,7 @@ export const main = function () {
     carouselOptions: {
       screen,
       interval: 0,
-      controlKeys: false,
+      controlKeys: true,
     },
 
     startCarousel(pages, carouselOptions) {

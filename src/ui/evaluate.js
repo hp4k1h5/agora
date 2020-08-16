@@ -5,12 +5,6 @@ import { search as fuzzySearch } from './search.js'
 import { help } from './help.js'
 
 export async function evaluate(ws, input) {
-  // update when empty return is submitted
-  if (input == '') return update(ws)
-
-  // parse input
-  let words = input.split(/\s+/g)
-
   // define command to execute
   const commands = {
     exit,
@@ -18,73 +12,43 @@ export async function evaluate(ws, input) {
     help,
     h: help,
     undefined: update,
-    '#': chart,
-    '!': news,
-    '=': watchlist,
-    '&': profile,
-    '?': search,
-    '"': quote,
+    '#': 'chart',
+    '!': 'news',
+    '=': 'watchlist',
+    '&': 'profile',
+    '?': 'search',
+    '"': 'quote',
   }
-  // find first command entered and ignore other potentially
-  // conflicting ones. Command-prefixes are also handled separately
-  // since they can be combined with regular commands
-  let command = commands[words.find((w) => commands[w])]
 
-  // if no command has been issued to change the components, run
-  // update with new values if any have been provided, else error
-  // with help
-  // if (command == commands[undefined] && !symbol && !time) {
-  //   help(ws, component, ['help'])
-  //   ws.printLines(`{red-fg}err:{/} no valid command found\rScroll help above`)
-  //   return
-  // }
+  // parse input
+  const words = input.split(/\s+/g)
+
+  // find any commands
+  const command = commands[words.find((w) => commands[w])]
+  // execute explicit command fns,
+  // otherwise pass box type to findOrMakeAndUpdate()
+
+  const _new = words.find((w) => w == 'new')
+  const { options, target } = findOrMakeAndUpdate(ws, command, _new)
+
+  if (typeof command == 'function')
+    return await command(ws, options, target, words)
 
   // execute command
-  await command(ws, words)
-}
-
-function search(ws, words) {
-  words = words.filter((w) => w != '?').join(' ')
-  let results = fuzzySearch(words)
-  results = results
-    .map((r) => `{bold}{#ce4-fg}${r.obj.symbol}{/} ${r.obj.name}`)
-    .join('\n')
-  ws.printLines(results)
-}
-
-async function quote(ws) {
-  const componentOptions = findOrMakeAndUpdate(ws, 'quote')
-  setSymbol(words, componentOptions)
-  parseTime(ws, componentOptions, words)
-}
-
-async function profile(ws) {
-  const componentOptions = findOrMakeAndUpdate(ws, 'profile')
-  await update(ws, componentOptions)
-}
-
-async function watchlist(ws, activeComponent) {
-  const componentOptions = findOrMakeAndUpdate(ws, 'watchlist', activeComponent)
-  await update(ws, componentOptions)
-}
-
-async function chart(ws, activeComponent) {
-  const chartType = ws.options.components.find((c) => ['line'].includes(c.type))
-    .type
-  const componentOptions = findOrMakeAndUpdate(ws, chartType, activeComponent)
-
-  await update(ws, componentOptions)
-}
-
-async function news(ws, activeComponent) {
-  const componentOptions = findOrMakeAndUpdate(ws, 'news', activeComponent)
-  await update(ws, componentOptions)
+  await update(ws, componentOptions, target, _new)
 }
 
 // helpers
-function findOrMakeAndUpdate(ws, type) {
-  let componentOptions = ws.options.components.find((c) => c.type == type)
+function findOrMakeAndUpdate(ws, type, _new) {
+  let target
+  if (!_new) target = ws.prevFocus
 
+  let componentOptions
+  if (target) {
+    componentOptions = ws.options.components.find((c) => c.id == target.id)
+  }
+
+  // create component from default if none exists
   if (!componentOptions) {
     if (!defaults[type]) {
       ws.printLines('{red-fg}err: no such component type{/}')
@@ -94,21 +58,30 @@ function findOrMakeAndUpdate(ws, type) {
     componentOptions.id = ws.id()
     ws.options.components.push(componentOptions)
   }
+  if (componentOptions.type == 'watchlist')
+    componentOptions.watchlist = config.options.watchlist
 
-  componentOptions.symbol = ws.activeSymbol
-  componentOptions.time = ws.activeTime
-  parseTime(ws, componentOptions, activeComponent.time)
-
-  ws.activeComponent = componentOptions
-
-  return componentOptions
+  // will only set for components that require symbol and time
+  setSymbol(componentOptions, words)
+  setTime(ws, componentOptions, words)
+  return { componentOptions, target }
 }
 
-/** time is a string, a valid number/interval combination, should not include
- * :-prefix*/
-export function parseTime(ws, componentOptions, words) {
+// only set if component has symbol & user entered symbol
+function setSymbol(componentOptions, words) {
+  if (!componentOptions.symbol) return
+
+  const symbol = words.find((w) => /(?<=\$)[\w.]+/.test(w))
+  if (symbol) componentOptions.symbol = symbol
+}
+
+// only set if component has time & user entered time
+export function setTime(ws, componentOptions, words) {
+  if (!componentOptions.time) return
+
   // find time
   let time = words.find((w) => /(?<=:)\S+/.test(w))
+  if (!time) return
 
   // handle intraday
   const intra = time.match(/([\d.]+)(min|h)/)
@@ -141,8 +114,11 @@ export function exit(ws) {
   }, 800)
 }
 
-function setSymbol(words, componentOptions) {
-  // find symbol
-  const symbol = words.find((w) => /(?<=\$)[\w.]+/.test(w))
-  if (symbol) componentOptions.symbol = symbol
+function search(ws, words, _new) {
+  words = words.filter((w) => w != '?').join(' ')
+  let results = fuzzySearch(words)
+  results = results
+    .map((r) => `{bold}{#ce4-fg}${r.obj.symbol}{/} ${r.obj.name}`)
+    .join('\n')
+  ws.printLines(results)
 }

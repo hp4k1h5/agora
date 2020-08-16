@@ -14,84 +14,102 @@ const grid = new contrib.grid({
   screen,
 })
 
-const boxA = grid.set(0, 0, 5, 5, blessed.box, {
-  name: 'boxA',
-  label: 'boxA',
-  keys: false,
-  mouse: false,
-  tags: true,
-  input: true,
-  scrollable: false,
-  border: { type: 'line' },
-  style: {
-    focus: {
-      border: { fg: '#ffaa00' },
+const boxA = () => {
+  const box = grid.set(0, 0, 5, 5, blessed.box, {
+    name: 'boxA',
+    label: 'boxA',
+    keys: false,
+    mouse: false,
+    tags: true,
+    input: true,
+    scrollable: false,
+    border: { type: 'line' },
+    style: {
+      focus: {
+        border: { fg: '#ffaa00' },
+      },
     },
-  },
-})
+  })
+  setListeners(box)
+  return box
+}
 
-const boxB = grid.set(3, 3, 3, 3, blessed.box, {
-  name: 'boxB',
-  label: 'boxB',
-  keys: false,
-  mouse: false,
-  tags: true,
-  input: true,
-  scrollable: false,
-  border: { type: 'line' },
-  style: {
-    focus: {
-      border: { fg: '#ffaa00' },
+const boxB = () => {
+  const box = grid.set(3, 3, 3, 3, blessed.box, {
+    name: 'boxB',
+    label: 'boxB',
+    keys: false,
+    mouse: false,
+    tags: true,
+    input: true,
+    scrollable: false,
+    border: { type: 'line' },
+    style: {
+      focus: {
+        border: { fg: '#ffaa00' },
+      },
     },
-  },
-})
+  })
+  setListeners(box)
+  return box
+}
 
-const boxC = grid.set(9, 9, 3, 3, blessed.box, {
-  name: 'boxC',
-  label: 'boxC',
-  keys: false,
-  mouse: false,
-  tags: true,
-  input: true,
-  scrollable: false,
-  border: { type: 'line' },
-  style: {
-    focus: {
-      border: { fg: '#ffaa00' },
+const boxC = () => {
+  const box = grid.set(9, 9, 3, 3, blessed.box, {
+    name: 'boxC',
+    label: 'boxC',
+    keys: false,
+    mouse: false,
+    tags: true,
+    input: true,
+    scrollable: false,
+    border: { type: 'line' },
+    style: {
+      focus: {
+        border: { fg: '#ffaa00' },
+      },
     },
-  },
-})
+  })
+  setListeners(box)
+  return box
+}
 
-const graphA = grid.set(9, 0, 3, 3, contrib.line, {
-  name: 'graphA',
-  label: 'graphA',
-  keys: false,
-  mouse: false,
-  input: true,
-  border: { type: 'line' },
-  style: {
-    focus: {
-      border: { fg: '#ffaa00' },
+const graphA = () => {
+  const box = grid.set(9, 0, 3, 3, contrib.line, {
+    name: 'graphA',
+    label: 'graphA',
+    keys: false,
+    mouse: false,
+    input: true,
+    border: { type: 'line' },
+    style: {
+      focus: {
+        border: { fg: '#ffaa00' },
+      },
     },
-  },
-})
-graphA.setData({ x: [1, 2, 3], y: [4, 5, 6] })
+  })
+  box.setData({ x: [1, 2, 3], y: [4, 5, 6] })
+  setListeners(box)
+  return box
+}
 
-const input = grid.set(0, 9, 1, 1, blessed.textbox, {
-  name: 'input',
-  input: true,
-  inputOnFocus: true,
-  style: {
-    border: { fg: '#0f0' },
-    focus: {
-      border: { fg: '#faa' },
+const input = () => {
+  let inp = grid.set(0, 9, 1, 1, blessed.textbox, {
+    name: 'input',
+    inputOnFocus: true,
+    style: {
+      border: { fg: '#0f0' },
+      focus: {
+        border: { fg: '#faa' },
+      },
     },
-  },
-})
-input.key('enter', () => {
-  input.clearValue()
-  input.focus()
-})
+  })
+  inp.key('enter', () => {
+    inp.clearValue()
+    inp.focus()
+  })
+  return inp
+}
 
 screen.key('C-c', function () {
   process.exit(0)
@@ -104,10 +122,8 @@ screen.key(['S-tab'], function () {
   screen.focusPrevious()
 })
 
-let prevFocus
-// const boxes = []
-const boxes = [boxA, boxB, boxC, graphA, input]
-boxes.forEach((box) => {
+function setListeners(box) {
+  let prevFocus
   screen.focusPush(box)
   if (box.name != 'input') {
     box.key('>', () => {
@@ -127,12 +143,17 @@ boxes.forEach((box) => {
     box.style.border = { fg: '#0f0' }
     screen.render()
   })
-})
+}
 
+const boxBox = function (boxes) {
+  boxes.map((b) => b())
+}
+const boxes = [boxA, boxB, boxC, graphA, input]
+const boxes2 = [boxA]
 const carouselOptions = {
   screen,
   interval: 0,
-  controlKeys: false,
+  controlKeys: true,
 }
 
 function startCarousel(pages, carouselOptions) {
@@ -140,3 +161,4 @@ function startCarousel(pages, carouselOptions) {
   carousel.start()
   return carousel
 }
+startCarousel([() => boxBox(boxes), () => boxBox(boxes2)], carouselOptions)

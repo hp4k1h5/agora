@@ -12,13 +12,35 @@ export class Workspace {
     this.options = options
     // incrementing unique id for components
     this.id = (function () {
-      let _id = 0
       const incId = function () {
         return _id++
       }
       return incId
     })()
-    this.activeComponentIds = []
+    this.prevFocus
+    this.repl = { focus: () => {} }
+  }
+
+  setListeners(ws, box) {
+    ws.screen.focusPush(box)
+    if (box.name != 'input') {
+      box.key('>', () => {
+        ws.repl.focus()
+      })
+    }
+
+    ws.prevFocus = box
+    box.on('focus', () => {
+      box.setFront()
+      ws.screen.render()
+    })
+
+    box.on('blur', () => {
+      ws.prevFocus.style.border = { fg: '#00f' }
+      ws.prevFocus = box
+      box.style.border = { fg: '#0f0' }
+      screen.render()
+    })
   }
 
   /** called by Carousel.workspaces once per Carousel "page", or "workspace",
@@ -43,14 +65,7 @@ export class Workspace {
       componentOptions.time &&
         parseTime(ws, componentOptions, [':' + componentOptions.time])
 
-      // update workspace active references
-      if (componentOptions.symbol) this.activeSymbol = componentOptions.symbol
-
-      const activeComponentTypes = ['line', 'quote', 'news', 'profile']
-      if (activeComponentTypes.includes(componentOptions.type)) {
-        ws.activeComponentIds.push(componentOptions.id)
-      }
-      update(ws, componentOptions)
+      update(ws, componentOptions, true)
     })
   }
 }
