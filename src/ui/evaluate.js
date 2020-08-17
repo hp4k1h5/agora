@@ -11,7 +11,7 @@ export async function evaluate(ws, input) {
     quit: exit,
     help,
     h: help,
-    undefined: update,
+    undefined: 'update',
     '#': 'chart',
     '!': 'news',
     '=': 'watchlist',
@@ -31,26 +31,26 @@ export async function evaluate(ws, input) {
 
   // find target
   const _new = words.find((w) => w == 'new')
-  const { options, target } = findOrMakeAndUpdate(ws, command, _new)
+  const { options, target } = findOrMakeAndUpdate(ws, command, words, _new)
 
   // execute command
   await update(ws, options, target, _new)
 }
 
 // helpers
-function findOrMakeAndUpdate(ws, type, _new) {
+function findOrMakeAndUpdate(ws, type, words, _new) {
   let target
   if (!_new) target = ws.prevFocus
 
   let options
   if (target) {
-    options = ws.options.components.find((c) => c.id == target.id)
+    options = ws.options.components.find((c) => c.id == target._id)
   }
 
   // create component from default if none exists
   if (!options) {
     if (!defaults[type]) {
-      ws.printLines('{red-fg}err: no such component type{/}')
+      ws.printLines(`{red-fg}err: no such component type: ${type}{/}`)
       return
     }
     options = defaults[type]
@@ -67,11 +67,11 @@ function findOrMakeAndUpdate(ws, type, _new) {
 }
 
 // only set if component has symbol & user entered symbol
-function setSymbol(componentOptions, words) {
-  if (!componentOptions.symbol) return
+function setSymbol(options, words) {
+  if (!options.symbol) return
 
   const symbol = words.find((w) => /(?<=\$)[\w.]+/.test(w))
-  if (symbol) componentOptions.symbol = symbol
+  if (symbol) options.symbol = symbol.slice(1)
 }
 
 // only set if component has time & user entered time
@@ -81,6 +81,7 @@ export function setTime(ws, componentOptions, words) {
   // find time
   let time = words.find((w) => /(?<=:)\S+/.test(w))
   if (!time) return
+  time = time.slice(1)
 
   // handle intraday
   const intra = time.match(/([\d.]+)(min|h)/)

@@ -5,12 +5,11 @@ import { intro } from './help.js'
 import { exit } from './evaluate.js'
 
 export function buildRepl(ws, options, _target, _data, _new) {
-  ws.repl = ws.grid.set(...options.yxhw, blessed.form, { keys: true })
+  const [y, x, h, w] = options.yxhw
 
   // console display (optional), otherwise commands just have effects and don't
   // report
-  options.output = blessed.text({
-    parent: ws.repl,
+  const output = ws.grid.set(y, x, h - 1, w, blessed.text, {
     name: 'output',
     // inputs
     keys: false,
@@ -18,14 +17,13 @@ export function buildRepl(ws, options, _target, _data, _new) {
     scrollable: true,
     // display
     tags: true,
-    height: '75%',
   })
 
   // add printLines to ws
   ws.printLines = function (text) {
     // accepts a array or string
-    options.output.pushLine(text)
-    options.output.setScrollPerc(100)
+    output.pushLine(text)
+    output.setScrollPerc(100)
     // TODO: find less intensive way of rendering terminal output
     ws.screen.render()
   }
@@ -34,14 +32,11 @@ export function buildRepl(ws, options, _target, _data, _new) {
   ws.printLines(intro)
 
   // all repl function & interaction is handled here and in evaluate()
-  const input = blessed.textbox({
-    parent: ws.repl,
+  const input = ws.grid.set(y + 5, x, 1, w, blessed.textbox, {
     name: 'input',
     // inputs
     inputOnFocus: true,
     // styles
-    bottom: 0,
-    height: 3,
     border: { type: 'line' },
     style: {
       border: { fg: 'gray' },
@@ -51,6 +46,7 @@ export function buildRepl(ws, options, _target, _data, _new) {
     },
   })
   // add to focus stack
+  // ws.setListeners(ws, input)
   ws.screen.focusPush(input)
 
   // handle keys
@@ -62,17 +58,17 @@ export function buildRepl(ws, options, _target, _data, _new) {
   })
   // handle submit
   input.key('enter', function () {
-    ws.repl.submit()
+    input.submit()
   })
 
   // handle submit
-  ws.repl.on('submit', async function (data) {
+  input.on('submit', async function (data) {
     // print last command
-    ws.printLines('{bold}> {/}' + data.input)
+    ws.printLines('{bold}> {/}' + data)
     input.clearValue()
 
     // parse and handle input
-    await evaluate(ws, data.input)
+    await evaluate(ws, data)
 
     // wait to focus until evaluation completes
     input.focus()

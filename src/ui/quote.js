@@ -7,9 +7,15 @@ export function buildQuoteList(ws, c, target, data, _new) {
       label: 'quote',
       columnSpacing: 3,
       columnWidth: [13, 30],
-      keys: false,
+      keys: true,
       interactive: false,
     })
+
+    // match options with component
+    target._id = c.id
+
+    // add focus listeners
+    ws.setListeners(ws, target)
   }
 
   // set data

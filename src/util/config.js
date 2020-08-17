@@ -26,7 +26,7 @@ export const config = parseConfig()
 export function parseConfig(location, config) {
   if (!config || !Object.keys(config).length) {
     const _configObj = loadConfig(location)
-    location = _configObj.location
+    location = _configObj.configLocation
     config = _configObj.config
   }
 
@@ -51,6 +51,10 @@ function vetConfig(config, location) {
         if (!validComponentTypes.includes(component.type))
           errors.push(`component type ${component.type} not supported
 valid component types are ${validComponentTypes.join(' ')}`)
+        const needsSymbol = ['graph', 'quote', 'profile']
+        if (needsSymbol.includes(component.type) && !component.symbol) {
+          errors.push(`component type ${component.type} needs a "symbol" key`)
+        }
 
         // // vet time
         // if (

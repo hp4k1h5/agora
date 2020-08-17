@@ -24,6 +24,7 @@ export class Workspace {
 
   setListeners(ws, box) {
     ws.screen.focusPush(box)
+
     if (box.name != 'input') {
       box.key('>', () => {
         ws.repl.focus()
@@ -31,6 +32,7 @@ export class Workspace {
     }
 
     ws.prevFocus = box
+
     box.on('focus', () => {
       box.setFront()
       ws.screen.render()
@@ -40,7 +42,7 @@ export class Workspace {
       ws.prevFocus.style.border = { fg: '#00f' }
       ws.prevFocus = box
       box.style.border = { fg: '#0f0' }
-      screen.render()
+      ws.screen.render()
     })
   }
 

@@ -23,23 +23,18 @@ const updateMap = {
   repl: { apiFn: () => {}, uiFn: buildRepl },
 }
 
-export async function update(ws, componentOptions, target, _new) {
+export async function update(ws, options, target, _new) {
   let data
   try {
     // make request(s)
-    data = await updateMap[componentOptions.type].apiFn(componentOptions)
+    if (ws.printLines) ws.printLines(options)
+    data = await updateMap[options.type].apiFn(options)
   } catch (e) {
     return handleErr(ws, e)
   }
 
   // update ui
-  updateMap[componentOptions.type].uiFn(
-    ws,
-    componentOptions,
-    target,
-    data,
-    _new,
-  )
+  updateMap[options.type].uiFn(ws, options, target, data, _new)
 
   ws.screen.render()
 }
