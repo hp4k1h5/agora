@@ -1,22 +1,22 @@
 import blessed from 'blessed'
 
-export function buildProfile(ws, component, data) {
-  // TODO: remove component first if necessary
-  // set options
-  ws.profile = ws.grid.set(...component.yxhw, blessed.box, {
-    name: 'profile',
-    label: 'profile',
-    keys: false,
-    mouse: false,
-    tags: true,
-    input: false,
-    scrollable: false,
-  })
-  const width = Math.floor(ws.profile.width / 2) - 1
-  const heightHalf = Math.floor(ws.profile.height / 2) - 1
+export function buildProfile(ws, c, target, data, _new) {
+  if (_new) {
+    target = ws.grid.set(...c.yxhw, blessed.box, {
+      name: 'profile',
+      label: 'profile',
+      keys: false,
+      mouse: false,
+      tags: true,
+      input: false,
+      scrollable: false,
+    })
+  }
+  const width = Math.floor(target.width / 2) - 1
+  const heightHalf = Math.floor(target.height / 2) - 1
 
   const company = blessed.text({
-    parent: ws.profile,
+    parent: target,
     name: 'company',
     label: 'company',
     // inputs
@@ -32,7 +32,7 @@ export function buildProfile(ws, component, data) {
   })
 
   const keyStats = blessed.text({
-    parent: ws.profile,
+    parent: target,
     name: 'stats',
     label: 'stats',
     // inputs
@@ -49,7 +49,7 @@ export function buildProfile(ws, component, data) {
   })
 
   const earnings = blessed.text({
-    parent: ws.profile,
+    parent: target,
     name: 'earnings',
     label: 'earnings',
     // inputs

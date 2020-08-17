@@ -1,7 +1,7 @@
 import contrib from 'blessed-contrib'
 
-import { parseTime } from './evaluate.js'
 import { update } from './update.js'
+import { setTime } from './evaluate.js'
 
 /*
  * blessed-contrib grid controller
@@ -12,6 +12,7 @@ export class Workspace {
     this.options = options
     // incrementing unique id for components
     this.id = (function () {
+      let _id = 0
       const incId = function () {
         return _id++
       }
@@ -53,19 +54,20 @@ export class Workspace {
   init(screen) {
     const ws = screen._ws
     ws.grid = new contrib.grid({
+      screen,
       rows: 12,
       cols: 12,
-      screen,
     })
 
     ws.options.components.forEach((componentOptions) => {
       // set id
       componentOptions.id = ws.id()
+      console.log(componentOptions.id, componentOptions.type)
       // handle options
       componentOptions.time &&
-        parseTime(ws, componentOptions, [':' + componentOptions.time])
+        setTime(ws, componentOptions, [':' + componentOptions.time])
 
-      update(ws, componentOptions, true)
+      update(ws, componentOptions, null, true)
     })
   }
 }

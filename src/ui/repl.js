@@ -4,7 +4,7 @@ import { evaluate } from './evaluate.js'
 import { intro } from './help.js'
 import { exit } from './evaluate.js'
 
-export function buildRepl(ws, options) {
+export function buildRepl(ws, options, _target, _data, _new) {
   ws.repl = ws.grid.set(...options.yxhw, blessed.form, { keys: true })
 
   // console display (optional), otherwise commands just have effects and don't
@@ -54,11 +54,6 @@ export function buildRepl(ws, options) {
   ws.screen.focusPush(input)
 
   // handle keys
-
-  input.key('tab', function () {
-    ws.printLines('tab;')
-    ws.screen.focusNext()
-  })
 
   input.unkey(['up', 'down'])
 

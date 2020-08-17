@@ -1,3 +1,5 @@
+import { validUnits } from '../util/config.js'
+
 export const intro = `{#2ea-fg}Welcome to iexcli.{/}
   Data provided by IEX Cloud 
   {blue-fg}<https://iexcloud.io>{/}
@@ -8,7 +10,7 @@ export const intro = `{#2ea-fg}Welcome to iexcli.{/}
   {underline}{#4be-fg}<https://github.com/hp4k1h5/iexcli>{/}...
 \n\n\n `
 
-export function help(ws, _c, words) {
+export function help(ws, _c, _target, words) {
   // print specific help if applicable
   let what = words[words.findIndex((w) => /h(elp)?/.test(w)) + 1]
   if (what) {
@@ -20,7 +22,7 @@ ex. {#cd2-fg}$brk.b{/}`
     {bold}{#2ea-fg}help {#cd2-fg}:{/} (time range)
 Prefix valid time ranges with {#cd2-fg}:{/} to change the active time range. Including a :-prefix will update the active component
     {bold}{#2ea-fg}valid time ranges:{/}
-${ws.validUnits.map((u) => '{#cd2-fg}:' + u + '{/}').join(' ')}
+${validUnits.map((u) => '{#cd2-fg}:' + u + '{/}').join(' ')}
 AND numbers with minute {#cd2-fg}min{/} or hour {#cd2-fg}h{/}
 ex. {#cd2-fg} :6.5h {/}`
     const whatChart = `

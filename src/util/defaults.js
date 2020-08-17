@@ -3,8 +3,9 @@ const repl = {
   yxhw: [6, 9, 6, 3],
 }
 
-const line = {
-  type: 'line',
+const chart = {
+  type: 'chart',
+  chartType: 'line',
   symbol: 'goog',
   time: '100min',
   vol: true,
@@ -37,7 +38,7 @@ const profile = {
 
 export const defaults = {
   repl,
-  line,
+  chart,
   quote,
   watchlist,
   news,

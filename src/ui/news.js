@@ -1,30 +1,28 @@
 import contrib from 'blessed-contrib'
 
-export function buildNewsList(ws, component, data) {
+export function buildNewsList(ws, c, target, data, _new) {
   // clear screen
-  if (ws.newsList) ws.screen.remove(ws.newsList)
-
-  // set contrib options
-  ws.newsList = ws.grid.set(...component.yxhw, contrib.table, {
-    title: 'news',
-    // inputs
-    keys: true,
-    interactive: true,
-    mouse: true,
-    // styles
-    columnSpacing: 2,
-    columnWidth: [9, 200],
-    border: { type: 'line' },
-  })
-  // add to focus stack
-  ws.screen.focusPush(ws.newsList)
+  if (_new) {
+    target = ws.grid.set(...c.yxhw, contrib.table, {
+      title: 'news',
+      // inputs
+      keys: false,
+      interactive: false,
+      mouse: true,
+      // styles
+      columnSpacing: 2,
+      columnWidth: [9, 200],
+    })
+    // add to focus stack
+    ws.screen.focusPush(ws.newsList)
+  }
 
   // set data
   if (!data) return
-  ws.newsList.setData({
+  target.setData({
     headers: [
       'News',
-      component.symbol +
+      c.symbol +
         '      ? hit tab or esc to return to repl, use arrow keys to scroll',
     ],
     data,

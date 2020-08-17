@@ -16,7 +16,7 @@ import { handleErr } from '../util/error.js'
 
 const updateMap = {
   quote: { apiFn: getQuote, uiFn: buildQuoteList },
-  charts: { apiFn: getPrices, uiFn: buildPriceVolCharts },
+  chart: { apiFn: getPrices, uiFn: buildPriceVolCharts },
   news: { apiFn: getNews, uiFn: buildNewsList },
   watchlist: { apiFn: getWatchlist, uiFn: buildWatchlist },
   profile: { apiFn: getProfile, uiFn: buildProfile },
@@ -29,7 +29,7 @@ export async function update(ws, componentOptions, target, _new) {
     // make request(s)
     data = await updateMap[componentOptions.type].apiFn(componentOptions)
   } catch (e) {
-    return handleErr(e)
+    return handleErr(ws, e)
   }
 
   // update ui

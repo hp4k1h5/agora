@@ -7,7 +7,7 @@ import { Workspace } from './ui/workspace.js'
 /**
  * main
  * */
-export const main = function () {
+const main = function () {
   const screen = blessed.screen({ title: 'iexcli', smartCSR: true })
   // set app-wide screen keys
   // app-wide exit
@@ -46,11 +46,11 @@ export const main = function () {
     },
   }
 
-  return self
+  return self.startCarousel(
+    self.workspaces.map((ws) => ws.init),
+    self.carouselOptions,
+  )
 }
 
-const app = main()
-app.startCarousel(
-  app.workspaces.map((ws) => ws.init),
-  app.carouselOptions,
-)
+// init app
+main()

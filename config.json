@@ -40,18 +40,6 @@
         {
           "type": "repl",
           "yxhw": [6, 9, 6, 3]
-        },
-        {
-          "type": "line",
-          "symbol": "goog",
-          "time": "100min",
-          "vol": true,
-          "yxhw": [0, 0, 9, 9],
-          "color": "green"
-        },
-        {
-          "type": "quote",
-          "yxhw": [0, 9, 6, 3]
         }
       ]
     }
