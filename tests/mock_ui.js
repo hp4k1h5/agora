@@ -4,7 +4,6 @@ import contrib from 'blessed-contrib'
 const screen = blessed.screen({
   smartCSR: true,
   title: 'iexcli',
-  dockBorders: true,
   debug: 'log.txt',
 })
 
@@ -159,6 +158,5 @@ const carouselOptions = {
 function startCarousel(pages, carouselOptions) {
   const carousel = new contrib.carousel(pages, carouselOptions)
   carousel.start()
-  return carousel
 }
 startCarousel([() => boxBox(boxes), () => boxBox(boxes2)], carouselOptions)
