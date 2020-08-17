@@ -11,7 +11,7 @@ export async function evaluate(ws, input) {
     quit: exit,
     help,
     h: help,
-    undefined: 'update',
+    undefined,
     '#': 'chart',
     '!': 'news',
     '=': 'watchlist',
@@ -22,48 +22,25 @@ export async function evaluate(ws, input) {
 
   // parse input
   const words = input.split(/\s+/g)
-
   // find any commands
   const command = commands[words.find((w) => commands[w])]
-
-  // execute fns
+  // execute repl fns first
   if (typeof command == 'function') return await command(ws, {}, null, words)
 
-  // find target
+  // execute component commands
+  // find target component
+  let target = {}
   const _new = words.find((w) => w == 'new')
-  const { options, target } = findOrMakeAndUpdate(ws, command, words, _new)
-
-  // execute command
-  await update(ws, options, target, _new)
-}
-
-// helpers
-function findOrMakeAndUpdate(ws, type, words, _new) {
-  let target
-  if (!_new) target = ws.prevFocus
-
-  let options
-  if (target) {
-    options = ws.options.components.find((c) => c.id == target._id)
+  if (!_new) {
+    target = ws.prevFocus
   }
 
-  // create component from default if none exists
-  if (!options) {
-    if (!defaults[type]) {
-      ws.printLines(`{red-fg}err: no such component type: ${type}{/}`)
-      return
-    }
-    options = defaults[type]
-    options.id = ws.id()
-    ws.options.components.push(options)
-  }
-  if (options.type == 'watchlist') options.watchlist = config.options.watchlist
+  // set component type and options
+  target.type = command || target.type
+  setSymbol(target, words)
+  setTime(target, words)
 
-  // will only set for components that require symbol and time
-  setSymbol(options, words)
-  setTime(ws, options, words)
-
-  return { options, target }
+  await update(ws, target)
 }
 
 // only set if component has symbol & user entered symbol

@@ -7,7 +7,7 @@ export function buildQuoteList(ws, c, target, data, _new) {
       label: 'quote',
       columnSpacing: 3,
       columnWidth: [13, 30],
-      keys: true,
+      input: true,
       interactive: false,
     })
 

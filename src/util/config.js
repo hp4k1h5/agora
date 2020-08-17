@@ -2,6 +2,8 @@ import os from 'os'
 import fs from 'fs'
 import path from 'path'
 
+import { defaults } from './defaults.js'
+
 export const validComponentTypes = [
   'repl',
   'quote',
@@ -36,36 +38,40 @@ export function parseConfig(location, config) {
   return config
 }
 
+// accumulate errors and dump at the end, unless there is no config
 function vetConfig(config, location) {
   let errors = []
-  if (!config || typeof config != 'object') errors.push('no config found')
+  if (!config || typeof config != 'object') {
+    return errors.push('no config found')
+  }
 
   // vet workspaces
-  if (!config.workspaces || !config.workspaces.length)
+  if (!config.workspaces || !config.workspaces.length) {
     errors.push('config must define key "workspaces')
+  }
 
   config.workspaces &&
     config.workspaces.forEach((workspace) => {
       workspace.components.forEach((component) => {
         // vet type
-        if (!validComponentTypes.includes(component.type))
+        if (!validComponentTypes.includes(component.type)) {
           errors.push(`component type ${component.type} not supported
 valid component types are ${validComponentTypes.join(' ')}`)
+        }
         const needsSymbol = ['graph', 'quote', 'profile']
         if (needsSymbol.includes(component.type) && !component.symbol) {
           errors.push(`component type ${component.type} needs a "symbol" key`)
         }
 
-        // // vet time
-        // if (
-        //   ['line'].includes(component.type) &&
-        //   (!component.time ||
-        //     !validUnits.includes(component.time) ||
-        //     !/[\d.]+(min|h)$/.test(component.time))
-        // )
-        //   errors.push(`component needs a valid time
-        // vaild component times are ${validUnits.join(' ')}`)
+        // merge repl
+        if (component.type == 'repl') {
+          // build repl separately.
+          workspace.repl = { ...defaults.repl, ...component }
+        }
       })
+      if (!workspace.repl) {
+        workspace.repl = defaults.repl
+      }
     })
 
   if (
@@ -73,12 +79,14 @@ valid component types are ${validComponentTypes.join(' ')}`)
     (!typeof config.watchlist == 'object' ||
       !config.watchlist.length ||
       config.watchlist.every((symbol) => typeof symbol == 'string'))
-  )
+  ) {
     errors.push('component "watchlist" must be a list of symbol names')
+  }
 
+  // return config
   if (!errors.length) return config
 
-  // print errors and exit
+  // or print errors and exit
   console.log(`err: the following errors were found with your config, which was found at ${location}
 ${errors.join('\n')}`)
   process.exit(1)

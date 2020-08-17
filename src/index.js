@@ -3,10 +3,8 @@ import contrib from 'blessed-contrib'
 
 import { config } from './util/config.js'
 import { Workspace } from './ui/workspace.js'
+import { update } from './ui/update.js'
 
-/**
- * main
- * */
 const main = function () {
   const screen = blessed.screen({ title: 'iexcli', smartCSR: true })
   // set app-wide screen keys
@@ -23,34 +21,29 @@ const main = function () {
     screen.focusPrevious()
   })
 
-  const self = {
-    workspaces: (function () {
-      return config.workspaces.map((options) => {
-        /** attach workspace to screen object to pass it through to
-         * contrib.carousel callback */
-        screen._ws = new Workspace(screen, options)
-        return screen._ws
+  // build workspaces to send to carousel
+  const workspaces = config.workspaces.map((wsOptions) => {
+    return function () {
+      wsOptions.screen = screen
+      const ws = new Workspace(wsOptions)
+      const components = ws.options.components.map(async (cOptions) => {
+        await update(ws, cOptions)
       })
-    })(),
+      return components
+    }
+  })
 
-    carouselOptions: {
-      screen,
-      interval: 0,
-      controlKeys: true,
-    },
-
-    startCarousel(pages, carouselOptions) {
-      const carousel = new contrib.carousel(pages, carouselOptions)
-      carousel.start()
-      return carousel
-    },
+  // init carousel
+  const carouselOptions = {
+    screen,
+    interval: 0,
+    controlKeys: true,
   }
-
-  return self.startCarousel(
-    self.workspaces.map((ws) => ws.init),
-    self.carouselOptions,
-  )
+  function startCarousel(pages, options) {
+    const carousel = new contrib.carousel(pages, options)
+    carousel.start()
+  }
+  startCarousel([...workspaces], carouselOptions)
 }
 
-// init app
 main()

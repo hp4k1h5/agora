@@ -1,14 +1,15 @@
 import contrib from 'blessed-contrib'
 
-import { update } from './update.js'
-import { setTime } from './evaluate.js'
-
 /*
  * blessed-contrib grid controller
  * */
 export class Workspace {
-  constructor(screen, options) {
-    this.screen = screen
+  constructor(options) {
+    this.grid = new contrib.grid({
+      screen: options.screen,
+      rows: 12,
+      cols: 12,
+    })
     this.options = options
     // incrementing unique id for components
     this.id = (function () {
@@ -19,57 +20,29 @@ export class Workspace {
       return incId
     })()
     this.prevFocus
-    this.repl = { focus: () => {} }
+    this.input = { focus: () => {} }
   }
 
-  setListeners(ws, box) {
-    ws.screen.focusPush(box)
+  setListeners(box) {
+    if (!this.prevFocus) this.prevFocus = box
+    this.options.screen.focusPush(box)
 
     if (box.name != 'input') {
       box.key('>', () => {
-        ws.repl.focus()
+        this.input.focus()
       })
     }
 
-    ws.prevFocus = box
-
     box.on('focus', () => {
       box.setFront()
-      ws.screen.render()
+      this.options.screen.render()
     })
 
     box.on('blur', () => {
-      ws.prevFocus.style.border = { fg: '#00f' }
-      ws.prevFocus = box
-      box.style.border = { fg: '#0f0' }
-      ws.screen.render()
-    })
-  }
-
-  /** called by Carousel.workspaces once per Carousel "page", or "workspace",
-   * as this package defines them. Exists to pass screen to each grid.
-   *
-   * each workspace defined in config instantiates a new grid, that
-   * is called on switch screens.
-   * TODO: handle switch workspace input
-   * */
-  init(screen) {
-    const ws = screen._ws
-    ws.grid = new contrib.grid({
-      screen,
-      rows: 12,
-      cols: 12,
-    })
-
-    ws.options.components.forEach((componentOptions) => {
-      // set id
-      componentOptions.id = ws.id()
-      console.log(componentOptions.id, componentOptions.type)
-      // handle options
-      componentOptions.time &&
-        setTime(ws, componentOptions, [':' + componentOptions.time])
-
-      update(ws, componentOptions, null, true)
+      this.prevFocus.style.border = { fg: '#acf' }
+      this.prevFocus = box
+      box.style.border = { fg: '#fc5' }
+      this.options.screen.render()
     })
   }
 }
