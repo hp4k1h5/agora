@@ -40,15 +40,22 @@ export async function evaluate(ws, input) {
       return
     }
     target = target ? target : ws.prevFocus
+    if (target.type != command) {
+      target = { ...defaults[command], ...target }
+    }
   } else {
-    target = defaults[command] || defaults.chart
+    target = defaults[command]
     target.id = ws.id()
   }
 
   // set component type and options
   target.type = command || target.type
+  if (command == 'chart') {
+    target.chartType =
+      words.find((w) => ['line', 'bar', 'ohlc'].includes(w)) || target.chartType
+  }
   setSymbol(target, words)
-  setTime(target, words)
+  setTime(target, words, ws)
 
   await update(ws, target)
 }
@@ -62,35 +69,34 @@ function setSymbol(options, words) {
 }
 
 // only set if component has time & user entered time
-export function setTime(ws, componentOptions, words) {
-  if (!componentOptions.time) return
+export function setTime(options, words, ws) {
+  if (!options.time) return
 
   // find time
-  let time = words.find((w) => /(?<=:)\S+/.test(w))
-  if (!time) return
-  time = time.slice(1)
+  let time = words.find((w) => /(?<=:)\S+/.test(w)) || options.time
+  time = time ? time.slice(1) : options.time
 
   // handle intraday
   const intra = time.match(/([\d.]+)(min|h)/)
   if (intra) {
-    componentOptions.series = 'intra'
-    componentOptions._time = {
+    options.series = 'intra'
+    options._time = {
       chartLast: +intra[1] * (intra[2] == 'h' ? 60 : 1),
     }
   } else if (time == '1d') {
-    componentOptions.series = 'intra'
-    componentOptions._time = { chartLast: 1000 }
+    options.series = 'intra'
+    options._time = { chartLast: 1000 }
   } else {
     // handle historical
     if (!validUnits.includes(time.substring(1))) {
       ws.printLines(`{red-fg}err:{/} invalid time`)
-      help(ws, c, ['h', ':'])
+      help(ws, options, ['h', ':'])
       return
     }
-    componentOptions.series = 'hist'
-    componentOptions._time = time.substring(1)
+    options.series = 'hist'
+    options._time = time.substring(1)
   }
-  componentOptions.time = time
+  options.time = time
 }
 
 export function exit(ws) {
