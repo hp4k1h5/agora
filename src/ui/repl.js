@@ -12,8 +12,8 @@ export function buildRepl(ws, options) {
   const output = ws.grid.set(y, x, h - 1, w, blessed.text, {
     name: 'output',
     // inputs
-    keys: true,
-    input: true,
+    keys: false,
+    input: false,
     mouse: true,
     scrollable: true,
     // display
@@ -36,23 +36,31 @@ export function buildRepl(ws, options) {
   ws.input = ws.grid.set(y + 5, x, 1, w, blessed.textbox, {
     name: 'input',
     // inputs
-    keys: true,
-    input: true,
     inputOnFocus: true,
     // styles
     style: {
       focus: { border: { fg: '#ddf' } },
     },
   })
-  // ws.options.screen.focusPush(input)
-  ws.setListeners(ws.input)
+
+  ws.options.screen.key('>', () => {
+    ws.input.focus()
+  })
 
   ws.input.key('C-c', function () {
     exit(ws)
   })
+
+  const screen = ws.options.screen
+  ws.input.key('tab', function () {
+    screen.focusNext()
+  })
+  ws.input.key('esc', function () {
+    screen.focusPrevious()
+  })
   // handle submit
   ws.input.key('enter', function () {
-    input.submit()
+    ws.input.submit()
   })
 
   // handle submit

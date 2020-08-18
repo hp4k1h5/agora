@@ -33,6 +33,9 @@ export async function evaluate(ws, input) {
   const _new = words.find((w) => w == 'new')
   if (!_new) {
     target = ws.prevFocus
+  } else {
+    target = defaults[command] || defaults.chart
+    target.id = ws.id()
   }
 
   // set component type and options
@@ -86,7 +89,7 @@ export function setTime(ws, componentOptions, words) {
 export function exit(ws) {
   ws.printLines('{#abf-fg}goodbye...{/}')
   setTimeout(() => {
-    ws.screen.destroy()
+    ws.options.screen.destroy()
     process.exit(0)
   }, 800)
 }

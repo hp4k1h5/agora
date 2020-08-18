@@ -23,26 +23,36 @@ export class Workspace {
     this.input = { focus: () => {} }
   }
 
-  setListeners(box) {
-    if (!this.prevFocus) this.prevFocus = box
-    this.options.screen.focusPush(box)
+  setListeners(options) {
+    const screen = this.options.screen
 
-    if (box.name != 'input') {
-      box.key('>', () => {
-        this.input.focus()
-      })
-    }
+    if (!this.prevFocus) this.prevFocus = options
 
-    box.on('focus', () => {
-      box.setFront()
-      this.options.screen.render()
+    // if (options.box.name != 'input') {
+    //   options.box.key('>', () => {
+    //     this.input.focus()
+    //   })
+    // }
+
+    // options.box.key('tab', function () {
+    //   screen.focusNext()
+    // })
+    // options.box.key('S-tab', function () {
+    //   screen.focusPrevious()
+    // })
+
+    options.box.on('focus', () => {
+      options.box.setFront()
+      screen.render()
     })
 
-    box.on('blur', () => {
-      this.prevFocus.style.border = { fg: '#acf' }
-      this.prevFocus = box
-      box.style.border = { fg: '#fc5' }
-      this.options.screen.render()
+    options.box.on('blur', () => {
+      this.prevFocus.box.style.border = { fg: '#6fa' }
+      this.prevFocus = options
+      options.box.style.border = { fg: '#fc5' }
+      screen.render()
     })
+
+    screen.focusPush(options.box)
   }
 }
