@@ -30,9 +30,13 @@ export async function evaluate(ws, input) {
   // execute component commands
   // find target component
   let target = {}
+  let paneId = words.find((w) => w[0] == '[')
+  paneId = paneId ? +paneId.substring(1) : null
   const _new = words.find((w) => w == 'new')
   if (!_new) {
-    target = ws.prevFocus
+    target = paneId
+      ? ws.options.components.find((c) => c.id == paneId)
+      : ws.prevFocus
   } else {
     target = defaults[command] || defaults.chart
     target.id = ws.id()

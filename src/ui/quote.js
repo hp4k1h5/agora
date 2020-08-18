@@ -23,6 +23,5 @@ export function buildQuoteList(ws, options, data) {
 
   // set data
   if (!data) return
-  options.box.setContent(data.join('\n'))
-  // options.box.setData({ headers: data[0], data: data.slice(1) })
+  options.box.setContent(data.map((d) => d.join(': ')).join('\n'))
 }

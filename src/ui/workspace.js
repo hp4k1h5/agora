@@ -28,19 +28,6 @@ export class Workspace {
 
     if (!this.prevFocus) this.prevFocus = options
 
-    // if (options.box.name != 'input') {
-    //   options.box.key('>', () => {
-    //     this.input.focus()
-    //   })
-    // }
-
-    // options.box.key('tab', function () {
-    //   screen.focusNext()
-    // })
-    // options.box.key('S-tab', function () {
-    //   screen.focusPrevious()
-    // })
-
     options.box.on('focus', () => {
       options.box.setFront()
       screen.render()

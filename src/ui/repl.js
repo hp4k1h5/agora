@@ -75,4 +75,8 @@ export function buildRepl(ws, options) {
     // wait to focus until evaluation completes
     ws.input.focus()
   })
+
+  // ws.input.on('focus', function () {
+  //   ws.prevFocus.box.style.border = { fg: '#fc5' }
+  // })
 }
