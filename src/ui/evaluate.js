@@ -73,28 +73,31 @@ export function setTime(options, words, ws) {
   if (!options.time) return
 
   // find time
-  let time = words.find((w) => /(?<=:)\S+/.test(w)) || options.time
+  let time = words.find((w) => /(?<=:)\S+/.test(w))
   time = time ? time.slice(1) : options.time
 
   // handle intraday
   const intra = time.match(/([\d.]+)(min|h)/)
   if (intra) {
     options.series = 'intra'
+    options.time = intra[0]
     options._time = {
       chartLast: +intra[1] * (intra[2] == 'h' ? 60 : 1),
     }
   } else if (time == '1d') {
+    options.time = time
     options.series = 'intra'
     options._time = { chartLast: 1000 }
   } else {
     // handle historical
-    if (!validUnits.includes(time.substring(1))) {
+    if (!validUnits.includes(time)) {
       ws.printLines(`{red-fg}err:{/} invalid time`)
-      help(ws, options, ['h', ':'])
+      help(ws, ['h', ':'])
       return
     }
     options.series = 'hist'
-    options._time = time.substring(1)
+    options.time = time
+    options._time = time
   }
   options.time = time
 }
