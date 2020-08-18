@@ -11,12 +11,12 @@ export async function evaluate(ws, input) {
     quit: exit,
     help,
     h: help,
+    '?': search,
     undefined,
     '#': 'chart',
     '!': 'news',
     '=': 'watchlist',
     '&': 'profile',
-    '?': 'search',
     '"': 'quote',
   }
 
@@ -25,18 +25,21 @@ export async function evaluate(ws, input) {
   // find any commands
   const command = commands[words.find((w) => commands[w])]
   // execute repl fns first
-  if (typeof command == 'function') return await command(ws, {}, null, words)
+  if (typeof command == 'function') return await command(ws, words)
 
   // execute component commands
   // find target component
-  let target = {}
-  let paneId = words.find((w) => w[0] == '[')
-  paneId = paneId ? +paneId.substring(1) : null
+  let target
   const _new = words.find((w) => w == 'new')
   if (!_new) {
-    target = paneId
-      ? ws.options.components.find((c) => c.id == paneId)
-      : ws.prevFocus
+    let tId = words.find((w) => w[0] == '[')
+    tId = tId ? +tId.substring(1) : null
+    target = ws.options.components.find((c) => c.id == tId)
+    if (tId && !target) {
+      ws.printLines(`{red-fg}err:{/} no such component id ${tId}`)
+      return
+    }
+    target = target ? target : ws.prevFocus
   } else {
     target = defaults[command] || defaults.chart
     target.id = ws.id()
@@ -98,7 +101,7 @@ export function exit(ws) {
   }, 800)
 }
 
-function search(ws, words, _new) {
+function search(ws, words) {
   words = words.filter((w) => w != '?').join(' ')
   let results = fuzzySearch(words)
   results = results

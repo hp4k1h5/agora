@@ -10,7 +10,7 @@ export const intro = `{#2ea-fg}Welcome to iexcli.{/}
   {underline}{#4be-fg}<https://github.com/hp4k1h5/iexcli>{/}...
 \n\n\n `
 
-export function help(ws, _c, _target, words) {
+export function help(ws, words) {
   // print specific help if applicable
   let what = words[words.findIndex((w) => /h(elp)?/.test(w)) + 1]
   if (what) {
