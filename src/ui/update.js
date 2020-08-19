@@ -4,6 +4,7 @@ import {
   getNews,
   getWatchlist,
   getProfile,
+  getLists,
 } from '../api/api.js'
 
 import { buildPriceVolCharts } from './graph.js'
@@ -11,6 +12,7 @@ import { buildQuoteList } from './quote.js'
 import { buildNewsList } from './news.js'
 import { buildWatchlist } from './watchlist.js'
 import { buildProfile } from './profile.js'
+import { buildLists } from './lists.js'
 import { buildRepl } from './repl.js'
 import { handleErr } from '../util/error.js'
 
@@ -20,6 +22,7 @@ const updateMap = {
   news: { apiFn: getNews, uiFn: buildNewsList },
   watchlist: { apiFn: getWatchlist, uiFn: buildWatchlist },
   profile: { apiFn: getProfile, uiFn: buildProfile },
+  lists: { apiFn: getLists, uiFn: buildLists },
   repl: { apiFn: () => {}, uiFn: buildRepl },
 }
 

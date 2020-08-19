@@ -83,18 +83,6 @@ export function shapeNews(data) {
   return items.join('\n')
 }
 
-function table(arr, widths) {
-  return arr
-    .map((el, i) => {
-      if (el.length > widths[i]) {
-        return '' + el.substring(0, widths[i])
-      } else if (widths[i]) {
-        return '' + el.padEnd(widths[i])
-      } else return '' + el
-    })
-    .join(': ')
-}
-
 export function shapeWatchlist(data) {
   const m = {
     symbol: (d) => d,
@@ -183,6 +171,29 @@ export function shapeProfile(data) {
   return { company, keyStats, earnings }
 }
 
+export function shapeLists(data, types) {
+  const m = {
+    mostactive: (d) => table([d.symbol, '' + d.volume], [5]),
+    gainers: (d) => table([d.symbol, `{#4fb-fg}${d.change}{/}`], [5]),
+    losers: (d) => table([d.symbol, `{#a25-fg}${d.change}{/}`], [5]),
+    iexvolume: (d) => table([d.symbol, d.iexVolume.toLocaleString()], [5]),
+    iexpercent: (d) =>
+      table([d.symbol, '' + d.iexMarketPercent.toFixed(4)], [5]),
+  }
+  let shaped = {}
+  types.forEach((type, i) => {
+    shaped[type] = data[i]
+      .map((d) => {
+        data[i].sort((l, r) => {
+          return l[type] > r[type]
+        })
+        return m[type](d)
+      })
+      .join('\n')
+  })
+  return shaped
+}
+
 function abbrevNum(num) {
   if (!num) return ''
   const l = ' KMBT'
@@ -192,4 +203,16 @@ function abbrevNum(num) {
     c++
   }
   return num.toFixed(1) + l[c] || ''
+}
+
+function table(arr, widths) {
+  return arr
+    .map((el, i) => {
+      if (el.length > widths[i]) {
+        return '' + el.substring(0, widths[i])
+      } else if (widths[i]) {
+        return '' + el.padEnd(widths[i])
+      } else return '' + el
+    })
+    .join(': ')
 }

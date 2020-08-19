@@ -36,6 +36,12 @@ const profile = {
   symbol: 'de',
 }
 
+const lists = {
+  type: 'list',
+  yxhw: [0, 0, 6, 9],
+  listTypes: ['mostactive', 'gainers', 'losers', 'iexvolume', 'iexpercent'],
+}
+
 export const defaults = {
   repl,
   chart,
@@ -43,4 +49,5 @@ export const defaults = {
   watchlist,
   news,
   profile,
+  lists,
 }

@@ -7,6 +7,7 @@ import {
   shapeNews,
   shapeWatchlist,
   shapeProfile,
+  shapeLists,
 } from './shape.js'
 import { config } from '../util/config.js'
 const token = config.IEX_PUB_KEY
@@ -102,4 +103,22 @@ export async function getProfile(options) {
   )
 
   return shapeProfile(data)
+}
+
+export async function getLists(options) {
+  let urls = options.listTypes.map((t) => buildURL(`stock/market/list/${t}`))
+
+  const data = await Promise.all(
+    urls.map(async (url) => {
+      let response = await fetch(url)
+      if (!response.ok) {
+        throw response
+      }
+
+      response = await response.json()
+      return response
+    }),
+  )
+
+  return shapeLists(data, options.listTypes)
 }
