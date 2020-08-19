@@ -1,22 +1,31 @@
 import blessed from 'blessed'
 
-export function buildProfile(ws, c, target, data, _new) {
-  if (_new) {
-    target = ws.grid.set(...c.yxhw, blessed.box, {
-      name: 'profile',
-      label: 'profile',
-      keys: false,
-      mouse: false,
-      tags: true,
-      input: false,
-      scrollable: false,
-    })
-  }
-  const width = Math.floor(target.width / 2) - 1
-  const heightHalf = Math.floor(target.height / 2) - 1
+import { clear } from '../util/clear.js'
+
+export function buildProfile(ws, options, data) {
+  clear(ws, options)
+
+  options.box = ws.grid.set(...options.yxhw, blessed.box, {
+    name: 'profile',
+    label: `[${options.id} profile]`,
+    keys: false,
+    input: true,
+    mouse: false,
+    scrollable: false,
+    tags: true,
+    style: {
+      focus: { border: { fg: '#ddf' } },
+    },
+  })
+
+  // add focus listeners
+  ws.setListeners(options)
+
+  const width = Math.floor(options.box.width / 2) - 1
+  const heightHalf = Math.floor(options.box.height / 2) - 1
 
   const company = blessed.text({
-    parent: target,
+    parent: options.box,
     name: 'company',
     label: 'company',
     // inputs
@@ -32,7 +41,7 @@ export function buildProfile(ws, c, target, data, _new) {
   })
 
   const keyStats = blessed.text({
-    parent: target,
+    parent: options.box,
     name: 'stats',
     label: 'stats',
     // inputs
@@ -49,7 +58,7 @@ export function buildProfile(ws, c, target, data, _new) {
   })
 
   const earnings = blessed.text({
-    parent: target,
+    parent: options.box,
     name: 'earnings',
     label: 'earnings',
     // inputs
