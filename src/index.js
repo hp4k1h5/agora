@@ -28,7 +28,7 @@ function buildScreen() {
 }
 const screen = buildScreen()
 
-const main = function () {
+export const main = function () {
   // build workspaces to send to carousel
   const workspaces = config.workspaces.map((wsOptions) => {
     return async function () {
