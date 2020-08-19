@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v0.0.7
+- bin fix, `iexcli` alias should work again.
+
 ## v0.0.6
 - 💠 multi-component handling. user can specify as many component windows as
     they wish for any component except repl. See [usage](./README.md#usage)
