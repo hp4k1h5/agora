@@ -13,12 +13,11 @@ export function buildPriceVolCharts(ws, options, data) {
 
   options.box = graph(
     ws,
-    options,
     data ? data.price : data,
-    options.id + ' price',
+    `[${options.id}  price]`,
     y,
     x,
-    h - 2,
+    h - (options.vol ? 2 : 0),
     w,
   )
   ws.setListeners(options)
@@ -27,17 +26,16 @@ export function buildPriceVolCharts(ws, options, data) {
   // put vol beneath price
   options.volChart = graph(
     ws,
-    options,
     data ? data.vol : data,
     'volume',
-    h - 2,
+    y + h - 2,
     x,
     2,
     w,
   )
 }
 
-export function graph(ws, options, data, label, row, col, height, width) {
+export function graph(ws, data, label, row, col, height, width) {
   const minY = data ? Math.min(...data.y) : 0
 
   const line = ws.grid.set(row, col, height, width, contrib.line, {
@@ -49,7 +47,6 @@ export function graph(ws, options, data, label, row, col, height, width) {
     label,
     wholeNumbersOnly: false,
     showLegend: data ? !!data.title : false,
-    border: { style: 'bg' },
     input: label != 'volume',
     style: {
       line: [100, 100, 100],

@@ -4,9 +4,6 @@ export function shapePrices(options, data) {
   let last = data.find((price) => price.close) || 0
   // intraday vs daily keys
   const x = options.series == 'intra' ? 'minute' : 'date'
-  // hilo
-  let hi = -Infinity
-  let lo = Infinity
   data = data.reduce(
     (a, v) => {
       if (!v.close) {
@@ -16,8 +13,6 @@ export function shapePrices(options, data) {
       last = v
       a.x.push(v[x])
       a.y.push(v.close)
-      if (v.close > hi) hi = v.close
-      if (v.close < lo) lo = v.close
       a.vol.push(v.volume)
       return a
     },
@@ -25,12 +20,12 @@ export function shapePrices(options, data) {
   )
   return {
     price: {
-      title: `${options.symbol} ${hi.toFixed(1)}:${lo.toFixed(1)}`,
+      title: `${options.time} $${options.symbol}`,
       x: data.x,
       y: data.y,
       style: { line: options.color },
     },
-    vol: { x: data.x, y: data.vol, style: { line: options.color } },
+    vol: { x: data.x, y: data.vol, style: { line: [200, 250, 30] } },
   }
 }
 

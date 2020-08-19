@@ -33,7 +33,7 @@ export function buildRepl(ws, options) {
   ws.printLines(intro)
 
   // all repl function & interaction is handled here and in evaluate()
-  ws.input = ws.grid.set(y + 5, x, 1, w, blessed.textbox, {
+  ws.input = ws.grid.set(y + (h - 1), x, 1, w, blessed.textbox, {
     name: 'input',
     // inputs
     inputOnFocus: true,
@@ -76,7 +76,7 @@ export function buildRepl(ws, options) {
     ws.input.focus()
   })
 
-  // ws.input.on('focus', function () {
-  //   ws.prevFocus.box.style.border = { fg: '#fc5' }
-  // })
+  ws.input.on('focus', function () {
+    ws.prevFocus.box.style.border = { fg: '#fc5' }
+  })
 }

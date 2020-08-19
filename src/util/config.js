@@ -7,7 +7,7 @@ import { defaults } from './defaults.js'
 export const validComponentTypes = [
   'repl',
   'quote',
-  'line',
+  'chart',
   'news',
   'watchlist',
   'profile',
@@ -58,9 +58,13 @@ function vetConfig(config, location) {
           errors.push(`component type ${component.type} not supported
 valid component types are ${validComponentTypes.join(' ')}`)
         }
-        const needsSymbol = ['graph', 'quote', 'profile']
+        const needsSymbol = ['chart', 'quote', 'profile']
         if (needsSymbol.includes(component.type) && !component.symbol) {
           errors.push(`component type ${component.type} needs a "symbol" key`)
+        }
+        const needsTime = ['chart']
+        if (needsTime.includes(component.type) && !component.time) {
+          errors.push(`component type ${component.type} needs a "time" key`)
         }
 
         // merge repl

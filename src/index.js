@@ -4,6 +4,7 @@ import contrib from 'blessed-contrib'
 import { config } from './util/config.js'
 import { Workspace } from './ui/workspace.js'
 import { update } from './ui/update.js'
+import { setTime } from './ui/evaluate.js'
 
 const screen = blessed.screen({ title: 'iexcli', smartCSR: true })
 // set app-wide screen keys
@@ -30,6 +31,7 @@ const main = function () {
       await Promise.all(
         ws.options.components.map(async (cOptions) => {
           cOptions.id = ws.id()
+          setTime(cOptions, [`:${cOptions.time}`], ws)
           await update(ws, cOptions)
         }),
       )

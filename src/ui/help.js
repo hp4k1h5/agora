@@ -7,8 +7,7 @@ export const intro = `{#2ea-fg}Welcome to iexcli.{/}
   type {bold}{#cd2-fg}h{/} or {bold}{#cd2-fg}help{/} for help. 
 
   more documentation is available at 
-  {underline}{#4be-fg}<https://github.com/hp4k1h5/iexcli>{/}...
-\n\n\n `
+  {underline}{#4be-fg}<https://github.com/hp4k1h5/iexcli>{/}...`
 
 export function help(ws, words) {
   // print specific help if applicable

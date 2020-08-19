@@ -36,7 +36,7 @@ export class Workspace {
     options.box.on('blur', () => {
       this.prevFocus.box.style.border = { fg: '#6fa' }
       this.prevFocus = options
-      options.box.style.border = { fg: '#fc5' }
+      // options.box.style.border = { fg: '#fc5' }
       screen.render()
     })
 
