@@ -6,7 +6,10 @@ import { Workspace } from './ui/workspace.js'
 import { update } from './ui/update.js'
 import { setTime } from './ui/evaluate.js'
 
-const screen = blessed.screen({ title: 'iexcli', smartCSR: true })
+const screen = blessed.screen({
+  title: 'iexcli',
+  smartCSR: true,
+})
 // set app-wide screen keys
 // app-wide exit
 screen.key('C-c', function () {

@@ -54,35 +54,45 @@ export function shapeQuote(data) {
       `{#${d[1] >= 0 ? '4fb' : 'a25'}-fg}${(d[1] * 100).toFixed(2)}%{/}`,
     ],
     peRatio: (d) => d,
-    marketCap: (d) => [d[0], (+d[1]).toLocaleString()],
+    marketCap: (d) => [d[0], ('' + d[1]).toLocaleString()],
   }
-  return (
-    data
-      .filter((d) => m[d[0]])
-      // replace nulls before blessed-contrib table calls toString()
-      .map((d) => [d[0], d[1] || ''])
-      .map((d) => m[d[0]](d))
-  )
+  return data
+    .filter((d) => m[d[0]])
+    .map((d) => [d[0], d[1] || ''])
+    .map((d) => table(m[d[0]](d), [10]))
+    .join('\n')
 }
 
 export function shapeNews(data) {
   const m = {
-    datetime: (d) => [d[0], new Date(d[1])],
+    datetime: (d) => [d[0], new Date(d[1]).toString()],
     headline: (d) => [d[0], `{#ee7-fg}${d[1]}{/}`],
     source: (d) => [d[0], `{#fff-fg}${d[1]}{/}`],
-    summary: (d) => [d[0], d[1]],
+    summary: (d) => [d[0], `{#bfc-fg}${d[1]}{/}`],
   }
   let items = []
   data.forEach((i) => {
     items.push(
       ...Object.entries(i)
         .filter((d) => m[d[0]])
-        .map((d) => m[d[0]](d)),
+        .map((d) => table(m[d[0]](d), [10])),
     )
-    items[items.length - 2][1] += ' {#abf-fg}< ' + i.url + ' >{/}'
-    items.push(['{#ccc-fg}------------{/}', '   {#ccc-fg}----------------{/}'])
+    items[items.length - 2] += ' {#abf-fg}< ' + i.url + ' >{/}'
+    items.push('{#ccc-fg}------------{/}    {#ccc-fg}----------------{/}')
   })
-  return items
+  return items.join('\n')
+}
+
+function table(arr, widths) {
+  return arr
+    .map((el, i) => {
+      if (el.length > widths[i]) {
+        return '' + el.substring(0, widths[i])
+      } else if (widths[i]) {
+        return '' + el.padEnd(widths[i])
+      } else return '' + el
+    })
+    .join(': ')
 }
 
 export function shapeWatchlist(data) {

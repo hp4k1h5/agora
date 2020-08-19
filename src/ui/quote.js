@@ -21,10 +21,11 @@ export function buildQuoteList(ws, options, data) {
       focus: { border: { fg: '#ddf' } },
     },
   })
+
   // add focus listeners
   ws.setListeners(options)
 
   // set data
   if (!data) return
-  options.box.setContent(data.map((d) => d.join(': ')).join('\n'))
+  options.box.setContent(data)
 }
