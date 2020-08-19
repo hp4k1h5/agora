@@ -1,12 +1,8 @@
 import contrib from 'blessed-contrib'
 
+import { clear } from '../util/clear.js'
 export function buildPriceVolCharts(ws, options, data) {
-  if (options.box) {
-    ws.options.screen.remove(options.box)
-  }
-  if (options.volChart) {
-    ws.options.screen.remove(options.volChart)
-  }
+  clear(ws, options)
 
   // graph price
   const [y, x, h, w] = options.yxhw

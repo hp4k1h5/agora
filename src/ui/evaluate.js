@@ -103,7 +103,7 @@ export function setTime(options, words, ws) {
 }
 
 export function exit(ws) {
-  ws.printLines('{#abf-fg}goodbye...{/}')
+  ws.printLines('{#abf-fg}\ngoodbye...{/}')
   setTimeout(() => {
     ws.options.screen.destroy()
     process.exit(0)
