@@ -7,6 +7,7 @@ import {
   shapeNews,
   shapeWatchlist,
   shapeProfile,
+  shapeLists,
 } from './shape.js'
 import { config } from '../util/config.js'
 const token = config.IEX_PUB_KEY
@@ -26,14 +27,14 @@ export function buildURL(path, params = {}) {
 /*
  * /intraday-prices endpoint returns minute-increment price data for a given stock @param sym: string
  * */
-export async function getPrices(_ws, c) {
+export async function getPrices(options) {
   let url
   // intraday
-  if (c.series == 'intra') {
-    url = buildURL(`stock/${c.symbol}/intraday-prices`, c._time)
+  if (options.series == 'intra') {
+    url = buildURL(`stock/${options.symbol}/intraday-prices`, options._time)
   } else {
     // daily
-    url = buildURL(`stock/${c.symbol}/chart/${c._time}`)
+    url = buildURL(`stock/${options.symbol}/chart/${options._time}`)
   }
 
   let response = await fetch(url)
@@ -42,11 +43,11 @@ export async function getPrices(_ws, c) {
   }
 
   const data = await response.json()
-  return shapePrices(c, data)
+  return shapePrices(options, data)
 }
 
-export async function getQuote(symbol) {
-  const url = buildURL(`stock/${symbol}/quote`)
+export async function getQuote(options) {
+  const url = buildURL(`stock/${options.symbol}/quote`)
   let response = await fetch(url)
   if (!response.ok) {
     throw response
@@ -56,8 +57,8 @@ export async function getQuote(symbol) {
   return shapeQuote(response)
 }
 
-export async function getNews(symbol) {
-  const url = buildURL(`stock/${symbol}/news/last/10`)
+export async function getNews(options) {
+  const url = buildURL(`stock/${options.symbol}/news/last/10`)
   let response = await fetch(url)
   if (!response.ok) {
     throw response
@@ -67,9 +68,9 @@ export async function getNews(symbol) {
   return shapeNews(response)
 }
 
-export async function getWatchlist(list) {
+export async function getWatchlist(options) {
   const url = buildURL('stock/market/batch', {
-    symbols: list.join(','),
+    symbols: options.watchlist.join(','),
     types: 'quote',
   })
   let response = await fetch(url)
@@ -82,11 +83,11 @@ export async function getWatchlist(list) {
   return shapeWatchlist(response)
 }
 
-export async function getProfile(symbol) {
+export async function getProfile(options) {
   let urls = [
-    buildURL(`stock/${symbol}/company`),
-    buildURL(`stock/${symbol}/stats`),
-    buildURL(`stock/${symbol}/earnings/1`, { period: 'quarter' }),
+    buildURL(`stock/${options.symbol}/company`),
+    buildURL(`stock/${options.symbol}/stats`),
+    buildURL(`stock/${options.symbol}/earnings/1`, { period: 'quarter' }),
   ]
 
   const data = await Promise.all(
@@ -102,4 +103,22 @@ export async function getProfile(symbol) {
   )
 
   return shapeProfile(data)
+}
+
+export async function getLists(options) {
+  let urls = options.listTypes.map((t) => buildURL(`stock/market/list/${t}`))
+
+  const data = await Promise.all(
+    urls.map(async (url) => {
+      let response = await fetch(url)
+      if (!response.ok) {
+        throw response
+      }
+
+      response = await response.json()
+      return response
+    }),
+  )
+
+  return shapeLists(data, options.listTypes)
 }

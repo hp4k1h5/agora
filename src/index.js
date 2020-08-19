@@ -1,57 +1,61 @@
 import blessed from 'blessed'
 import contrib from 'blessed-contrib'
 
-// CONFIG
 import { config } from './util/config.js'
-
 import { Workspace } from './ui/workspace.js'
+import { update } from './ui/update.js'
+import { setTime } from './ui/evaluate.js'
 
-/**
- * main
- * */
-export const main = function () {
-  const screen = blessed.screen({ smartCSR: true, log: 'log.txt' })
+function buildScreen() {
+  const screen = blessed.screen({
+    title: 'iexcli',
+    smartCSR: true,
+  })
+  // set app-wide screen keys
+  // app-wide exit
+  screen.key('C-c', function () {
+    this.destroy()
+    process.exit(0)
+  })
+  // tab through components
+  screen.key(['tab'], function () {
+    screen.focusNext()
+  })
+  screen.key(['S-tab'], function () {
+    screen.focusPrevious()
+  })
+  return screen
+}
+const screen = buildScreen()
 
-  const self = {
-    config,
+const main = function () {
+  // build workspaces to send to carousel
+  const workspaces = config.workspaces.map((wsOptions) => {
+    return async function () {
+      wsOptions.screen = screen
 
-    screen: (function () {
-      screen.key('C-c', function () {
-        this.destroy()
-        process.exit(0)
-      })
-      return screen
-    })(),
+      const ws = new Workspace(wsOptions)
+      await Promise.all(
+        ws.options.components.map(async (cOptions) => {
+          cOptions.id = ws.id()
+          setTime(cOptions, [`:${cOptions.time}`], ws)
+          await update(ws, cOptions)
+        }),
+      )
+    }
+  })
 
-    workspaces: (function () {
-      return config.workspaces.map((options) => {
-        /** attach workspace to screen object to pass it through to
-         * contrib.carousel callback */
-        screen._ws = new Workspace(screen, options)
-        /** init is a callback function called by carousel(screens)
-         * on each screen */
-        return screen._ws
-      })
-    })(),
-
-    carouselOptions: {
-      screen,
-      interval: 3000,
-      controlKeys: false,
-    },
-
-    startCarousel(pages, carouselOptions) {
-      const carousel = new contrib.carousel(pages, carouselOptions)
-      carousel.start()
-      return carousel
-    },
+  // init carousel
+  const carouselOptions = {
+    screen,
+    interval: 0,
+    controlKeys: true,
   }
-
-  return self
+  function startCarousel(pages, options) {
+    const carousel = new contrib.carousel(pages, options)
+    carousel.start()
+  }
+  startCarousel([...workspaces], carouselOptions)
 }
 
-const app = main()
-app.startCarousel(
-  app.workspaces.map((ws) => ws.init),
-  app.carouselOptions,
-)
+main()

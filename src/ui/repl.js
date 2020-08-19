@@ -2,72 +2,81 @@ import blessed from 'blessed'
 
 import { evaluate } from './evaluate.js'
 import { intro } from './help.js'
+import { exit } from './evaluate.js'
 
-export function buildRepl(ws, c) {
-  const repl = ws.grid.set(...c.yxhw, blessed.form, { keys: true })
+export function buildRepl(ws, options) {
+  const [y, x, h, w] = options.yxhw
 
   // console display (optional), otherwise commands just have effects and don't
   // report
-  const output = blessed.text({
-    parent: repl,
+  const output = ws.grid.set(y, x, h - 1, w, blessed.text, {
     name: 'output',
     // inputs
     keys: false,
+    input: false,
     mouse: true,
     scrollable: true,
     // display
     tags: true,
-    height: '75%',
   })
-  c.output = output
 
-  // add printLines to c
+  // add printLines to ws
   ws.printLines = function (text) {
-    c.output.pushLine(text)
-    c.output.setScrollPerc(100)
+    // accepts a array or string
+    output.pushLine(text)
+    output.setScrollPerc(100)
+    // TODO: find less intensive way of rendering terminal output
+    ws.options.screen.render()
   }
 
   // init welcome text
   ws.printLines(intro)
 
-  // all interaction is handled here
-  const input = blessed.textbox({
-    parent: repl,
+  // all repl function & interaction is handled here and in evaluate()
+  ws.input = ws.grid.set(y + (h - 1), x, 1, w, blessed.textbox, {
     name: 'input',
     // inputs
     inputOnFocus: true,
     // styles
-    bottom: 0,
-    height: 3,
-    border: { type: 'line' },
     style: {
-      border: { fg: 'gray' },
-      focus: {
-        border: { fg: [180, 180, 255] },
-      },
+      focus: { border: { fg: '#ddf' } },
     },
   })
 
-  input.unkey(['up', 'down'])
-  // handle submit
-  input.key('enter', function () {
-    repl.submit()
+  ws.options.screen.key('>', () => {
+    ws.input.focus()
   })
-  repl.on('submit', async function (data) {
-    // push last command
-    ws.printLines('{bold}> {/}' + data.input)
-    // clear input and refocus
-    input.clearValue()
-    input.focus()
+
+  ws.input.key('C-c', function () {
+    exit(ws)
+  })
+
+  const screen = ws.options.screen
+  ws.input.key('tab', function () {
+    screen.focusNext()
+  })
+  ws.input.key('esc', function () {
+    screen.focusPrevious()
+  })
+  // handle submit
+  ws.input.key('enter', function () {
+    ws.input.submit()
+  })
+
+  // handle submit
+  ws.input.on('submit', async function (data) {
+    // print last command
+    ws.printLines('{bold}> {/}' + data)
+    ws.input.clearValue()
 
     // parse and handle input
-    await evaluate(ws, data.input)
+    await evaluate(ws, data)
 
-    ws.screen.render()
+    // wait to focus until evaluation completes
+    ws.input.focus()
   })
 
-  input.focus()
-  // add to curScreen
-  ws.repl = repl
-  ws.screen.render()
+  ws.input.on('focus', function () {
+    ws.prevFocus.box.style.border = { fg: '#fc5' }
+  })
 }

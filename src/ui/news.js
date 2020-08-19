@@ -1,46 +1,34 @@
-import contrib from 'blessed-contrib'
+import blessed from 'blessed'
 
-export function buildNewsList(ws, component, data) {
-  // remove active component
-  if (ws.activeComponent) ws.screen.remove(ws.activeComponent)
-  // set active component
-  ws.activeComponent = component
+import { clear } from '../util/clear.js'
 
-  // restored by tab/esc
-  ws.screen.saveFocus()
+export function buildNewsList(ws, options, data) {
+  clear(ws, options)
 
-  // clear screen
-  if (ws.newsList) ws.screen.remove(ws.newsList)
-
-  // set contrib options
-  ws.newsList = ws.grid.set(...component.yxhw, contrib.table, {
-    title: 'news',
+  options.box = ws.grid.set(...options.yxhw, blessed.text, {
+    name: 'news',
+    label: `[${options.id} news]`,
     // inputs
-    keys: true,
-    interactive: true,
+    keys: false,
+    input: true,
     mouse: true,
+    scrollable: true,
     // styles
-    columnSpacing: 2,
-    columnWidth: [9, 200],
+    tags: true,
+    style: {
+      fg: [60, 200, 250],
+      focus: { border: { fg: '#ddf' } },
+    },
   })
 
-  // set keys for screen
-  ws.screen.onceKey(['escape', 'tab'], function () {
-    // saved above
-    ws.screen.restoreFocus()
-  })
+  // add focus listeners
+  ws.setListeners(options)
 
   // set data
   if (!data) return
-  ws.newsList.setData({
-    headers: [
-      'News',
-      component.symbol +
-        '      ? hit tab or esc to return to repl, use arrow keys to scroll',
-    ],
-    data,
-  })
-  ws.newsList.focus()
-
-  ws.screen.render()
+  data =
+    options.symbol +
+    '      ? hit {yellow-fg}esc{/} to return to repl, use mouse to scroll\n' +
+    data
+  options.box.setContent(data)
 }

@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v0.0.6
+- 💠 multi-component handling. user can specify as many component windows as
+    they wish for any component except repl. See [usage](./README.md#usage)
+- 🎠 carousel mode. use left and right arrows to switch workspaces.
+- 📜 gainers/losers lists. use `*` command to see list info
+
+
+## v0.0.5
+- npm fix
+
 ## v0.0.4
 - bin fix
 

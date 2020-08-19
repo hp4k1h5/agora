@@ -1,44 +1,40 @@
 import contrib from 'blessed-contrib'
 
-export function buildPriceVolCharts(ws, c, data) {
-  // remove active component
-  if (ws.activeComponent) ws.screen.remove(ws.activeComponent)
-  // set active component
-  ws.activeComponent = c
+import { clear } from '../util/clear.js'
+export function buildPriceVolCharts(ws, options, data) {
+  clear(ws, options)
 
-  // clear graph and add line graph
-  if (c.priceChart) ws.screen.remove(c.priceChart)
-  c.priceChart = graph(ws.grid, data ? data.price : data, 'price', ...c.yxhw)
+  // graph price
+  const [y, x, h, w] = options.yxhw
 
-  // clear vol and add vol graph
-  if (c.volChart) ws.screen.remove(ws.volChart)
-  if (!c.vol) return
-
-  // put vol beneath price
-  const [y, x, h, w] = c.yxhw
-  c.volChart = graph(
-    ws.grid,
-    data ? data.vol : data,
-    'volume',
-    y + h,
+  options.box = graph(
+    ws,
+    data ? data.price : data,
+    `[${options.id}  price]`,
+    y,
     x,
-    12 - (y + h),
+    h - (options.vol ? 2 : 0),
     w,
   )
+  ws.setListeners(options)
 
-  ws.screen.render()
+  if (!options.vol) return
+  // put vol beneath price
+  options.volChart = graph(
+    ws,
+    data ? data.vol : data,
+    'volume',
+    y + h - 2,
+    x,
+    2,
+    w,
+  )
 }
 
-export function graph(grid, data, label, row, col, h, w) {
+export function graph(ws, data, label, row, col, height, width) {
   const minY = data ? Math.min(...data.y) : 0
 
-  const line = grid.set(row, col, h, w, contrib.line, {
-    style: {
-      line: [100, 100, 100],
-      text: [180, 220, 180],
-      baseline: [100, 100, 100],
-      bold: true,
-    },
+  const line = ws.grid.set(row, col, height, width, contrib.line, {
     minY,
     xLabelPadding: 0,
     yLabelPadding: 0,
@@ -47,7 +43,16 @@ export function graph(grid, data, label, row, col, h, w) {
     label,
     wholeNumbersOnly: false,
     showLegend: data ? !!data.title : false,
-    interactive: false,
+    input: label != 'volume',
+    style: {
+      line: [100, 100, 100],
+      text: [180, 220, 180],
+      baseline: [100, 100, 100],
+      bold: true,
+      focus: { border: { fg: '#ddf' } },
+    },
   })
   data && line.setData([data])
+
+  return line
 }
