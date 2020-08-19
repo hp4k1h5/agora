@@ -18,7 +18,7 @@ export async function evaluate(ws, input) {
     '=': 'watchlist',
     '&': 'profile',
     '"': 'quote',
-    '*': 'lists',
+    '*': 'list',
   }
 
   // parse input

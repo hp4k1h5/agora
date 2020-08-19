@@ -6,23 +6,27 @@ import { Workspace } from './ui/workspace.js'
 import { update } from './ui/update.js'
 import { setTime } from './ui/evaluate.js'
 
-const screen = blessed.screen({
-  title: 'iexcli',
-  smartCSR: true,
-})
-// set app-wide screen keys
-// app-wide exit
-screen.key('C-c', function () {
-  this.destroy()
-  process.exit(0)
-})
-// tab through components
-screen.key(['tab'], function () {
-  screen.focusNext()
-})
-screen.key(['S-tab'], function () {
-  screen.focusPrevious()
-})
+function buildScreen() {
+  const screen = blessed.screen({
+    title: 'iexcli',
+    smartCSR: true,
+  })
+  // set app-wide screen keys
+  // app-wide exit
+  screen.key('C-c', function () {
+    this.destroy()
+    process.exit(0)
+  })
+  // tab through components
+  screen.key(['tab'], function () {
+    screen.focusNext()
+  })
+  screen.key(['S-tab'], function () {
+    screen.focusPrevious()
+  })
+  return screen
+}
+const screen = buildScreen()
 
 const main = function () {
   // build workspaces to send to carousel

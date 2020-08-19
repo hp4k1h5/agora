@@ -17,6 +17,7 @@ export function buildNewsList(ws, options, data) {
     tags: true,
     style: {
       fg: [60, 200, 250],
+      focus: { border: { fg: '#ddf' } },
     },
   })
 
@@ -27,7 +28,7 @@ export function buildNewsList(ws, options, data) {
   if (!data) return
   data =
     options.symbol +
-    '      ? hit tab or esc to return to repl, use arrow keys to scroll\n' +
+    '      ? hit {yellow-fg}esc{/} to return to repl, use mouse to scroll\n' +
     data
   options.box.setContent(data)
 }

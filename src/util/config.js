@@ -11,6 +11,7 @@ export const validComponentTypes = [
   'news',
   'watchlist',
   'profile',
+  'list',
 ]
 export const validUnits = [
   '1d',

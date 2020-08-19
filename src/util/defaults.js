@@ -36,7 +36,7 @@ const profile = {
   symbol: 'de',
 }
 
-const lists = {
+const list = {
   type: 'list',
   yxhw: [0, 0, 6, 9],
   listTypes: ['mostactive', 'gainers', 'losers', 'iexvolume', 'iexpercent'],
@@ -49,5 +49,5 @@ export const defaults = {
   watchlist,
   news,
   profile,
-  lists,
+  list,
 }

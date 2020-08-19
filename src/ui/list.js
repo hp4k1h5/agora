@@ -6,8 +6,8 @@ export function buildLists(ws, options, data) {
   clear(ws, options)
 
   options.box = ws.grid.set(...options.yxhw, blessed.box, {
-    name: 'lists',
-    label: `[${options.id} lists]`,
+    name: 'list',
+    label: `[${options.id} list]`,
     keys: false,
     input: true,
     mouse: false,
@@ -17,6 +17,9 @@ export function buildLists(ws, options, data) {
       focus: { border: { fg: '#ddf' } },
     },
   })
+
+  // add focus listeners
+  ws.setListeners(options)
 
   if (!data) return
 
@@ -41,7 +44,4 @@ export function buildLists(ws, options, data) {
 
     list.setContent(data[type])
   })
-
-  // add focus listeners
-  ws.setListeners(options)
 }

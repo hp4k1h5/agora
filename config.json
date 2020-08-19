@@ -39,7 +39,64 @@
       "components": [
         {
           "type": "repl",
-          "yxhw": [6, 9, 6, 3]
+          "yxhw": [8, 9, 4, 3]
+        },
+        { "type": "quote", "yxhw": [0, 9, 3, 3], "symbol": "ge" },
+        { "type": "news", "yxhw": [3, 9, 5, 3], "symbol": "tsla" },
+        {
+          "type": "chart",
+          "chartType": "line",
+          "yxhw": [0, 0, 4, 9],
+          "symbol": "ge",
+          "time": "30min",
+          "vol": false,
+          "color": [230, 100, 200]
+        },
+        {
+          "type": "chart",
+          "chartType": "line",
+          "yxhw": [4, 0, 8, 9],
+          "symbol": "tsla",
+          "time": "60min",
+          "vol": true,
+          "color": "green"
+        }
+      ]
+    },
+    {
+      "name": "details",
+      "watchlist": ["tsla"],
+      "components": [
+        {
+          "type": "repl",
+          "yxhw": [8, 9, 4, 3]
+        },
+        { "type": "quote", "yxhw": [0, 9, 3, 3], "symbol": "tsla" },
+        { "type": "news", "yxhw": [3, 9, 5, 3], "symbol": "tsla" },
+        {
+          "type": "list",
+          "yxhw": [0, 0, 4, 9],
+          "listTypes": [
+            "mostactive",
+            "gainers",
+            "losers",
+            "iexvolume",
+            "iexpercent"
+          ]
+        },
+        {
+          "type": "chart",
+          "chartType": "line",
+          "yxhw": [4, 0, 8, 4],
+          "symbol": "tsla",
+          "time": "1y",
+          "vol": true,
+          "color": "green"
+        },
+        {
+          "type": "profile",
+          "symbol": "tsla",
+          "yxhw": [4, 4, 8, 5]
         }
       ]
     }
