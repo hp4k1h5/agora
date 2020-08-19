@@ -9,8 +9,6 @@ export function buildQuoteList(ws, options, data) {
   options.box = ws.grid.set(...options.yxhw, blessed.text, {
     name: 'quote',
     label: `[${options.id} quote]`,
-    // columnSpacing: 3,
-    // columnWidth: [13, 30],
     keys: false,
     input: true,
     mouse: true,

@@ -53,6 +53,8 @@ export async function evaluate(ws, input) {
   if (command == 'chart') {
     target.chartType =
       words.find((w) => ['line', 'bar', 'ohlc'].includes(w)) || target.chartType
+  } else if (command == 'watchlist') {
+    target.watchlist = ws.options.watchlist
   }
   setSymbol(target, words)
   setTime(target, words, ws)

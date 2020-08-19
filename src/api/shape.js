@@ -109,7 +109,7 @@ export function shapeWatchlist(data) {
     close: (d) => [d[0], '' + d[1]],
     high: (d) => [d[0], `{#2fe-fg}${d[1]}{/}`],
     low: (d) => [d[0], '' + d[1]],
-    previousClose: (d) => ['prev', '' + d[1]],
+    previousClose: (d) => ['prev', '' + d[1].toFixed(2)],
     week52High: (d) => ['52hi', '' + `{#2fe-fg}${d[1]}{/}`],
     week52Low: (d) => ['52lo', '' + d[1]],
     ytdChange: (d) => [
