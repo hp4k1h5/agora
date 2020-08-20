@@ -102,7 +102,7 @@ specific window with a command. For instance, in this example:
 
 ![iexcli running with multiple open windows](img/targeting.png)
 
-the command `[3 $aapl !` would switch the 2 window to a news view of appl.
+the command `[3 $aapl !` would switch the 3 window to a news view of $appl.
 
 ![after running the \[`3 $aapl !` command](img/targeted.png)
 
@@ -112,28 +112,29 @@ the command `[3 $aapl !` would switch the 2 window to a news view of appl.
 Typing `help` or `h` brings up a help menu. If you include another command
 name after, command-specific help is returned.  
 **examples**
-```bash
+```fortran
 help $   # show help for stock prefix command
 h :      # show help for time prefix command
+h #      # show help for chart command
 h        # show general help
 ```
 
 #### `quit` or `exit`
-Typing `quit` or `exit` will exit the app
+Typing `quit`, `exit` or `Ctrl-c` will exit the app
 
 #### `[` window id prefix
 Typing a `[` followed immediately by a window id, will target the window with
 the command. Window ids are found in the top-left corner of each targetable
 window.  
-examples  
-```bash
+**examples**
+```fortran
 [4 # :1y $tm
 ```
-this will display a 1-year chart of $tm in the fourth window
-```bash
+> this will display a 1-year chart of $tm in the fourth window
+```fortran
 & $pg [2
 ```
-this will display a company profile of $pg in the second window
+> this will display a company profile of $pg in the second window
 
 #### `?` search
 Typing `?` followed by search terms will query stock symbols and company names
@@ -149,50 +150,51 @@ examples
 ```
 
 #### `$` stock ticker symbol prefix
-Typing `$` followed immediately by a stock ticker symbol changes the currently
-active symbol, updating all visible charts and data windows. Can be combined
-with time prefix to update multiple values at the same time  
+Typing `$` followed immediately by a stock ticker symbol changes the symbol in
+the active window. Can be combined with window and time prefixes to update
+multiple values at the same time  
 **examples**
-```bash
-$tsla          # update active symbol to TSLA
-$BRK.B :1.5h   # update active symbol to BRK.B and update time to last 90 minutes
+```fortran
+$TSLA            # update active symbol to TSLA
+[2 $BRK.B :1.5h  # update active symbol to BRK.B and update time to last 90 minutes
 ```
 
 #### `:` time range prefix
-Typing `:` followed immediately by a combination of the following paramters
-will change the currently active time range and update all visible charts and
-data windows.  
-**valid times ranges** `5d, 1m, 3m, 6m, ytd, 1y, 5y, max`  OR  
+Typing `:` followed immediately by a combination of the following parameters
+will change the currently active time range and update the currently active
+window. This will only apply to chart windows.  
+**valid time ranges** `1d, 5d, 1m, 3m, 6m, ytd, 1y, 5y, max`  OR  
 numeric values affixed with `min` or `h`, see examples.  
 Can be combined with time prefix to update multiple values at the same time  
 **examples**
 ```bash
 :100min        # update time to last 100 minutes
-:6.5h          # update time to last trading day
+:6.5h [4       # update time to last trading day in the fourth window
 :5d  $x        # update time to last 5 days and update stock to X
 ```
 
 #### `!` news command
 Typing `!` brings up the news display with the latest 20 results relevant to
-the active symbol. Use arrow keys `up` and `down` to navigate the table. Use
-`tab` or `esc` to return to repl. Can be combined with stock prefix to update
-multiple values at the same time  
+the active symbol. Use mouse to scroll the table. Use `tab` or `esc` to return
+to repl. Can be combined with stock prefix to update multiple values at the
+same time  
 ![news display for iexcli](img/news.png)  
 **examples**
 ```bash
 $de !          # show news and update active stock to DE
-! $ibm         # show news and update stock to ibm
+! $ibm [3      # show news and update stock to ibm in window 3
 ```
 
 #### `=` watchlist command
-Typing `=` brings up the watchlist display. Use arrow keys `up` and `down` to
-navigate the table. Use `tab` or `esc` to return to repl.  
-![watchlist display for iexcli](img/watchlist.png) Key values `open high low
-close` are only available to iex premium data subscribers and during
-non-market hours to other api consumers.  
+Typing `=` brings up the watchlist display. Use mouse to scroll the table. Use
+`tab` or `esc` to return to repl.  ![watchlist display for
+iexcli](img/watchlist.png).
+> note: Key values `open high low close` are only available to iex premium
+> data subscribers and during non-market hours to other api consumers  
+
 **examples**
 ```bash
-=
+= [4
 ```
 
 #### `#` chart command
@@ -217,4 +219,12 @@ customized in `config.json`.
 **examples**
 ```bash
 *
+```
+
+#### `"` quote command
+Typing `"` displays a real-time quote for the active symbol in the targeted
+window. Can be customized in `config.json`.  
+**examples**
+```bash
+[4 " $r
 ```
