@@ -1,5 +1,5 @@
-import blessed from 'blessed'
-import contrib from 'blessed-contrib'
+import blessed from '@hp4k1h5/blessed'
+import contrib from '@hp4k1h5/blessed-contrib'
 
 import { config } from './util/config.js'
 import { Workspace } from './ui/workspace.js'
