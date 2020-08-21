@@ -1,5 +1,7 @@
 {
   "IEX_PUB_KEY": "",
+  "ALPACA_API_ID": "",
+  "ALPACA_SECRET_KEY": "",
   "workspaces": [
     {
       "name": "home",
