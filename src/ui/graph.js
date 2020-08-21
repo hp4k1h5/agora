@@ -1,4 +1,4 @@
-import contrib from 'blessed-contrib'
+import contrib from '@hp4k1h5/blessed-contrib'
 
 import { clear } from '../util/clear.js'
 export function buildPriceVolCharts(ws, options, data) {

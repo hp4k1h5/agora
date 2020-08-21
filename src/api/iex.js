@@ -9,17 +9,19 @@ import {
   shapeProfile,
   shapeLists,
 } from './shape.js'
+
 import { config } from '../util/config.js'
-const token = config.IEX_PUB_KEY
+
+const iexToken = config.IEX_PUB_KEY
 
 /*
  * create a url from path: string, and params: any, a flat object that can be
  * encoded as escaped query parameters by 'querystring'. at minimum will ship
  * query with private key as urlEncoded query parameter.
  * */
-export function buildURL(path, params = {}) {
+export function buildIexURL(path, params = {}) {
   const baseURL = 'https://cloud.iexapis.com/stable'
-  const queryString = qs.encode({ ...params, token })
+  const queryString = qs.encode({ ...params, token: iexToken })
 
   return `${baseURL}/${path}?${queryString}`
 }
@@ -31,10 +33,10 @@ export async function getPrices(options) {
   let url
   // intraday
   if (options.series == 'intra') {
-    url = buildURL(`stock/${options.symbol}/intraday-prices`, options._time)
+    url = buildIexURL(`stock/${options.symbol}/intraday-prices`, options._time)
   } else {
     // daily
-    url = buildURL(`stock/${options.symbol}/chart/${options._time}`)
+    url = buildIexURL(`stock/${options.symbol}/chart/${options._time}`)
   }
 
   let response = await fetch(url)
@@ -47,7 +49,7 @@ export async function getPrices(options) {
 }
 
 export async function getQuote(options) {
-  const url = buildURL(`stock/${options.symbol}/quote`)
+  const url = buildIexURL(`stock/${options.symbol}/quote`)
   let response = await fetch(url)
   if (!response.ok) {
     throw response
@@ -58,7 +60,7 @@ export async function getQuote(options) {
 }
 
 export async function getNews(options) {
-  const url = buildURL(`stock/${options.symbol}/news/last/10`)
+  const url = buildIexURL(`stock/${options.symbol}/news/last/10`)
   let response = await fetch(url)
   if (!response.ok) {
     throw response
@@ -69,7 +71,7 @@ export async function getNews(options) {
 }
 
 export async function getWatchlist(options) {
-  const url = buildURL('stock/market/batch', {
+  const url = buildIexURL('stock/market/batch', {
     symbols: options.watchlist.join(','),
     types: 'quote',
   })
@@ -85,9 +87,9 @@ export async function getWatchlist(options) {
 
 export async function getProfile(options) {
   let urls = [
-    buildURL(`stock/${options.symbol}/company`),
-    buildURL(`stock/${options.symbol}/stats`),
-    buildURL(`stock/${options.symbol}/earnings/1`, { period: 'quarter' }),
+    buildIexURL(`stock/${options.symbol}/company`),
+    buildIexURL(`stock/${options.symbol}/stats`),
+    buildIexURL(`stock/${options.symbol}/earnings/1`, { period: 'quarter' }),
   ]
 
   const data = await Promise.all(
@@ -106,7 +108,7 @@ export async function getProfile(options) {
 }
 
 export async function getLists(options) {
-  let urls = options.listTypes.map((t) => buildURL(`stock/market/list/${t}`))
+  let urls = options.listTypes.map((t) => buildIexURL(`stock/market/list/${t}`))
 
   const data = await Promise.all(
     urls.map(async (url) => {

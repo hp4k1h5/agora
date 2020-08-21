@@ -1,4 +1,4 @@
-import blessed from 'blessed'
+import blessed from '@hp4k1h5/blessed'
 
 import { evaluate } from './evaluate.js'
 import { intro } from './help.js'
