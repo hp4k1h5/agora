@@ -42,6 +42,11 @@ const list = {
   listTypes: ['mostactive', 'gainers', 'losers', 'iexvolume', 'iexpercent'],
 }
 
+const account = {
+  type: 'account',
+  yxhw: [0, 0, 12, 9],
+}
+
 export const defaults = {
   repl,
   chart,
@@ -50,4 +55,5 @@ export const defaults = {
   news,
   profile,
   list,
+  account,
 }

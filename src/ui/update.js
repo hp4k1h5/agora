@@ -5,7 +5,8 @@ import {
   getWatchlist,
   getProfile,
   getLists,
-} from '../api/api.js'
+} from '../api/iex.js'
+import { getAccount } from '../api/alpaca.js'
 
 import { buildPriceVolCharts } from './graph.js'
 import { buildQuoteList } from './quote.js'
@@ -14,6 +15,8 @@ import { buildWatchlist } from './watchlist.js'
 import { buildProfile } from './profile.js'
 import { buildLists } from './list.js'
 import { buildRepl } from './repl.js'
+import { buildAccount } from './account.js'
+
 import { handleErr } from '../util/error.js'
 
 const updateMap = {
@@ -23,6 +26,7 @@ const updateMap = {
   watchlist: { apiFn: getWatchlist, uiFn: buildWatchlist },
   profile: { apiFn: getProfile, uiFn: buildProfile },
   list: { apiFn: getLists, uiFn: buildLists },
+  account: { apiFn: getAccount, uiFn: buildAccount },
   repl: { apiFn: () => {}, uiFn: buildRepl },
 }
 

@@ -55,7 +55,7 @@ export const main = function () {
     const carousel = new contrib.carousel(pages, options)
     carousel.start()
   }
-  startCarousel([...workspaces], carouselOptions)
+  startCarousel(workspaces, carouselOptions)
 }
 
 main()

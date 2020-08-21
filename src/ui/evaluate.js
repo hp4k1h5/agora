@@ -2,7 +2,9 @@ import { defaults } from '../util/defaults.js'
 import { validUnits } from '../util/config.js'
 import { update } from './update.js'
 import { search as fuzzySearch } from './search.js'
+import { submitOrder } from '../api/alpaca.js'
 import { help } from './help.js'
+import { handleErr } from '../util/error.js'
 
 export async function evaluate(ws, input) {
   // define command to execute
@@ -19,13 +21,31 @@ export async function evaluate(ws, input) {
     '&': 'profile',
     '"': 'quote',
     '*': 'list',
+    '@': 'account',
   }
 
   // parse input
   const words = input.split(/\s+/g)
+
+  // execute orders first cannot be combined with other commands
+  const orderCmd = words.find((w) => /^[+-]\d+$/.test(w))
+  if (orderCmd) {
+    let order = { symbol: true }
+    setSymbol(order, words)
+    order.symbol = order.symbol.toUpperCase()
+    order.qty = +orderCmd.substring(1)
+    order.side = orderCmd[0] == '+' ? 'buy' : 'sell'
+
+    try {
+      return await submitOrder(ws, order)
+    } catch (e) {
+      return handleErr(ws, e)
+    }
+  }
+
   // find any commands
   const command = commands[words.find((w) => commands[w])]
-  // execute repl fns first
+  // execute repl fns next
   if (typeof command == 'function') return await command(ws, words)
 
   // execute component commands

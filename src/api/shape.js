@@ -184,6 +184,7 @@ export function shapeLists(data, types) {
   types.forEach((type, i) => {
     shaped[type] = data[i]
       .map((d) => {
+        d[0] = `{#4be-fg}${d[0]}{/}`
         data[i].sort((l, r) => {
           return l[type] > r[type]
         })
@@ -192,6 +193,30 @@ export function shapeLists(data, types) {
       .join('\n')
   })
   return shaped
+}
+
+export function shapeAccount(data) {
+  const [accountData, positionsData] = data
+  const shapedData = { account: '', positions: '' }
+  shapedData.account = Object.entries(accountData)
+    .map((d) => {
+      d[0] = `{#4be-fg}${d[0]}{/}`
+      return table(d, [35])
+    })
+    .join('\n')
+
+  shapedData.positions = positionsData
+    .map((position) => {
+      return Object.entries(position)
+        .map((d) => {
+          d[0] = `{#4be-fg}${d[0]}{/}`
+          return table(d, [35])
+        })
+        .join('\n')
+    })
+    .join('\n\n')
+
+  return shapedData
 }
 
 function abbrevNum(num) {

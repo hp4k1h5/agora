@@ -1,7 +1,8 @@
 {
   "IEX_PUB_KEY": "",
-  "ALPACA_API_ID": "",
-  "ALPACA_SECRET_KEY": "",
+  "APCA_API_KEY_ID": "",
+  "APCA_API_SECRET_KEY": "",
+  "alpacaAccountType": "paper",
   "workspaces": [
     {
       "name": "home",
@@ -99,6 +100,15 @@
           "type": "profile",
           "symbol": "tsla",
           "yxhw": [4, 4, 8, 5]
+        }
+      ]
+    },
+    {
+      "name": "account info",
+      "components": [
+        {
+          "type": "account",
+          "yxhw": [0, 0, 12, 9]
         }
       ]
     }

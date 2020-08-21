@@ -31,6 +31,7 @@ export function buildProfile(ws, options, data) {
     // inputs
     mouse: true,
     scrollable: true,
+    // styles
     width,
     height: heightHalf + 3,
     tags: true,
