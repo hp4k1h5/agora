@@ -8,19 +8,23 @@
 - allow traders to integrate high-level technical data processing and
     automated alerts and actions
 
-## future versions
+## alpha release
 
-### v0.0.8
-- bugfix for carousel '>' repl focus
-- streaming data, charts
-- account mgmt
-- paper trading
+### v0.0.10
+- charts
+  - bar
+  - ohlc
+- alpaca
+  - orders
+  - watchlist
+  - portfolio history
+  - streaming
+  - bots
 
-### v0.0.9
-- bar charts
-- iex premium data api endpoints
+## beta release
 
 ### v0.1.0
+- iex premium data api endpoints
 - set config options in iexcli
 - better component window management, set position and size dynamically
 - readme in terminal
