@@ -99,10 +99,10 @@ valid component types are ${validComponentTypes.join(' ')}`)
 
   // check for alpaca keys
   if (!config['APCA_API_KEY_ID'] || !config['APCA_API_KEY_ID'].length) {
-    config['APCA_API_KEY_ID'] = process.env.ALPACA_API_ID
+    config['APCA_API_KEY_ID'] = process.env.APCA_API_KEY_ID
   }
-  if (!config['APCA_API_SECRET_KEY'] || !config['APCA_API_SECRET_KEY']) {
-    config['APCA_API_SECRET_KEY'] = process.env.ALPACA_SECRET_KEY
+  if (!config['APCA_API_SECRET_KEY'] || !config['APCA_API_SECRET_KEY'].length) {
+    config['APCA_API_SECRET_KEY'] = process.env.APCA_API_SECRET_KEY
   }
   if (
     (!!config['APCA_API_KEY_ID'] && !!config['APCA_API_KEY_ID'].length) ^
@@ -110,14 +110,6 @@ valid component types are ${validComponentTypes.join(' ')}`)
   ) {
     errors.push(
       `user must provide both alpaca keys ALPACA_API_ID, and ALPACA_SECRET_KEY`,
-    )
-  } else if (
-    (!!config['APCA_API_KEY_ID'] && !!config['APCA_API_KEY_ID'].length) ^
-    !!config.alpacaAccountType
-  ) {
-    console.log(config.alpacaAccountType)
-    errors.push(
-      `user must specify key alpacaAccountType, either "paper" or "live"`,
     )
   }
 

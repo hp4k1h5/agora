@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v0.0.9
+- alpaca config fixes
+
 ## v0.0.8
 - 🐛 bugfix for '>' return to repl command in carousel mode
 - 🐴 [alpaca](https://alpaca.markets/) integration. Users can now trade with
