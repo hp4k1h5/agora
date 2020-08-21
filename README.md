@@ -1,10 +1,8 @@
 # iexcli
 
-> query and view stock charts in the terminal using a
-> [blessed](https://github.com/chjj/blessed) interface and
-> [blessed-contrib](https://github.com/yaronn/blessed-contrib) widgets
+> view market info and charts and trade stocks in the terminal
 
-#### !!warning unstable and in early development ⚠
+#### !!warning iexcli is in alpha and subject to change ⚠
 [contributions](./.github/CONTRIBUTING.md) and [bug
 reports](https://github.com/HP4k1h5/iexcli/issues/new?assignees=HP4k1h5&labels=bug&template=bug_report.md&title=basic)
 are_welcome_
@@ -19,15 +17,20 @@ some stock quote data](img/iexcli.png)
 - [installation](#installation)
 - [usage](#usage)
   - [commands](#commands)
+- [trading](#trading)
+- [thanks](#thanks)
 
 
 ## CHANGELOG
-## v0.0.7
-- bin fix, `iexcli` alias should work again.
+## v0.0.8
+- 🐛 bugfix for '>' return to repl command in carousel mode
+- 🐴 [alpaca](https://alpaca.markets/) integration. Users can now trade with
+    alpaca api and see account and positions info. See
+    [trading](#trading)
 
 ### v0.0.6
 - 💠 multi-component handling. user can specify as many component windows as
-    they wish for any component except repl. See [usage](./README.md#usage)
+    they wish for any component except repl. See [usage](#usage)
 - 🎠 carousel mode. Use left and right arrows to switch workspaces.
 - 📜 gainers/losers lists. use `*` command to see list info
 
@@ -142,7 +145,7 @@ for approximate (fuzzy) matches. Capitalization and spacing is ignored as are
 quotes and most other non word symbols.
 If you are searching by key word like "solar", consider adding more words to
 narrow down the result set  
-examples  
+**examples**  
 ```bash
 ? electric
    tlsa    ?  
@@ -192,21 +195,27 @@ iexcli](img/watchlist.png).
 > note: Key values `open high low close` are only available to iex premium
 > data subscribers and during non-market hours to other api consumers  
 
+If the watchlist expands beyond its defined boundaries and is occluding other
+components, try rotating through your other components with `tab` or
+`Shift-tab`. Alternatively, use the arrow-keys 'right' and then 'left' to
+reset the workspace.  
 **examples**
 ```bash
 = [4
 ```
 
 #### `#` chart command
-Typing `#` brings up the price/volume chart display.
+Typing `#` brings up the price/volume chart display in the targeted window.
+You may also set time and stock symbol by including those prefix-commands in
+the query.  
 **examples**
-```bash
+```c
 # :1d $t
 ```
 
 #### `&` profile command
-Typing `&` brings up a profile of the active symbol. Use mouse to scroll
-components.
+Typing `&` brings up a profile of the active symbol in the targeted window.
+Use mouse to scroll components.
 ![profile display](img/profile.png)  
 **examples**
 ```bash
@@ -214,8 +223,8 @@ $qcom &
 ```
 
 #### `*` list command
-Typing `*` brings up a list of gainers/losers/active/etc. List can be
-customized in `config.json`.
+Typing `*` brings up a list of gainers/losers/active/etc in the targeted
+window. List can be customized in `config.json`.
 **examples**
 ```bash
 *
@@ -223,8 +232,73 @@ customized in `config.json`.
 
 #### `"` quote command
 Typing `"` displays a real-time quote for the active symbol in the targeted
-window. Can be customized in `config.json`.  
+window.  
 **examples**
 ```bash
 [4 " $r
 ```
+
+## trading
+**⚠ disclaimer: iexcli's trading integration is in early _alpha_ and it is not
+recommended to use for real money accounts.** Per the [LICENSE](./LICENSE),
+neither hp4k1h5, nor iexcli makes any guarantees or claims regarding the
+status of trades executed via iexcli. Please consult a financial professional
+before deciding whether to use iexcli for live, real-money trading. While
+trading integration is in development, it is recommended to only use "paper"
+accounts with no real-money value, although the user is free to make their own
+judgement.
+
+### setup
+You will need an [alpaca trading account](https://app.alpaca.markets/signup).
+Accounts are free as are trades. After signing up you can generate real or
+paper api keys. Use these to set env vars or `config.json` values as follows:
+```bash
+export APCA_API_KEY_ID="YourAlpacaAPIid"
+export APCA_API_SECRET_KEY="YourAlpacaSecretKey"
+```
+or
+```json
+{
+  "APCA_API_KEY_ID": "YourAlpacaAPIid",
+  "APCA_API_SECRET_KEY": "YourAlpacaSecretKey"
+}
+```
+
+Though it is not recommended, you can set `config.json` value
+`"alpacaAccountType"` to "live" if you wish to trade real-money with iexcli.
+The default value is "paper"
+
+## account
+if you have entered your information correctly, you should be able to display
+your account and positions info by typing `@`.
+
+### placing orders
+While algo/robo trading is in development, users can execute manual trades as
+follows. All orders must have three components:
+1) order **side** buy or sell
+    - use the `+` buy-prefix to buy. use the `-` to sell.
+2) **quantity**
+    - affix the quantity directly to the order side
+3) stock symbol
+    - use the stock symbol prefix `$` to designate the instrument  
+
+**examples**
+```bash
++100 $tm     -> buy 100 shares of $tm
+-50 $qqq     -> sell (short or close) 50 shares of $qqq
+```
+
+
+## thanks
+- this project would not have been possible were it not for the incredible
+efforts of [blessed](https://github.com/chjj/blessed) and
+[blessed-contrib](https://github.com/yaronn/blessed-contrib) authors and
+contributors. Though these repos are somewhat dormant and iexcli is using
+forked versions, my heartfelt thanks go to these teams.
+
+- stock search is brought to you by
+  [fuzzysort](https://github.com/farzher/fuzzysort)
+
+- [iex](https://iexcloud.io) for making a robust free market data api
+
+- [alpaca](https://app.alpaca.markets), for their free trading api

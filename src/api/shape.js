@@ -209,12 +209,13 @@ export function shapeAccount(data) {
     .map((position) => {
       return Object.entries(position)
         .map((d) => {
+          d[1] = d[0] == 'symbol' ? `{#cd2-fg}${d[1]}{/}` : d[1]
           d[0] = `{#4be-fg}${d[0]}{/}`
-          return table(d, [35])
+          return table(d, [40])
         })
         .join('\n')
     })
-    .join('\n\n')
+    .join('\n{#eb3-fg}-----------------------{/}\n')
 
   return shapedData
 }

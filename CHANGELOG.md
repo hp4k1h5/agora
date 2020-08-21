@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.0.8
+- 🐛 bugfix for '>' return to repl command in carousel mode
+- 🐴 [alpaca](https://alpaca.markets/) integration. Users can now trade with
+    alpaca api and see account and positions info. See
+    [trading](./README.md/#trading)
+
 ## v0.0.7
 - bin fix, `iexcli` alias should work again.
 

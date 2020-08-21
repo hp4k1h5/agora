@@ -15,6 +15,7 @@ if (config['APCA_API_KEY_ID'] && config['APCA_API_KEY_ID'].length) {
 export function buildAlpacaURL(path, method, order) {
   const baseURLs = {
     paper: 'https://paper-api.alpaca.markets/v2',
+    live: 'https://api.alpaca.markets/v2',
   }
   const url = `${baseURLs[config.alpacaAccountType]}/${path}`
 
@@ -58,7 +59,6 @@ export async function submitOrder(ws, order) {
   order.time_in_force = 'day'
   order.type = 'market'
   const { url, httpOptions } = buildAlpacaURL('orders', 'POST', order)
-  ws.printLines(JSON.stringify(httpOptions, null, 2))
 
   let response = await fetch(url, httpOptions)
   if (!response.ok) {
