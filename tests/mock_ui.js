@@ -1,5 +1,5 @@
 import blessed from 'blessed'
-import contrib from 'blessed-contrib'
+import contrib from '@hp4k1h5/blessed-contrib'
 
 const screen = blessed.screen({
   smartCSR: true,

@@ -54,11 +54,19 @@ Search for terms by typing a {yello-fg}?{/} and words to look up symbol and
 ex. {#2ea-fg}? solar{/}
 ex. {#2ea-fg}aviation engineering ?{/}`
     const whatWindow = `
-    {bold}{#2ea-fg}help {#cd2-fg}*{/} (window id)
+    {bold}{#2ea-fg}help {#cd2-fg}[{/} target (window id)
 Target a specfic window by id. Window id is located in the top left corner of
-    the component.
+    the component. Can be combined with other commands.
 ex. {#2ea-fg}[2 # $aa :6.5h{/}
 ex. {#2ea-fg}& [1{/}`
+    const whatBuy = `
+    {bold}{#2ea-fg}help {#cd2-fg}+{/} BUY (quantity) (symbol)
+BUY (quantity) of (symbol)
+ex. {#2ea-fg}+100 $aa {/}   -> buy 100 shares of $aa`
+    const whatSell = `
+    {bold}{#2ea-fg}help {#cd2-fg}-{/} SELL (quantity) (symbol)
+BUY (quantity) of (symbol)
+ex. {#2ea-fg}-10 $s {/}   -> sell 100 shares of $s`
     const whatExit = `
     {bold}{#2ea-fg}help {#cd2-fg}exit{/} | {#cd2-fg}quit{/}
 Exits iexcli`
@@ -73,6 +81,8 @@ Exits iexcli`
       '*': whatList,
       '?': whatSearch,
       '[': whatWindow,
+      '+': whatBuy,
+      '-': whatSell,
       exit: whatExit,
       quit: whatExit,
     }
@@ -89,19 +99,21 @@ Exits iexcli`
 try {#cd2-fg}help <command>{/} i.e. {#cd2-fg}help :{/}
 {bold}available commands:{/}
 {#cd2-fg}h(elp){/}   :prints this menu
-{#cd2-fg}\${/}        :ticker symbol prefix
+{#cd2-fg}\${/}        :ticker (symbol) prefix
 {#cd2-fg}:{/}        :time (range) prefix
 {#cd2-fg}[{/}        :target (window) prefix
 {#cd2-fg}!{/}        :news
 {#cd2-fg}={/}        :watchlist
 {#cd2-fg}#{/}        :chart
 {#cd2-fg}&{/}        :profile
-{#cd2-fg}?{/}        :search
+{#cd2-fg}?{/}        :search (terms)
 {#cd2-fg}*{/}        :list
+{#cd2-fg}+{/}        :buy (quantity) (symbol)
+{#cd2-fg}-{/}        :sell (quantity) (symbol)
 {#cd2-fg}exit / quit{/}     :quit iexcli)
 {#fcc-fg}-----------------------------{/}
 commands can be aggregated:
-ex. {#cd2-fg}$z :10h{/}  -> 10 hour chart for Z 
-ex. {#cd2-fg}$GM !{/}  -> news for GM
+ex. {#cd2-fg}$z # :10h{/}  -> 10 hour chart for $Z 
+ex. {#cd2-fg}$GM !{/}  -> news for $gm
 {#eb4-fg}scroll up for more...{/}`)
 }

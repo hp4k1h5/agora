@@ -10,12 +10,17 @@
 
 ## future versions
 
-### v0.0.6
-- input and focus handling
-- config vetting
-- table width adjustments
-
-### v0.0.7
+### v0.0.8
+- bugfix for carousel '>' repl focus
 - streaming data, charts
 - account mgmt
 - paper trading
+
+### v0.0.9
+- bar charts
+- iex premium data api endpoints
+
+### v0.1.0
+- set config options in iexcli
+- better component window management, set position and size dynamically
+- readme in terminal

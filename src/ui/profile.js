@@ -1,4 +1,4 @@
-import blessed from 'blessed'
+import blessed from '@hp4k1h5/blessed'
 
 import { clear } from '../util/clear.js'
 
@@ -31,6 +31,7 @@ export function buildProfile(ws, options, data) {
     // inputs
     mouse: true,
     scrollable: true,
+    // styles
     width,
     height: heightHalf + 3,
     tags: true,
