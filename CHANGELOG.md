@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v0.0.10
+- 📉📈 technical indicators. use `%` indicator prefix to
+    overlay bollinger bands, moving averages and more. currently only a
+    limited subset of iex's technical indicators are available. requires a
+    paid iex subscription. See [technical
+    indicator](./README.md#technical-indicator)
+- 📺 improved window handling. `new` keyword opens new windows. `x` closes
+    them. repl is fronted on focus.
+
 ## v0.0.9
 - alpaca config fixes
 

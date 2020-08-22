@@ -28,14 +28,19 @@ export function buildIexURL(path, params = {}) {
 
 export async function getPrices(options) {
   let url
+  let params
+
   // handle indicator first which brings back chart also
   if (options.indicator) {
+    params = { range: options.time, chartLast: options._time.chartLast }
     if (options.series == 'intra') {
-      options.time = '1d'
+      params.range = '1d'
+    } else {
+      delete params.chartLast
     }
     url = buildIexURL(
       `stock/${options.symbol}/indicator/${options.indicator}`,
-      { range: options.time, chartLast: options._time.chartLast },
+      params,
     )
     // intraday
   } else if (options.series == 'intra') {
@@ -47,6 +52,10 @@ export async function getPrices(options) {
 
   let response = await fetch(url)
   if (!response.ok) {
+    response._errMeta = {
+      url,
+      params,
+    }
     throw response
   }
 
