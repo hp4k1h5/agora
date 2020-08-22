@@ -1,32 +1,52 @@
 // return clean shaped data
 export function shapePrices(options, data) {
+  let priceData, indicatorData
+  if (options.indicator) {
+    priceData = data.chart
+    indicatorData = data.indicator
+  } else {
+    priceData = data
+  }
+
   // keep track of last price, which fills in for null price points
-  let last = data.find((price) => price.close) || 0
+  let last = priceData.find((price) => price.close) || 0
   // intraday vs daily keys
-  const x = options.series == 'intra' ? 'minute' : 'date'
-  data = data.reduce(
+  const xKey = options.series == 'intra' ? 'minute' : 'date'
+  priceData = priceData.reduce(
     (a, v) => {
       if (!v.close) {
         v.close = last.close
       }
       // update last
       last = v
-      a.x.push(v[x])
+      a.x.push(v[xKey])
       a.y.push(v.close)
       a.vol.push(v.volume)
       return a
     },
     { x: [], y: [], vol: [] },
   )
-  return {
+
+  const shapedData = {
     price: {
       title: `${options.time} $${options.symbol}`,
-      x: data.x,
-      y: data.y,
+      x: priceData.x,
+      y: priceData.y,
       style: { line: options.color },
     },
-    vol: { x: data.x, y: data.vol, style: { line: [200, 250, 30] } },
+    vol: { x: priceData.x, y: priceData.vol, style: { line: [200, 250, 30] } },
   }
+  if (options.indicator) {
+    shapedData.indicators = indicatorData.map((indicator) => {
+      return {
+        title: options.indicator,
+        x: priceData.x,
+        y: indicator.map((d) => d || last),
+        style: { line: [250, 230, 150] },
+      }
+    })
+  }
+  return shapedData
 }
 
 export function shapeQuote(data) {

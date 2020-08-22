@@ -71,9 +71,13 @@ export async function evaluate(ws, input) {
 
   // set component type and options
   target.type = command || target.type
-  if (command == 'chart') {
+  if (target.type == 'chart') {
     target.chartType =
       words.find((w) => ['line', 'bar', 'ohlc'].includes(w)) || target.chartType
+    const indicator = words.find((w) => w[0] == '%')
+    if (indicator) {
+      target.indicator = indicator.slice(1)
+    }
   } else if (command == 'watchlist') {
     target.watchlist = ws.options.watchlist
   }

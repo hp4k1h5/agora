@@ -26,13 +26,19 @@ export function buildIexURL(path, params = {}) {
   return `${baseURL}/${path}?${queryString}`
 }
 
-/*
- * /intraday-prices endpoint returns minute-increment price data for a given stock @param sym: string
- * */
 export async function getPrices(options) {
   let url
-  // intraday
-  if (options.series == 'intra') {
+  // handle indicator first which brings back chart also
+  if (options.indicator) {
+    if (options.series == 'intra') {
+      options.time = '1d'
+    }
+    url = buildIexURL(
+      `stock/${options.symbol}/indicator/${options.indicator}`,
+      { range: options.time, chartLast: options._time.chartLast },
+    )
+    // intraday
+  } else if (options.series == 'intra') {
     url = buildIexURL(`stock/${options.symbol}/intraday-prices`, options._time)
   } else {
     // daily
