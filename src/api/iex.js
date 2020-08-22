@@ -123,7 +123,9 @@ export async function getProfile(options) {
 }
 
 export async function getLists(options) {
-  let urls = options.listTypes.map((t) => buildIexURL(`stock/market/list/${t}`))
+  let urls = options.listTypes.map((t) =>
+    buildIexURL(`stock/market/list/${t}`, { displayPercent: true }),
+  )
 
   const data = await Promise.all(
     urls.map(async (url) => {

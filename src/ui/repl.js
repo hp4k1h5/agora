@@ -78,6 +78,7 @@ export function buildRepl(ws, options) {
 
   ws.input.on('focus', function () {
     ws.prevFocus.box.style.border = { fg: '#fc5' }
-    // ws.input.setFront()
+    output.setFront()
+    ws.input.setFront()
   })
 }

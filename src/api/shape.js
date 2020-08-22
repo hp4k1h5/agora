@@ -1,3 +1,5 @@
+import blessed from '@hp4k1h5/blessed'
+
 // return clean shaped data
 export function shapePrices(options, data) {
   let priceData, indicatorData
@@ -193,22 +195,39 @@ export function shapeProfile(data) {
 
 export function shapeLists(data, types) {
   const m = {
-    mostactive: (d) => table([d.symbol, '' + d.volume], [5]),
-    gainers: (d) => table([d.symbol, `{#4fb-fg}${d.change}{/}`], [5]),
-    losers: (d) => table([d.symbol, `{#a25-fg}${d.change}{/}`], [5]),
-    iexvolume: (d) => table([d.symbol, d.iexVolume.toLocaleString()], [5]),
+    mostactive: (d) => table([d.symbol, '' + d.volume.toLocaleString()], [5]),
+    changePercent: (d) =>
+      table(
+        [
+          d.symbol,
+          `{#${
+            d.changePercent >= 0 ? '4fb' : 'a25'
+          }-fg}${d.changePercent.toFixed(1)}{/}%`,
+        ],
+        [5],
+      ),
+    iexvolume: (d) =>
+      table([d.symbol, ('' + d.iexVolume).toLocaleString()], [5]),
     iexpercent: (d) =>
-      table([d.symbol, '' + d.iexMarketPercent.toFixed(4)], [5]),
+      table(
+        [d.symbol, d.iexMarketPercent ? d.iexMarketPercent.toFixed(4) : ''],
+        [5],
+      ),
   }
+
   let shaped = {}
   types.forEach((type, i) => {
+    let _type = type
+    if (['gainers', 'losers'].includes(type)) {
+      _type = 'changePercent'
+    }
     shaped[type] = data[i]
+      .sort((l, r) => {
+        return r[_type] - l[_type]
+      })
       .map((d) => {
-        d[0] = `{#4be-fg}${d[0]}{/}`
-        data[i].sort((l, r) => {
-          return l[type] > r[type]
-        })
-        return m[type](d)
+        d.symbol = `{#4be-fg}${d.symbol}{/}`
+        return m[_type](d)
       })
       .join('\n')
   })
@@ -254,8 +273,9 @@ function abbrevNum(num) {
 function table(arr, widths) {
   return arr
     .map((el, i) => {
-      if (el.length > widths[i]) {
-        return '' + el.substring(0, widths[i])
+      const noTags = blessed.stripTags('' + el)
+      if (noTags.length > widths[i]) {
+        return ('' + el).replace(noTags, noTags.substring(0, widths[i]))
       } else if (widths[i]) {
         return '' + el.padEnd(widths[i])
       } else return '' + el
