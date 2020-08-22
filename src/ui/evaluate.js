@@ -42,6 +42,7 @@ export async function evaluate(ws, input) {
 
   // parse inputs
   const target = setTarget(ws, words, command)
+  if (!target) return
   setComponentOptions(ws, target, words, command)
   setSymbol(target, words)
   setTime(ws, target, words)

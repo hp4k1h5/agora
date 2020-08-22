@@ -1,6 +1,7 @@
 import { defaults } from './defaults.js'
 import { validUnits } from './config.js'
 import { submitOrder } from '../api/alpaca.js'
+import { clear } from './clear.js'
 import { help } from '../ui/help.js'
 import { handleErr } from './error.js'
 
@@ -16,7 +17,21 @@ export function setTarget(ws, words, command) {
       ws.printLines(`{red-fg}err:{/} no such component id ${tId}`)
       return
     }
+
     target = target ? target : ws.prevFocus
+
+    // handle close component window
+    const x = words.find((w) => w == 'x')
+    if (x) {
+      ws.options.components.splice(
+        ws.options.components.findIndex((c) => c.id == target.id),
+        1,
+      )
+      clear(ws, target)
+      ws.options.screen.render()
+      return
+    }
+
     if (command && target.type != command) {
       target = { ...defaults[command], ...target }
     }
@@ -60,9 +75,13 @@ export function setTime(ws, options, words) {
 
   // find time
   let time = words.find((w) => /(?<=:)\S+/.test(w))
-  if (!time) return
+  if (!time && options._time) return
 
-  time = time.slice(1)
+  if (!options._time) {
+    time = options.time
+  } else {
+    time = time.slice(1)
+  }
 
   // handle intraday
   const intra = time.match(/([\d.]+)(min|h)/)

@@ -11,9 +11,10 @@
 ## alpha release
 
 ### v0.0.10
-- charts
-  - bar
-  - ohlc
+- better component window management, set position and size dynamically
+- iex premium data api endpoints
+  - technical indicators
+  - analyst reports
 - alpaca
   - orders
   - watchlist
@@ -24,7 +25,14 @@
 ## beta release
 
 ### v0.1.0
-- iex premium data api endpoints
 - set config options in iexcli
-- better component window management, set position and size dynamically
 - readme in terminal
+
+---
+## backlog
+
+- chart types
+  - bar (have to make a new drawille component since contrib bar is not made
+      for financial data graphing)
+  - ohlc (same as above)
+

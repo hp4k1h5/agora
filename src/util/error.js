@@ -8,7 +8,7 @@ message:  {#faa-fg}${e.statusText}{/}`
 
   if (e._errMeta)
     msg += `
-${JSON.stringify(e._meta, null, 2)}`
+${JSON.stringify(e._errMeta, null, 2)}`
 
   ws.printLines(msg)
 }
