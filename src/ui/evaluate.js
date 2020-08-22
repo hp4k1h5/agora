@@ -61,7 +61,7 @@ export async function evaluate(ws, input) {
       return
     }
     target = target ? target : ws.prevFocus
-    if (target.type != command) {
+    if (command && target.type != command) {
       target = { ...defaults[command], ...target }
     }
   } else {
