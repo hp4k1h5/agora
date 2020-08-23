@@ -52,6 +52,11 @@ const account = {
   yxhw: [0, 0, 12, 9],
 }
 
+const help = {
+  type: 'help',
+  yxhw: [1, 1, 9, 9],
+}
+
 export const defaults = {
   repl,
   chart,
@@ -62,4 +67,5 @@ export const defaults = {
   list,
   sectors,
   account,
+  help,
 }

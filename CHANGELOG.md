@@ -1,13 +1,15 @@
 # CHANGELOG
 
 ## v0.0.10
-- 📺 improved window focus handling. `new` keyword opens new windows. `x`
-    closes them. better repl focus behavior.
+- 📺 improved window handling. `new` keyword opens new windows. `x`
+    closes targeted window. `all` updates all targetable windows.
+- `>` better repl focus and front behavior. English keywords for all commands.
 - 📉📈 technical indicators. use `%` indicator prefix to
-    overlay bollinger bands, moving averages and more. currently only a
-    limited subset of iex's technical indicators are available. _requires a
-    paid iex subscription._ See [technical
-    indicator](./README.md#technical-indicator)
+    overlay indicators, such as bollinger bands `%bbands`, weighted move
+    average `%wma` and more. currently only a limited subset of iex's
+    technical indicators will display correctly. _requires a paid iex
+    subscription._ See [technical indicator](./README.md#technical-indicator)
+- 📊 sector performance
 
 ## v0.0.9
 - alpaca config fixes

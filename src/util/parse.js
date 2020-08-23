@@ -24,13 +24,13 @@ export function setTargets(ws, words, command) {
     // handle close component window
     const x = words.find((w) => w == 'x')
     if (x) {
+      clear(ws, target)
       ws.options.components.splice(
         ws.options.components.findIndex((c) => c.id == target.id),
         1,
       )
-      clear(ws, target)
       ws.options.screen.render()
-      return
+      return []
     }
 
     if (command && target.type != command) {

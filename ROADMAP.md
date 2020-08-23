@@ -11,24 +11,32 @@
 ## alpha release
 
 ### v0.0.10
-- better component window management, set position and size dynamically
+- better component window management
+  - keywords `[new`, `[all`, `x` to open new windows, update all windows, and
+      close the targeted window
 - iex premium data api endpoints
   - technical indicators
-  - analyst reports
 - alpaca
   - orders
-  - watchlist
   - portfolio history
-  - streaming
-  - bots
+
+### v0.0.11
+- markdown analyst reports
+- alpaca
+  - watchlist integration
+
+---
 
 ## beta release
 
 ### v0.1.0
 - set config options in iexcli
-- readme in terminal
+- alpaca
+  - streaming
+  - algo/bot management
 
 ---
+
 ## backlog
 
 - chart types

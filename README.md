@@ -22,6 +22,19 @@ some stock quote data](img/iexcli.png)
 
 
 ## CHANGELOG
+
+### v0.0.10
+- 📺 improved window handling. `[new` keyword opens new windows. `x`
+    closes targeted window. `[all` updates all targetable windows.
+- ℹ new help component
+- `>` better repl focus and front behavior. English keywords for all commands.
+- 📉📈 technical indicators. use `%` indicator prefix to
+    overlay indicators, such as bollinger bands `%bbands`, weighted move
+    average `%wma` and more. currently only a limited subset of iex's
+    technical indicators will display correctly. _requires a paid iex
+    subscription._ See [technical indicator](./README.md#technical-indicator)
+- 📊 sector performance
+
 ## v0.0.8
 - 🐛 bugfix for '>' return to repl command in carousel mode
 - 🐴 [alpaca](https://alpaca.markets/) integration. Users can now trade with
