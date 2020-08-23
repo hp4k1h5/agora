@@ -14,16 +14,19 @@
 - better component window management
   - keywords `[new`, `[all`, `x` to open new windows, update all windows, and
       close the targeted window
+- improved help menus
 - iex premium data api endpoints
   - technical indicators
-- alpaca
-  - orders
-  - portfolio history
 
 ### v0.0.11
 - markdown analyst reports
 - alpaca
   - watchlist integration
+  - orders
+  - portfolio history
+- multiple config examples and walkthrough tutorial for how to build or
+    customize
+- more complete tutorial
 
 ---
 
