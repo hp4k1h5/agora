@@ -7,9 +7,18 @@ export function buildPriceVolCharts(ws, options, data) {
   // graph price
   const [y, x, h, w] = options.yxhw
 
+  let priceData
+  if (data) {
+    if (data.indicators) {
+      priceData = [data.price, ...data.indicators]
+    } else {
+      priceData = [data.price]
+    }
+  }
+
   options.box = graph(
     ws,
-    data ? data.price : data,
+    priceData,
     `[${options.id}  price]`,
     y,
     x,
@@ -22,7 +31,7 @@ export function buildPriceVolCharts(ws, options, data) {
   // put vol beneath price
   options.volChart = graph(
     ws,
-    data ? data.vol : data,
+    data ? [data.vol] : data,
     'volume',
     y + h - 2,
     x,
@@ -32,7 +41,15 @@ export function buildPriceVolCharts(ws, options, data) {
 }
 
 export function graph(ws, data, label, row, col, height, width) {
-  const minY = data ? Math.min(...data.y) : 0
+  if (!data) {
+    data = [{ title: 'no data', x: [0], y: [0] }]
+  }
+
+  const minY = data ? Math.min(...data[0].y) : 0
+
+  if (!data) {
+    data = [{ title: 'no data', x: [0], y: [0] }]
+  }
 
   const line = ws.grid.set(row, col, height, width, contrib.line, {
     minY,
@@ -42,7 +59,7 @@ export function graph(ws, data, label, row, col, height, width) {
     yPadding: 0,
     label,
     wholeNumbersOnly: false,
-    showLegend: data ? !!data.title : false,
+    showLegend: data ? !!data[0].title : false,
     input: label != 'volume',
     style: {
       line: [100, 100, 100],
@@ -52,7 +69,8 @@ export function graph(ws, data, label, row, col, height, width) {
       focus: { border: { fg: '#ddf' } },
     },
   })
-  data && line.setData([data])
+
+  line.setData(data)
 
   return line
 }

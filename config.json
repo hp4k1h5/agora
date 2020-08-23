@@ -72,21 +72,10 @@
       "components": [
         {
           "type": "repl",
-          "yxhw": [8, 9, 4, 3]
+          "yxhw": [0, 9, 4, 3]
         },
-        { "type": "quote", "yxhw": [0, 9, 3, 3], "symbol": "tsla" },
-        { "type": "news", "yxhw": [3, 9, 5, 3], "symbol": "tsla" },
-        {
-          "type": "list",
-          "yxhw": [0, 0, 4, 9],
-          "listTypes": [
-            "mostactive",
-            "gainers",
-            "losers",
-            "iexvolume",
-            "iexpercent"
-          ]
-        },
+        { "type": "news", "yxhw": [0, 0, 4, 6], "symbol": "tsla" },
+        { "type": "quote", "yxhw": [0, 6, 4, 3], "symbol": "tsla" },
         {
           "type": "chart",
           "chartType": "line",
@@ -99,7 +88,31 @@
         {
           "type": "profile",
           "symbol": "tsla",
-          "yxhw": [4, 4, 8, 5]
+          "yxhw": [4, 4, 8, 8]
+        }
+      ]
+    },
+    {
+      "name": "lists",
+      "components": [
+        {
+          "type": "list",
+          "yxhw": [0, 0, 4, 9],
+          "listTypes": [
+            "mostactive",
+            "gainers",
+            "losers",
+            "iexvolume",
+            "iexpercent"
+          ]
+        },
+        {
+          "type": "watchlist",
+          "yxhw": [4, 0, 8, 12]
+        },
+        {
+          "type": "sectors",
+          "yxhw": [0, 9, 4, 3]
         }
       ]
     },

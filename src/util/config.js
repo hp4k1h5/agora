@@ -12,12 +12,15 @@ export const validComponentTypes = [
   'watchlist',
   'profile',
   'list',
+  'sectors',
   'account',
 ]
 export const validUnits = [
   '1d',
   '5d',
+  '5dm',
   '1m',
+  '1mm',
   '3m',
   '6m',
   'ytd',
@@ -25,6 +28,13 @@ export const validUnits = [
   '5y',
   'max',
 ]
+export const validIndicators = JSON.parse(
+  fs.readFileSync(
+    path.resolve(path.resolve(), './src/util/technicals.json'),
+    'utf8',
+  ),
+)
+
 export const config = parseConfig()
 
 export function parseConfig(location, config) {
@@ -117,7 +127,7 @@ valid component types are ${validComponentTypes.join(' ')}`)
   if (!errors.length) return config
 
   // or print errors and exit
-  console.log(`err: the following errors were found with your config, which was found at ${location}
+  console.error(`err: the following errors were found with your config, which was found at ${location}
 ${errors.join('\n')}`)
   process.exit(1)
 }

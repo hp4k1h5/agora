@@ -22,24 +22,24 @@ some stock quote data](img/iexcli.png)
 
 
 ## CHANGELOG
-## v0.0.8
+
+### v0.0.10
+- 📺 improved window handling. `[new` keyword opens new windows. `x`
+    closes targeted window. `[all` updates all targetable windows.
+- ℹ new help component. type `h` or `help`
+- `>` better repl focus and front behavior. English keywords for all commands.
+- 📉📈 technical indicators. use `%` indicator prefix to
+    overlay indicators, such as bollinger bands `%bbands`, weighted move
+    average `%wma` and more. currently only a limited subset of iex's
+    technical indicators will display correctly. _requires a paid iex
+    subscription._ See [technical indicator](./README.md#technical-indicator)
+- 📊 sector performance
+
+### v0.0.8
 - 🐛 bugfix for '>' return to repl command in carousel mode
 - 🐴 [alpaca](https://alpaca.markets/) integration. Users can now trade with
     alpaca api and see account and positions info. See
     [trading](#trading)
-
-### v0.0.6
-- 💠 multi-component handling. user can specify as many component windows as
-    they wish for any component except repl. See [usage](#usage)
-- 🎠 carousel mode. Use left and right arrows to switch workspaces.
-- 📜 gainers/losers lists. use `*` command to see list info
-
-### v0.0.3
-- 🔍 fuzzy search for symbols by symbol or company name. thanks to farzher's
-   [fuzzysort](https://github.com/farzher/fuzzysort), users can now use `?`
-  command to print possible matches for their search terms. see [](#fuzzysort)
-- 💻 new shell alias `iexcli` should run from anywhere, if you have iexcli
-     installed globally.
 
 ## installation
 
@@ -113,7 +113,7 @@ the command `[3 $aapl !` would switch the 3 window to a news view of $appl.
 
 #### `help` or `h`
 Typing `help` or `h` brings up a help menu. If you include another command
-name after, command-specific help is returned.  
+name after, command-specific help is returned to the repl.  
 **examples**
 ```fortran
 help $   # show help for stock prefix command
@@ -126,18 +126,25 @@ h        # show general help
 Typing `quit`, `exit` or `Ctrl-c` will exit the app
 
 #### `[` window id prefix
-Typing a `[` followed immediately by a window id, will target the window with
-the command. Window ids are found in the top-left corner of each targetable
-window.  
+Typing a `[` followed immediately by a window id, or one of the keywords `all`
+or `new` will target the window(s) with the command. Window ids are found in the
+top-left corner of each targetable window.  
 **examples**
 ```fortran
-[4 # :1y $tm
+[4 # :max $tm  --> display max-time chart of $tm in the fourth window
+$aa [all       --> update all targetable windows with stock symobl $aa
+[2 x           --> close the second window
+= [new         --> open a new watchlist window
 ```
-> this will display a 1-year chart of $tm in the fourth window
-```fortran
-& $pg [2
+
+#### `x` close window
+Typing an x will close the active window. May be combined with window prefix
+to target a specific window.
+**examples**
+```c
+[4  x       --> closes the 4th window
+x           --> closes the active window
 ```
-> this will display a company profile of $pg in the second window
 
 #### `?` search
 Typing `?` followed by search terms will query stock symbols and company names
@@ -154,26 +161,55 @@ narrow down the result set
 
 #### `$` stock ticker symbol prefix
 Typing `$` followed immediately by a stock ticker symbol changes the symbol in
-the active window. Can be combined with window and time prefixes to update
-multiple values at the same time  
+the active window. Can be combined with window, technical-indicator and time
+prefixes to update multiple values at the same time  
 **examples**
 ```fortran
-$TSLA            # update active symbol to TSLA
-[2 $BRK.B :1.5h  # update active symbol to BRK.B and update time to last 90 minutes
+$TM              --> update symbol in active component to TSLA
+[2 $BRK.B :1.5h   --> update active symbol to BRK.B and update time to last 90 minutes
+```
+
+#### `#` chart command
+Typing `#` brings up the price/volume chart display in the targeted window.
+You may also set time, technical-indicator, and stock symbol by including
+those prefix-commands in the query.  
+**examples**
+```c
+# :1dm $t     --> change the active window to a 1 day 5-minutes chart of $t
+[2 # %wma     --> change the second window to a chart with
+                  weighted-moving-average overlay
 ```
 
 #### `:` time range prefix
 Typing `:` followed immediately by a combination of the following parameters
 will change the currently active time range and update the currently active
 window. This will only apply to chart windows.  
-**valid time ranges** `1d, 5d, 1m, 3m, 6m, ytd, 1y, 5y, max`  OR  
+**valid time ranges** `1d, 5d, 5dm, 1m, 1mm, 3m, 6m, ytd, 1y, 5y, max`  OR  
 numeric values affixed with `min` or `h`, see examples.  
 Can be combined with time prefix to update multiple values at the same time  
 **examples**
 ```bash
-:100min        # update time to last 100 minutes
-:6.5h [4       # update time to last trading day in the fourth window
-:5d  $x        # update time to last 5 days and update stock to X
+:100min        --> update time to last 100 minutes
+:6.5h [4       --> update time to last trading day in the fourth window
+:5dm  $x       --> update time to last 5 days minute-averaged and update stock
+                   to X
+```
+
+#### `%` technical-indicator prefix
+> _iex paid subscribers only_  
+
+Typing `%` followed immediately by the abbreviated name of the technical
+indicator will overlay the active chart window with the technical indicator.
+This will only apply to chart windows.  
+**valid technical indicators** include `bbands, wma, ema, hma`. See [full
+list](./src/util/technicals.json). Can be combined with time, stock and window
+prefixes to update multiple values at the same time  
+**examples**
+```bash
+%bbands         --> add bollinger bands overlay to current active chart
+[4 $qqq %wma    --> update fourth window with weighted moving average and $qqq
+%               --> % by itself with no indicator name will remove any
+                    indicator from the targeted window
 ```
 
 #### `!` news command
@@ -202,15 +238,6 @@ reset the workspace.
 **examples**
 ```bash
 = [4
-```
-
-#### `#` chart command
-Typing `#` brings up the price/volume chart display in the targeted window.
-You may also set time and stock symbol by including those prefix-commands in
-the query.  
-**examples**
-```c
-# :1d $t
 ```
 
 #### `&` profile command
@@ -276,10 +303,11 @@ your account and positions info by typing `@`.
 While algo/robo trading is in development, users can execute manual trades as
 follows. All orders must have three components:
 1) order **side** buy or sell
-    - use the `+` buy-prefix to buy. use the `-` to sell.
+    - use the `+` buy-prefix to buy. use the `-` sell-prefix to sell.
+    - selling when you own no shares will be considered a short sale.
 2) **quantity**
     - affix the quantity directly to the order side
-3) stock symbol
+3) stock **symbol**
     - use the stock symbol prefix `$` to designate the instrument  
 
 **examples**

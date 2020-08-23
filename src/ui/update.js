@@ -4,6 +4,7 @@ import {
   getNews,
   getWatchlist,
   getProfile,
+  getSectors,
   getLists,
 } from '../api/iex.js'
 import { getAccount } from '../api/alpaca.js'
@@ -15,6 +16,7 @@ import { buildWatchlist } from './watchlist.js'
 import { buildProfile } from './profile.js'
 import { buildLists } from './list.js'
 import { buildRepl } from './repl.js'
+import { buildSectors } from './sectors.js'
 import { buildAccount } from './account.js'
 
 import { handleErr } from '../util/error.js'
@@ -27,6 +29,7 @@ const updateMap = {
   profile: { apiFn: getProfile, uiFn: buildProfile },
   list: { apiFn: getLists, uiFn: buildLists },
   account: { apiFn: getAccount, uiFn: buildAccount },
+  sectors: { apiFn: getSectors, uiFn: buildSectors },
   repl: { apiFn: () => {}, uiFn: buildRepl },
 }
 
@@ -36,7 +39,7 @@ export async function update(ws, options) {
     // make request(s)
     data = await updateMap[options.type].apiFn(options)
   } catch (e) {
-    return handleErr(ws, e)
+    handleErr(ws, e)
   }
 
   // update ui

@@ -21,7 +21,8 @@ export function buildProfile(ws, options, data) {
   // add focus listeners
   ws.setListeners(options)
 
-  const width = Math.floor(options.box.width / 2) - 1
+  const dataLen = Object.keys(data).length - 1
+  const width = Math.floor(options.box.width / dataLen) - 1
   const heightHalf = Math.floor(options.box.height / 2) - 1
 
   const company = blessed.text({
@@ -34,23 +35,6 @@ export function buildProfile(ws, options, data) {
     // styles
     width,
     height: heightHalf + 3,
-    tags: true,
-    border: { type: 'line' },
-    style: {
-      border: { fg: '#44bbee' },
-    },
-  })
-
-  const keyStats = blessed.text({
-    parent: options.box,
-    name: 'stats',
-    label: 'stats',
-    // inputs
-    mouse: true,
-    scrollable: true,
-    // style
-    width,
-    left: width,
     tags: true,
     border: { type: 'line' },
     style: {
@@ -76,9 +60,44 @@ export function buildProfile(ws, options, data) {
     },
   })
 
+  const keyStats = blessed.text({
+    parent: options.box,
+    name: 'stats',
+    label: 'stats',
+    // inputs
+    mouse: true,
+    scrollable: true,
+    // style
+    width,
+    left: width,
+    tags: true,
+    border: { type: 'line' },
+    style: {
+      border: { fg: '#44bbee' },
+    },
+  })
+
+  const financials = blessed.text({
+    parent: options.box,
+    name: 'financials',
+    label: 'financials',
+    // inputs
+    mouse: true,
+    scrollable: true,
+    // style
+    width,
+    left: width * 2,
+    tags: true,
+    border: { type: 'line' },
+    style: {
+      border: { fg: '#44bbee' },
+    },
+  })
+
   // set data
   if (!data) return
   company.setContent(data.company)
-  keyStats.setContent(data.keyStats)
   earnings.setContent(data.earnings)
+  keyStats.setContent(data.keyStats)
+  financials.setContent(data.financials)
 }

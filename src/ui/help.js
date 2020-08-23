@@ -1,4 +1,7 @@
+import blessed from '@hp4k1h5/blessed'
+import { defaults } from '../util/defaults.js'
 import { validUnits } from '../util/config.js'
+import { clear } from '../util/clear.js'
 
 export const intro = `{#2ea-fg}Welcome to iexcli.{/}
   Data provided by IEX Cloud 
@@ -8,6 +11,91 @@ export const intro = `{#2ea-fg}Welcome to iexcli.{/}
 
   more documentation is available at 
   {underline}{#4be-fg}<https://github.com/hp4k1h5/iexcli>{/}...`
+
+const fullHelp = `   {bold}{#2ea-fg}help menu{/} 
+try {#cd2-fg}help <command>{/} for command specific help
+  e.g. {#cd2-fg}help :{/}
+       {#cd2-fg}help \${/}
+
+{#eb4-fg}scroll down for more...{/}
+
+{bold}available commands:{/}
+{#cd2-fg}h(elp){/}   :prints this menu
+{#cd2-fg}[{/}        :target (window) prefix
+         :changes the active window
+{#cd2-fg}[new{/}     :open new window in workspace
+{#cd2-fg}[all{/}     :target all windows in workspace
+{#cd2-fg}x{/}        :close active window
+{#cd2-fg}\${/}        :ticker (symbol) prefix
+         :changes the active ticker symbol
+{#cd2-fg}:{/}        :time (range) prefix
+         :changes the active time range
+{#cd2-fg}#/chart{/}  :display chart in targeted window
+{#cd2-fg}%{/}        :technical (indicator) prefix
+         :adds a technical indicator to targeted chart window 
+{#cd2-fg}"/quote{/}        :quote
+         :display quote in the active window
+{#cd2-fg}!/news{/}        :news
+         :display news in the active window
+{#cd2-fg}=/watchlist{/}        :watchlist
+         :display watchlist in the active window
+{#cd2-fg}&/profile{/}:profile
+         :display profile in the active window
+{#cd2-fg}*/list{/}   :list
+         :display active/gainers/losers list in the active window
+{#cd2-fg}?{/}        :search (terms)
+{#cd2-fg}@/account{/}:account
+         :display iex/alpaca account info in the active window
+
+------------------
+
+{bold}Alpaca commands{/}
+{#cd2-fg}@{/}        :account {#f6a-fg}requires alpaca keys{/}
+{#cd2-fg}+{/}        :buy (quantity) (symbol) {#f6a-fg}requires alpaca keys{/}
+{#cd2-fg}-{/}        :sell (quantity) (symbol){#f6a-fg}requires alpaca keys{/}
+{#cd2-fg}exit / quit / <Ctrl-c>{/}     :quit iexcli
+
+{#fcc-fg}-----------------------------{/}
+
+commands can be aggregated:
+
+ex. {#cd2-fg}$z # :10h %bbands{/}  -> 10 hour chart for $Z  in the last active
+    window with bollinger bands technical indicator
+ex. {#cd2-fg}$GM ! [3{/}  -> news for $gm in the 3rd window
+ex. {#cd2-fg}[2 x{/}  -> close the 2nd window
+ex. {#cd2-fg}[all $tm{/}  -> update all targetable components with ticker
+    symbol $tm
+
+
+{#eb4-fg}scroll up for more...{/}`
+
+export function halp(ws) {
+  const options = defaults.help
+  options.id = ws.id()
+  ws.options.components.push(options)
+
+  clear(ws, options)
+
+  options.box = ws.grid.set(...options.yxhw, blessed.text, {
+    name: 'help',
+    label: `[${options.id} help]`,
+    // inputs
+    keys: false,
+    input: true,
+    mouse: true,
+    scrollable: true,
+    // styles
+    tags: true,
+    style: {
+      focus: { border: { fg: '#ddf' } },
+    },
+  })
+
+  // add focus listeners
+  ws.setListeners(options)
+
+  options.box.setContent(fullHelp)
+}
 
 export function help(ws, words) {
   // print specific help if applicable
@@ -94,26 +182,5 @@ Exits iexcli`
   }
 
   // print full help
-  else
-    ws.printLines(`   {bold}{#2ea-fg}help menu{/} 
-try {#cd2-fg}help <command>{/} i.e. {#cd2-fg}help :{/}
-{bold}available commands:{/}
-{#cd2-fg}h(elp){/}   :prints this menu
-{#cd2-fg}\${/}        :ticker (symbol) prefix
-{#cd2-fg}:{/}        :time (range) prefix
-{#cd2-fg}[{/}        :target (window) prefix
-{#cd2-fg}!{/}        :news
-{#cd2-fg}={/}        :watchlist
-{#cd2-fg}#{/}        :chart
-{#cd2-fg}&{/}        :profile
-{#cd2-fg}?{/}        :search (terms)
-{#cd2-fg}*{/}        :list
-{#cd2-fg}+{/}        :buy (quantity) (symbol)
-{#cd2-fg}-{/}        :sell (quantity) (symbol)
-{#cd2-fg}exit / quit{/}     :quit iexcli)
-{#fcc-fg}-----------------------------{/}
-commands can be aggregated:
-ex. {#cd2-fg}$z # :10h{/}  -> 10 hour chart for $Z 
-ex. {#cd2-fg}$GM !{/}  -> news for $gm
-{#eb4-fg}scroll up for more...{/}`)
+  else halp(ws)
 }

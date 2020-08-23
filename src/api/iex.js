@@ -8,6 +8,7 @@ import {
   shapeWatchlist,
   shapeProfile,
   shapeLists,
+  shapeSectors,
 } from './shape.js'
 
 import { config } from '../util/config.js'
@@ -26,13 +27,30 @@ export function buildIexURL(path, params = {}) {
   return `${baseURL}/${path}?${queryString}`
 }
 
-/*
- * /intraday-prices endpoint returns minute-increment price data for a given stock @param sym: string
- * */
 export async function getPrices(options) {
   let url
-  // intraday
-  if (options.series == 'intra') {
+  let params
+
+  // handle indicator first which brings back chart also
+  if (options.indicator) {
+    params = { range: options.time, chartLast: options._time.chartLast }
+    if (options.series == 'intra') {
+      params.range = '1d'
+    } else {
+      delete params.chartLast
+    }
+    if (options.indicator.defaults) {
+      options.indicator.defaults.forEach((d, i) => {
+        params['input' + (i + 1)] = d * 1.5
+      })
+    }
+
+    url = buildIexURL(
+      `stock/${options.symbol}/indicator/${options.indicator.name}`,
+      params,
+    )
+    // intraday
+  } else if (options.series == 'intra') {
     url = buildIexURL(`stock/${options.symbol}/intraday-prices`, options._time)
   } else {
     // daily
@@ -41,6 +59,10 @@ export async function getPrices(options) {
 
   let response = await fetch(url)
   if (!response.ok) {
+    response._errMeta = {
+      url,
+      params,
+    }
     throw response
   }
 
@@ -90,6 +112,7 @@ export async function getProfile(options) {
     buildIexURL(`stock/${options.symbol}/company`),
     buildIexURL(`stock/${options.symbol}/stats`),
     buildIexURL(`stock/${options.symbol}/earnings/1`, { period: 'quarter' }),
+    buildIexURL(`stock/${options.symbol}/financials`),
   ]
 
   const data = await Promise.all(
@@ -108,7 +131,9 @@ export async function getProfile(options) {
 }
 
 export async function getLists(options) {
-  let urls = options.listTypes.map((t) => buildIexURL(`stock/market/list/${t}`))
+  let urls = options.listTypes.map((t) =>
+    buildIexURL(`stock/market/list/${t}`, { displayPercent: true }),
+  )
 
   const data = await Promise.all(
     urls.map(async (url) => {
@@ -123,4 +148,16 @@ export async function getLists(options) {
   )
 
   return shapeLists(data, options.listTypes)
+}
+
+export async function getSectors(_options) {
+  let url = buildIexURL('stock/market/sector-performance')
+
+  let response = await fetch(url)
+  if (!response.ok) {
+    throw response
+  }
+
+  response = await response.json()
+  return shapeSectors(response)
 }

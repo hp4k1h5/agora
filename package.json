@@ -1,6 +1,6 @@
 {
   "name": "@hp4k1h5/iexcli",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "license": "MIT",
   "main": "src/index.js",
   "bin": {
@@ -15,7 +15,7 @@
     "type": "git",
     "url": "git+ssh://git@github.com/HP4k1h5/iexcli.git"
   },
-  "description": "stock charts in the terminal, with a blessed interface and iex data",
+  "description": "stock charts in the terminal, and algo trading api",
   "keywords": [
     "blessed",
     "blessed-contrib",
@@ -25,11 +25,15 @@
     "terminal",
     "repl",
     "markets",
-    "crypto"
+    "crypto",
+    "finance",
+    "alpaca",
+    "algo",
+    "trading"
   ],
   "dependencies": {
-    "@hp4k1h5/blessed": "^0.0.1",
-    "@hp4k1h5/blessed-contrib": "^0.0.1",
+    "@hp4k1h5/blessed": "^0.0.2",
+    "@hp4k1h5/blessed-contrib": "^0.0.2",
     "fuzzysort": "^1.1.4",
     "node-fetch": "^2.6.0"
   },

@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v0.0.10
+- 📺 improved window handling. `new` keyword opens new windows. `x`
+    closes targeted window. `all` updates all targetable windows.
+- ℹ new help component, and improved help menu
+- `>` better repl focus and front behavior. English keywords for all commands.
+- 📉📈 technical indicators. use `%` indicator prefix to
+    overlay indicators, such as bollinger bands `%bbands`, weighted move
+    average `%wma` and more. currently only a limited subset of iex's
+    technical indicators will display correctly. _requires a paid iex
+    subscription._ See [technical indicator](./README.md#technical-indicator)
+- 📊 sector performance
+
 ## v0.0.9
 - alpaca config fixes
 

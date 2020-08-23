@@ -1,32 +1,62 @@
+import blessed from '@hp4k1h5/blessed'
+
 // return clean shaped data
 export function shapePrices(options, data) {
+  let priceData, indicatorData
+
+  if (data && options.indicator) {
+    priceData = data.chart
+    indicatorData = data.indicator
+  } else if (data) {
+    priceData = data
+  }
+  // some indicators returns a blank {} off trading hours
+  if (!Object.keys(data).length) {
+    priceData = []
+  }
+
   // keep track of last price, which fills in for null price points
-  let last = data.find((price) => price.close) || 0
+  // let last = priceData.find((price) => price.close) || 0
+  let last = 0
   // intraday vs daily keys
-  const x = options.series == 'intra' ? 'minute' : 'date'
-  data = data.reduce(
+  const xKey = options.series == 'intra' ? 'minute' : 'date'
+  priceData = priceData.reduce(
     (a, v) => {
       if (!v.close) {
         v.close = last.close
       }
       // update last
       last = v
-      a.x.push(v[x])
+      a.x.push(v[xKey])
       a.y.push(v.close)
       a.vol.push(v.volume)
       return a
     },
     { x: [], y: [], vol: [] },
   )
-  return {
+
+  const shapedData = {
     price: {
       title: `${options.time} $${options.symbol}`,
-      x: data.x,
-      y: data.y,
+      x: priceData.x,
+      y: priceData.y,
       style: { line: options.color },
     },
-    vol: { x: data.x, y: data.vol, style: { line: [200, 250, 30] } },
+    vol: { x: priceData.x, y: priceData.vol, style: { line: [200, 250, 30] } },
   }
+
+  if (indicatorData) {
+    shapedData.indicators = indicatorData.map((indicator) => {
+      return {
+        title: options.indicator.name,
+        x: priceData.x,
+        y: indicator,
+        style: { line: [250, 230, 150] },
+      }
+    })
+  }
+
+  return shapedData
 }
 
 export function shapeQuote(data) {
@@ -127,12 +157,7 @@ export function shapeWatchlist(data) {
 export function shapeProfile(data) {
   if (!data || !data.length) return 'no data for symbol'
 
-  // first datum is from `/company`
-  let company = data[0]
-  // second is `/stats`
-  let keyStats = data[1]
-  // third is `/earnings`
-  let earnings = data[2]
+  let [company, keyStats, earnings, financials] = data
 
   company = `{#afa-fg}${company.symbol}{/}  ${company.companyName}
 
@@ -143,56 +168,80 @@ export function shapeProfile(data) {
 {#4be-fg}issue type{/}: ${company.issueType}
 {#4be-fg}description{/}: {#eb4-fg}${company.description}{/}`
 
-  const treat = (v) => {
-    if (!v) return ''
-    if (typeof v == 'number') {
-      const color = v >= 0 ? '{#4ea-fg}' : '{#eaa-fg}'
-      return color + v.toLocaleString() + '{/}'
+  function shape(obj) {
+    const treat = (v) => {
+      if (!v) return ''
+      if (typeof v == 'number') {
+        const color = v >= 0 ? '{#4ea-fg}' : '{#eaa-fg}'
+        return color + v.toLocaleString() + '{/}'
+      }
+      return v
     }
-    return v
+
+    return Object.entries(obj)
+      .map((e) => {
+        return `{#4be-fg}${e[0]}{/}: ${treat(e[1])}`
+      })
+      .join('\n')
   }
 
-  if (keyStats)
-    keyStats = Object.entries(keyStats)
-      .map((e) => {
-        return `{#4be-fg}${e[0]}{/}: ${treat(e[1])}`
-      })
-      .join('\n')
-  else keyStats = ''
+  keyStats = shape(keyStats)
+  earnings = shape(earnings.earnings[0])
+  financials = shape(financials.financials[0])
 
-  if (earnings && earnings.earnings)
-    earnings = Object.entries(earnings.earnings[0])
-      .map((e) => {
-        return `{#4be-fg}${e[0]}{/}: ${treat(e[1])}`
-      })
-      .join('\n')
-  else earnings = ''
-
-  return { company, keyStats, earnings }
+  return { company, keyStats, earnings, financials }
 }
 
 export function shapeLists(data, types) {
   const m = {
-    mostactive: (d) => table([d.symbol, '' + d.volume], [5]),
-    gainers: (d) => table([d.symbol, `{#4fb-fg}${d.change}{/}`], [5]),
-    losers: (d) => table([d.symbol, `{#a25-fg}${d.change}{/}`], [5]),
-    iexvolume: (d) => table([d.symbol, d.iexVolume.toLocaleString()], [5]),
+    mostactive: (d) => table([d.symbol, '' + d.volume.toLocaleString()], [5]),
+    changePercent: (d) =>
+      table(
+        [
+          d.symbol,
+          `{#${
+            d.changePercent >= 0 ? '4fb' : 'a25'
+          }-fg}${d.changePercent.toFixed(1)}{/}%`,
+        ],
+        [5],
+      ),
+    iexvolume: (d) =>
+      table([d.symbol, ('' + d.iexVolume).toLocaleString()], [5]),
     iexpercent: (d) =>
-      table([d.symbol, '' + d.iexMarketPercent.toFixed(4)], [5]),
+      table(
+        [d.symbol, d.iexMarketPercent ? d.iexMarketPercent.toFixed(4) : ''],
+        [5],
+      ),
   }
+
   let shaped = {}
   types.forEach((type, i) => {
+    let _type = type
+    if (['gainers', 'losers'].includes(type)) {
+      _type = 'changePercent'
+    }
     shaped[type] = data[i]
+      .sort((l, r) => {
+        return r[_type] - l[_type]
+      })
       .map((d) => {
-        d[0] = `{#4be-fg}${d[0]}{/}`
-        data[i].sort((l, r) => {
-          return l[type] > r[type]
-        })
-        return m[type](d)
+        d.symbol = `{#4be-fg}${d.symbol}{/}`
+        return m[_type](d)
       })
       .join('\n')
   })
   return shaped
+}
+
+export function shapeSectors(data) {
+  return data
+    .map((datum) => {
+      table(
+        [`{#4be-fg}${datum.name}{/}`, (datum.performance * 100).toFixed(1)],
+        [15],
+      )
+    })
+    .join('\n')
 }
 
 export function shapeAccount(data) {
@@ -234,8 +283,9 @@ function abbrevNum(num) {
 function table(arr, widths) {
   return arr
     .map((el, i) => {
-      if (el.length > widths[i]) {
-        return '' + el.substring(0, widths[i])
+      const noTags = blessed.stripTags('' + el)
+      if (noTags.length > widths[i]) {
+        return ('' + el).replace(noTags, noTags.substring(0, widths[i]))
       } else if (widths[i]) {
         return '' + el.padEnd(widths[i])
       } else return '' + el

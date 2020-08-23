@@ -3,13 +3,15 @@ import contrib from '@hp4k1h5/blessed-contrib'
 
 import { config } from './util/config.js'
 import { Workspace } from './ui/workspace.js'
+import { setComponentOptions } from './util/parse.js'
 import { update } from './ui/update.js'
-import { setTime } from './ui/evaluate.js'
+import { setTime } from './util/parse.js'
 
 function buildScreen() {
   const screen = blessed.screen({
     title: 'iexcli',
     smartCSR: true,
+    // log: 'data/log.txt',
   })
   // set app-wide screen keys
   // app-wide exit
@@ -38,7 +40,9 @@ export const main = function () {
       await Promise.all(
         ws.options.components.map(async (cOptions) => {
           cOptions.id = ws.id()
-          setTime(cOptions, [`:${cOptions.time}`], ws)
+          setComponentOptions(ws, cOptions, [], null)
+          setTime(ws, cOptions, [`:${cOptions.time}`])
+
           await update(ws, cOptions)
         }),
       )
