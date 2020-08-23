@@ -47,6 +47,10 @@ export function graph(ws, data, label, row, col, height, width) {
 
   const minY = data ? Math.min(...data[0].y) : 0
 
+  if (!data) {
+    data = [{ title: 'no data', x: [0], y: [0] }]
+  }
+
   const line = ws.grid.set(row, col, height, width, contrib.line, {
     minY,
     xLabelPadding: 0,
