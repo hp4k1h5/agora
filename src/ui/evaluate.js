@@ -1,7 +1,7 @@
 import { update } from './update.js'
 import {
   setOrder,
-  setTarget,
+  setTargets,
   setComponentOptions,
   setTime,
   setSymbol,
@@ -41,14 +41,20 @@ export async function evaluate(ws, input) {
   if (typeof command == 'function') return await command(ws, words)
 
   // parse inputs
-  const target = setTarget(ws, words, command)
-  if (!target) return
-  setComponentOptions(ws, target, words, command)
-  setSymbol(target, words)
-  setTime(ws, target, words)
+  const targets = setTargets(ws, words, command)
+  if (!targets.length) return
+  targets.forEach((target) => {
+    setComponentOptions(ws, target, words, command)
 
-  // execute window fns
-  await update(ws, target)
+    setSymbol(target, words)
+    setTime(ws, target, words)
+  })
+
+  await Promise.all(
+    targets.map(async (target) => {
+      await update(ws, target)
+    }),
+  )
 }
 
 export function exit(ws) {

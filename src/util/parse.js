@@ -5,11 +5,12 @@ import { clear } from './clear.js'
 import { help } from '../ui/help.js'
 import { handleErr } from './error.js'
 
-export function setTarget(ws, words, command) {
+export function setTargets(ws, words, command) {
   // find target component
   let target
-  const _new = words.find((w) => w == 'new')
-  if (!_new) {
+  const _new = words.find((w) => w == '[new')
+  const _all = words.find((w) => w == '[all')
+  if (!_new && !_all) {
     let tId = words.find((w) => w[0] == '[')
     tId = tId ? +tId.substring(1) : null
     target = ws.options.components.find((c) => c.id == tId)
@@ -35,13 +36,16 @@ export function setTarget(ws, words, command) {
     if (command && target.type != command) {
       target = { ...defaults[command], ...target }
     }
-  } else {
+  } else if (_new) {
     target = defaults[command]
     target.id = ws.id()
     ws.options.components.push(target)
+    // all
+  } else {
+    target = ws.options.components.filter((c) => c.symbol)
   }
 
-  return target
+  return Array.isArray(target) ? target : [target]
 }
 
 export function setComponentOptions(ws, target, words, command) {
