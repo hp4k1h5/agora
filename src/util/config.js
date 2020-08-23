@@ -25,6 +25,13 @@ export const validUnits = [
   '5y',
   'max',
 ]
+export const validIndicators = JSON.parse(
+  fs.readFileSync(
+    path.resolve(path.resolve(), './src/util/technicals.json'),
+    'utf8',
+  ),
+)
+
 export const config = parseConfig()
 
 export function parseConfig(location, config) {

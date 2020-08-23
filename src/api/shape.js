@@ -38,16 +38,18 @@ export function shapePrices(options, data) {
     },
     vol: { x: priceData.x, y: priceData.vol, style: { line: [200, 250, 30] } },
   }
+
   if (options.indicator) {
     shapedData.indicators = indicatorData.map((indicator) => {
       return {
         title: options.indicator,
         x: priceData.x,
-        y: indicator.map((d) => d || last),
+        y: indicator,
         style: { line: [250, 230, 150] },
       }
     })
   }
+
   return shapedData
 }
 
