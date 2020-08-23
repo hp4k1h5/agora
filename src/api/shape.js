@@ -3,11 +3,11 @@ import blessed from '@hp4k1h5/blessed'
 // return clean shaped data
 export function shapePrices(options, data) {
   let priceData, indicatorData
-  if (options.indicator) {
+  if (data && options.indicator) {
     priceData = data.chart
     indicatorData = data.indicator
   } else {
-    priceData = data
+    priceData = data || []
   }
 
   // keep track of last price, which fills in for null price points
@@ -42,7 +42,7 @@ export function shapePrices(options, data) {
   if (options.indicator) {
     shapedData.indicators = indicatorData.map((indicator) => {
       return {
-        title: options.indicator,
+        title: options.indicator.name,
         x: priceData.x,
         y: indicator,
         style: { line: [250, 230, 150] },

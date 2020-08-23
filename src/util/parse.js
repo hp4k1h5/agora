@@ -1,5 +1,5 @@
 import { defaults } from './defaults.js'
-import { validUnits } from './config.js'
+import { validUnits, validIndicators } from './config.js'
 import { submitOrder } from '../api/alpaca.js'
 import { clear } from './clear.js'
 import { help } from '../ui/help.js'
@@ -54,6 +54,17 @@ export function setComponentOptions(ws, target, words, command) {
       target.indicator = indicator.substring(1)
       if (!target.indicator.length) {
         delete target.indicator
+      } else {
+        const indicatorOptions = validIndicators.find(
+          (i) => i.name == target.indicator,
+        )
+        if (!indicatorOptions) {
+          // TODO fuzzy search indicators
+          handleErr(ws, `no such indicator ${target.indicator}`)
+          delete target.indicator
+        } else {
+          target.indicator = indicatorOptions
+        }
       }
     }
   } else if (command == 'watchlist') {

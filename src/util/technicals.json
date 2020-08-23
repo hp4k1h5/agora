@@ -1,648 +1,647 @@
 [
   {
-    "name": ["abs"],
-    "desc": ["Vector Absolute Value"],
+    "name": "abs",
+    "desc": "Vector Absolute Value",
     "inputs": ["abs"]
   },
   {
-    "name": ["acos"],
-    "desc": ["Vector Arccosine"],
+    "name": "acos",
+    "desc": "Vector Arccosine",
     "inputs": ["acos"]
   },
   {
-    "name": ["ad"],
-    "desc": ["Accumulation/Distribution Line"],
+    "name": "ad",
+    "desc": "Accumulation/Distribution Line",
     "inputs": ["ad"]
   },
   {
-    "name": ["add"],
-    "desc": ["Vector Addition"],
+    "name": "add",
+    "desc": "Vector Addition",
     "inputs": ["add"]
   },
   {
-    "name": ["adosc"],
-    "desc": ["Accumulation/Distribution Oscillator"],
+    "name": "adosc",
+    "desc": "Accumulation/Distribution Oscillator",
     "inputs": ["short period", "long period"],
     "defaults": [2, 5],
     "outputs": ["adosc"]
   },
   {
-    "name": ["adx"],
-    "desc": ["Average Directional Movement Index"],
+    "name": "adx",
+    "desc": "Average Directional Movement Index",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["dx"]
   },
   {
-    "name": ["adxr"],
-    "desc": ["Average Directional Movement Rating"],
+    "name": "adxr",
+    "desc": "Average Directional Movement Rating",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["dx"]
   },
   {
-    "name": ["ao"],
-    "desc": ["Awesome Oscillator"],
+    "name": "ao",
+    "desc": "Awesome Oscillator",
     "inputs": ["ao"]
   },
   {
-    "name": ["apo"],
-    "desc": ["Absolute Price Oscillator"],
+    "name": "apo",
+    "desc": "Absolute Price Oscillator",
     "inputs": ["short period", "long period"],
     "defaults": [2, 5],
     "outputs": ["apo"]
   },
   {
-    "name": ["aroon"],
-    "desc": ["Aroon"],
+    "name": "aroon",
+    "desc": "Aroon",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["aroon_down,aroon_up"]
   },
   {
-    "name": ["aroonosc"],
-    "desc": ["Aroon Oscillator"],
+    "name": "aroonosc",
+    "desc": "Aroon Oscillator",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["aroonosc"]
   },
   {
-    "name": ["asin"],
-    "desc": ["Vector Arcsine"],
+    "name": "asin",
+    "desc": "Vector Arcsine",
     "inputs": ["asin"]
   },
   {
-    "name": ["atan"],
-    "desc": ["Vector Arctangent"],
+    "name": "atan",
+    "desc": "Vector Arctangent",
     "inputs": ["atan"]
   },
   {
-    "name": ["atr"],
-    "desc": ["Average True Range"],
+    "name": "atr",
+    "desc": "Average True Range",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["atr"]
   },
   {
-    "name": ["avgprice"],
-    "desc": ["Average Price"],
+    "name": "avgprice",
+    "desc": "Average Price",
     "inputs": ["avgprice"]
   },
   {
-    "name": ["bbands"],
-    "desc": ["Bollinger Bands"],
+    "name": "bbands",
+    "desc": "Bollinger Bands",
     "inputs": ["period", "stddev"],
     "defaults": [20, 2],
     "outputs": ["bbands_lower,bbands_middle,bbands_upper"]
   },
   {
-    "name": ["bop"],
-    "desc": ["Balance of Power"]
+    "name": "bop",
+    "desc": "Balance of Power"
   },
   {
-    "name": ["cci"],
-    "desc": ["Commodity Channel Index"],
+    "name": "cci",
+    "desc": "Commodity Channel Index",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["cci"]
   },
   {
-    "name": ["ceil"],
-    "desc": ["Vector Ceiling"],
+    "name": "ceil",
+    "desc": "Vector Ceiling",
     "inputs": ["ceil"]
   },
   {
-    "name": ["cmo"],
-    "desc": ["Chande Momentum Oscillator"],
+    "name": "cmo",
+    "desc": "Chande Momentum Oscillator",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["cmo"]
   },
   {
-    "name": ["cos"],
-    "desc": ["Vector Cosine"],
+    "name": "cos",
+    "desc": "Vector Cosine",
     "inputs": ["cos"]
   },
   {
-    "name": ["cosh"],
-    "desc": ["Vector Hyperbolic Cosine"],
+    "name": "cosh",
+    "desc": "Vector Hyperbolic Cosine",
     "inputs": ["cosh"]
   },
   {
-    "name": ["crossany"],
-    "desc": ["Crossany"],
+    "name": "crossany",
+    "desc": "Crossany",
     "inputs": ["crossany"]
   },
   {
-    "name": ["crossover"],
-    "desc": ["Crossover"],
+    "name": "crossover",
+    "desc": "Crossover",
     "inputs": ["crossover"]
   },
   {
-    "name": ["cvi"],
-    "desc": ["Chaikins Volatility"],
+    "name": "cvi",
+    "desc": "Chaikins Volatility",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["cvi"]
   },
   {
-    "name": ["decay"],
-    "desc": ["Linear Decay"],
+    "name": "decay",
+    "desc": "Linear Decay",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["decay"]
   },
   {
-    "name": ["dema"],
-    "desc": ["Double Exponential Moving Average"],
+    "name": "dema",
+    "desc": "Double Exponential Moving Average",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["dema"]
   },
   {
-    "name": ["di"],
-    "desc": ["Indic", "Directional ator"],
+    "name": "di",
+    "desc": "Indic",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["plus_di,minus_di"]
   },
   {
-    "name": ["div"],
-    "desc": ["Vector Division"],
+    "name": "div",
+    "desc": "Vector Division",
     "inputs": ["div"]
   },
   {
-    "name": ["dm"],
-    "desc": ["Directional Movement"],
+    "name": "dm",
+    "desc": "Directional Movement",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["plus_dm,minus_dm"]
   },
   {
-    "name": ["dpo"],
-    "desc": ["Detrended Price Oscillator"],
+    "name": "dpo",
+    "desc": "Detrended Price Oscillator",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["dpo"]
   },
   {
-    "name": ["dx"],
-    "desc": ["Directional Movement Index"],
+    "name": "dx",
+    "desc": "Directional Movement Index",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["dx"]
   },
   {
-    "name": ["edecay"],
-    "desc": ["Exponential Decay"],
+    "name": "edecay",
+    "desc": "Exponential Decay",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["edecay"]
   },
   {
-    "name": ["ema"],
-    "desc": ["Exponential Moving Average"],
+    "name": "ema",
+    "desc": "Exponential Moving Average",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["ema"]
   },
   {
-    "name": ["emv"],
-    "desc": ["Ease of Movement"],
+    "name": "emv",
+    "desc": "Ease of Movement",
     "inputs": ["emv"]
   },
   {
-    "name": ["exp"],
-    "desc": ["Vector Exponential"],
+    "name": "exp",
+    "desc": "Vector Exponential",
     "inputs": ["exp"]
   },
   {
-    "name": ["fisher"],
-    "desc": ["Fisher Transform"],
+    "name": "fisher",
+    "desc": "Fisher Transform",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["fisher,fisher_signal"]
   },
   {
-    "name": ["floor"],
-    "desc": ["Vector Floor"],
+    "name": "floor",
+    "desc": "Vector Floor",
     "inputs": ["floor"]
   },
   {
-    "name": ["fosc"],
-    "desc": ["Forecast Oscillator"],
+    "name": "fosc",
+    "desc": "Forecast Oscillator",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["fosc"]
   },
   {
-    "name": ["hma"],
-    "desc": ["Hull Moving Average"],
+    "name": "hma",
+    "desc": "Hull Moving Average",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["hma"]
   },
   {
-    "name": ["kama"],
-    "desc": ["Kaufman Adaptive Moving Average"],
+    "name": "kama",
+    "desc": "Kaufman Adaptive Moving Average",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["kama"]
   },
   {
-    "name": ["kvo"],
-    "desc": ["Klinger Volume Oscillator"],
+    "name": "kvo",
+    "desc": "Klinger Volume Oscillator",
     "inputs": ["short period", "long period"],
     "defaults": [2, 5],
     "outputs": ["kvo"]
   },
   {
-    "name": ["lag"],
-    "desc": ["Lag"],
+    "name": "lag",
+    "desc": "Lag",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["lag"]
   },
   {
-    "name": ["linreg"],
-    "desc": ["Linear Regression"],
+    "name": "linreg",
+    "desc": "Linear Regression",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["linreg"]
   },
   {
-    "name": ["linregintercept"],
-    "desc": ["Linear Regression Intercept"],
+    "name": "linregintercept",
+    "desc": "Linear Regression Intercept",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["linregintercept"]
   },
   {
-    "name": ["linregslope"],
-    "desc": ["Linear Regression Slope"],
+    "name": "linregslope",
+    "desc": "Linear Regression Slope",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["linregslope"]
   },
   {
-    "name": ["ln"],
-    "desc": ["Vector Natural Log"],
+    "name": "ln",
+    "desc": "Vector Natural Log",
     "inputs": ["ln"]
   },
   {
-    "name": ["log10"],
-    "desc": ["Vector Base-10 Log"],
+    "name": "log10",
+    "desc": "Vector Base-10 Log",
     "inputs": ["log10"]
   },
   {
-    "name": ["macd"],
-    "desc": ["Moving Average Convergence/Divergence"],
+    "name": "macd",
+    "desc": "Moving Average Convergence/Divergence",
     "inputs": ["short period", "long period", "signal period"],
     "defaults": [12, 26, 9],
     "outputs": ["macd,macd_signal,macd_histogram"]
   },
   {
-    "name": ["marketfi"],
-    "desc": ["Market Facilitation Index"],
+    "name": "marketfi",
+    "desc": "Market Facilitation Index",
     "inputs": ["marketfi"]
   },
   {
-    "name": ["mass"],
-    "desc": ["Mass Index"],
+    "name": "mass",
+    "desc": "Mass Index",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["mass"]
   },
   {
-    "name": ["max"],
-    "desc": ["Maximum In Period"],
+    "name": "max",
+    "desc": "Maximum In Period",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["max"]
   },
   {
-    "name": ["md"],
-    "desc": ["Mean Deviation Over Period"],
+    "name": "md",
+    "desc": "Mean Deviation Over Period",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["md"]
   },
   {
-    "name": ["medprice"],
-    "desc": ["Median Price"],
+    "name": "medprice",
+    "desc": "Median Price",
     "inputs": ["medprice"]
   },
   {
-    "name": ["mfi"],
-    "desc": ["Money Flow Index"],
+    "name": "mfi",
+    "desc": "Money Flow Index",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["mfi"]
   },
   {
-    "name": ["min"],
-    "desc": ["Minimum In Period"],
+    "name": "min",
+    "desc": "Minimum In Period",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["min"]
   },
   {
-    "name": ["mom"],
-    "desc": ["Momentum"],
+    "name": "mom",
+    "desc": "Momentum",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["mom"]
   },
   {
-    "name": ["msw"],
-    "desc": ["Mesa Sine Wave"],
+    "name": "msw",
+    "desc": "Mesa Sine Wave",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["msw_sine,msw_lead"]
   },
   {
-    "name": ["mul"],
-    "desc": ["Vector Multiplication"],
+    "name": "mul",
+    "desc": "Vector Multiplication",
     "inputs": ["mul"]
   },
   {
-    "name": ["natr"],
-    "desc": ["Normalized Average True Range"],
+    "name": "natr",
+    "desc": "Normalized Average True Range",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["natr"]
   },
   {
-    "name": ["nvi"],
-    "desc": ["Negative Volume Index"],
+    "name": "nvi",
+    "desc": "Negative Volume Index",
     "inputs": ["nvi"]
   },
   {
-    "name": ["obv"],
-    "desc": ["On Balance Volume"],
+    "name": "obv",
+    "desc": "On Balance Volume",
     "inputs": ["obv"]
   },
   {
-    "name": ["ppo"],
-    "desc": ["Percentage Price Oscillator"],
+    "name": "ppo",
+    "desc": "Percentage Price Oscillator",
     "inputs": ["short period", "long period"],
     "defaults": [2, 5],
     "outputs": ["ppo"]
   },
   {
-    "name": ["psar"],
-    "desc": ["Parabolic SAR"],
+    "name": "psar",
+    "desc": "Parabolic SAR",
     "inputs": ["acceleration factor step", "acceleration factor maximum"],
     "defaults": [0.2, 2],
     "outputs": ["psar"]
   },
   {
-    "name": ["pvi"],
-    "desc": ["Positive Volume Index"],
+    "name": "pvi",
+    "desc": "Positive Volume Index",
     "inputs": ["pvi"]
   },
   {
-    "name": ["qstick"],
-    "desc": ["Qstick"],
+    "name": "qstick",
+    "desc": "Qstick",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["qstick"]
   },
   {
-    "name": ["roc"],
-    "desc": ["Rate of Change"],
+    "name": "roc",
+    "desc": "Rate of Change",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["roc"]
   },
   {
-    "name": ["rocr"],
-    "desc": ["Rate of Change Ratio"],
+    "name": "rocr",
+    "desc": "Rate of Change Ratio",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["rocr"]
   },
   {
-    "name": ["round"],
-    "desc": ["Vector Round"],
+    "name": "round",
+    "desc": "Vector Round",
     "inputs": ["round"]
   },
   {
-    "name": ["rsi"],
-    "desc": ["Relative Strength Index"],
+    "name": "rsi",
+    "desc": "Relative Strength Index",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["rsi"]
   },
   {
-    "name": ["sin"],
-    "desc": ["Vector Sine"],
+    "name": "sin",
+    "desc": "Vector Sine",
     "inputs": ["sin"]
   },
   {
-    "name": ["sinh"],
-    "desc": ["Vector Hyperbolic Sine"],
+    "name": "sinh",
+    "desc": "Vector Hyperbolic Sine",
     "inputs": ["sinh"]
   },
   {
-    "name": ["sma"],
-    "desc": ["Simple Moving Average"],
+    "name": "sma",
+    "desc": "Simple Moving Average",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["sma"]
   },
   {
-    "name": ["sqrt"],
-    "desc": ["Vector Square Root"],
+    "name": "sqrt",
+    "desc": "Vector Square Root",
     "inputs": ["sqrt"]
   },
   {
-    "name": ["stddev"],
-    "desc": ["Standard Deviation Over Period"],
+    "name": "stddev",
+    "desc": "Standard Deviation Over Period",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["stddev"]
   },
   {
-    "name": ["stderr"],
-    "desc": ["Standard Error Over Period"],
+    "name": "stderr",
+    "desc": "Standard Error Over Period",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["stderr"]
   },
   {
-    "name": ["stoch"],
-    "desc": ["Stochastic Oscillator"],
+    "name": "stoch",
+    "desc": "Stochastic Oscillator",
     "inputs": ["%k period", "%k slowing period", "%d period"],
     "defaults": [5, 3, 3],
     "outputs": ["stoch_k,stoch_d"]
   },
   {
-    "name": ["stochrsi"],
-    "desc": ["Stochastic RSI"],
+    "name": "stochrsi",
+    "desc": "Stochastic RSI",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["stochrsi"]
   },
   {
-    "name": ["sub"],
-    "desc": ["Vector Subtraction"],
+    "name": "sub",
+    "desc": "Vector Subtraction",
     "inputs": ["sub"]
   },
   {
-    "name": ["sum"],
-    "desc": ["Sum Over Period"],
+    "name": "sum",
+    "desc": "Sum Over Period",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["sum"]
   },
   {
-    "name": ["tan"],
-    "desc": ["Vector Tangent"],
+    "name": "tan",
+    "desc": "Vector Tangent",
     "inputs": ["tan"]
   },
   {
-    "name": ["tanh"],
-    "desc": ["Vector Hyperbolic Tangent"],
+    "name": "tanh",
+    "desc": "Vector Hyperbolic Tangent",
     "inputs": ["tanh"]
   },
   {
-    "name": ["tema"],
-    "desc": ["Triple Exponential Moving Average"],
+    "name": "tema",
+    "desc": "Triple Exponential Moving Average",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["tema"]
   },
   {
-    "name": ["todeg"],
-    "desc": ["Vector Degree Conversion"],
+    "name": "todeg",
+    "desc": "Vector Degree Conversion",
     "inputs": ["degrees"]
   },
   {
-    "name": ["torad"],
-    "desc": ["Vector Radian Conversion"],
+    "name": "torad",
+    "desc": "Vector Radian Conversion",
     "inputs": ["radians"]
   },
   {
-    "name": ["tr"],
-    "desc": ["True Range"],
+    "name": "tr",
+    "desc": "True Range",
     "inputs": ["tr"]
   },
   {
-    "name": ["trima"],
-    "desc": ["Triangular Moving Average"],
+    "name": "trima",
+    "desc": "Triangular Moving Average",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["trima"]
   },
   {
-    "name": ["trix"],
-    "desc": ["Trix"],
+    "name": "trix",
+    "desc": "Trix",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["trix"]
   },
   {
-    "name": ["trunc"],
-    "desc": ["Vector Truncate"],
+    "name": "trunc",
+    "desc": "Vector Truncate",
     "inputs": ["trunc"]
   },
   {
-    "name": ["tsf"],
-    "desc": ["Time Series Forecast"],
+    "name": "tsf",
+    "desc": "Time Series Forecast",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["tsf"]
   },
   {
-    "name": ["typprice"],
-    "desc": ["Typical Price"],
+    "name": "typprice",
+    "desc": "Typical Price",
     "inputs": ["typprice"]
   },
   {
-    "name": ["ultosc"],
-    "desc": ["Ultimate Oscillator"],
+    "name": "ultosc",
+    "desc": "Ultimate Oscillator",
     "inputs": ["short period", "medium period", "long period"],
     "defaults": [2, 3, 5],
     "outputs": ["ultosc"]
   },
   {
-    "name": ["var"],
-    "desc": ["Variance Over Period"],
+    "name": "var",
+    "desc": "Variance Over Period",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["var"]
   },
   {
-    "name": ["vhf"],
-    "desc": ["Vertical Horizontal Filter"],
+    "name": "vhf",
+    "desc": "Vertical Horizontal Filter",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["vhf"]
   },
   {
-    "name": ["vidya"],
-    "desc": ["Variable Index Dynamic Average"],
+    "name": "vidya",
+    "desc": "Variable Index Dynamic Average",
     "inputs": ["short period", "long period", "alpha"],
     "defaults": [2, 5, 0.2],
     "outputs": ["vidya"]
   },
   {
-    "name": ["volatility"],
-    "desc": ["Annualized Historical Volatility"],
+    "name": "volatility",
+    "desc": "Annualized Historical Volatility",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["volatility"]
   },
   {
-    "name": ["vosc"],
-    "desc": ["Volume Oscillator"],
+    "name": "vosc",
+    "desc": "Volume Oscillator",
     "inputs": ["short period", "long period"],
     "defaults": [2, 5],
     "outputs": ["vosc"]
   },
   {
-    "name": ["vwma"],
-    "desc": ["Volume Weighted Moving Average"],
+    "name": "vwma",
+    "desc": "Volume Weighted Moving Average",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["vwma"]
   },
   {
-    "name": ["wad"],
-    "desc": ["Williams Accumulation/Distribution"],
+    "name": "wad",
+    "desc": "Williams Accumulation/Distribution",
     "inputs": ["wad"]
   },
   {
-    "name": ["wcprice"],
-    "desc": ["Weighted Close Price"],
+    "name": "wcprice",
+    "desc": "Weighted Close Price",
     "inputs": ["wcprice"]
   },
   {
-    "name": ["wilders"],
-    "desc": ["Wilders Smoothing"],
+    "name": "wilders",
+    "desc": "Wilders Smoothing",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["wilders"]
   },
   {
-    "name": ["willr"],
-    "desc": ["Williams %R"],
+    "name": "willr",
+    "desc": "Williams %R",
     "inputs": ["period"]
   },
   {
-    "name": ["wma"],
-    "desc": ["Weighted Moving Average"],
+    "name": "wma",
+    "desc": "Weighted Moving Average",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["wma"]
   },
   {
-    "name": ["zlema"],
-    "desc": ["Zero-Lag Exponential Moving Average"],
+    "name": "zlema",
+    "desc": "Zero-Lag Exponential Moving Average",
     "inputs": ["period"],
     "defaults": [5],
     "outputs": ["zlema"]
   }
 ]
-

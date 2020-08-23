@@ -6,11 +6,15 @@ export function buildPriceVolCharts(ws, options, data) {
 
   // graph price
   const [y, x, h, w] = options.yxhw
-  let priceData = options.indicator
-    ? [data.price, ...data.indicators]
-    : data
-    ? [data.price]
-    : data
+
+  let priceData
+  if (data) {
+    if (data.indicators) {
+      priceData = [data.price, ...data.indicators]
+    } else {
+      priceData = [data.price]
+    }
+  }
 
   options.box = graph(
     ws,
@@ -37,11 +41,11 @@ export function buildPriceVolCharts(ws, options, data) {
 }
 
 export function graph(ws, data, label, row, col, height, width) {
-  const minY = data ? Math.min(...data[0].y) : 0
-
   if (!data) {
     data = [{ title: 'no data', x: [0], y: [0] }]
   }
+
+  const minY = data ? Math.min(...data[0].y) : 0
 
   const line = ws.grid.set(row, col, height, width, contrib.line, {
     minY,
@@ -62,7 +66,7 @@ export function graph(ws, data, label, row, col, height, width) {
     },
   })
 
-  data && line.setData(data)
+  line.setData(data)
 
   return line
 }

@@ -38,8 +38,14 @@ export async function getPrices(options) {
     } else {
       delete params.chartLast
     }
+    if (options.indicator.defaults) {
+      options.indicator.defaults.forEach((d, i) => {
+        params['input' + (i + 1)] = d * 1.5
+      })
+    }
+
     url = buildIexURL(
-      `stock/${options.symbol}/indicator/${options.indicator}`,
+      `stock/${options.symbol}/indicator/${options.indicator.name}`,
       params,
     )
     // intraday

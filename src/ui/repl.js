@@ -2,6 +2,7 @@ import blessed from '@hp4k1h5/blessed'
 
 import { evaluate } from './evaluate.js'
 import { intro } from './help.js'
+import { handleErr } from '../util/error.js'
 import { exit } from './evaluate.js'
 
 export function buildRepl(ws, options) {
@@ -70,7 +71,11 @@ export function buildRepl(ws, options) {
     ws.input.clearValue()
 
     // parse and handle input
-    await evaluate(ws, data)
+    try {
+      await evaluate(ws, data)
+    } catch (e) {
+      handleErr(ws, e)
+    }
 
     // wait to focus until evaluation completes
     ws.input.focus()
