@@ -157,12 +157,7 @@ export function shapeWatchlist(data) {
 export function shapeProfile(data) {
   if (!data || !data.length) return 'no data for symbol'
 
-  // first datum is from `/company`
-  let company = data[0]
-  // second is `/stats`
-  let keyStats = data[1]
-  // third is `/earnings`
-  let earnings = data[2]
+  let [company, keyStats, earnings, financials] = data
 
   company = `{#afa-fg}${company.symbol}{/}  ${company.companyName}
 
@@ -173,32 +168,28 @@ export function shapeProfile(data) {
 {#4be-fg}issue type{/}: ${company.issueType}
 {#4be-fg}description{/}: {#eb4-fg}${company.description}{/}`
 
-  const treat = (v) => {
-    if (!v) return ''
-    if (typeof v == 'number') {
-      const color = v >= 0 ? '{#4ea-fg}' : '{#eaa-fg}'
-      return color + v.toLocaleString() + '{/}'
+  function shape(obj) {
+    const treat = (v) => {
+      if (!v) return ''
+      if (typeof v == 'number') {
+        const color = v >= 0 ? '{#4ea-fg}' : '{#eaa-fg}'
+        return color + v.toLocaleString() + '{/}'
+      }
+      return v
     }
-    return v
+
+    return Object.entries(obj)
+      .map((e) => {
+        return `{#4be-fg}${e[0]}{/}: ${treat(e[1])}`
+      })
+      .join('\n')
   }
 
-  if (keyStats)
-    keyStats = Object.entries(keyStats)
-      .map((e) => {
-        return `{#4be-fg}${e[0]}{/}: ${treat(e[1])}`
-      })
-      .join('\n')
-  else keyStats = ''
+  keyStats = shape(keyStats)
+  earnings = shape(earnings.earnings[0])
+  financials = shape(financials.financials[0])
 
-  if (earnings && earnings.earnings)
-    earnings = Object.entries(earnings.earnings[0])
-      .map((e) => {
-        return `{#4be-fg}${e[0]}{/}: ${treat(e[1])}`
-      })
-      .join('\n')
-  else earnings = ''
-
-  return { company, keyStats, earnings }
+  return { company, keyStats, earnings, financials }
 }
 
 export function shapeLists(data, types) {

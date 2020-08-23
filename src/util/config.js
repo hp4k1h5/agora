@@ -17,7 +17,9 @@ export const validComponentTypes = [
 export const validUnits = [
   '1d',
   '5d',
+  '5dm',
   '1m',
+  '1mm',
   '3m',
   '6m',
   'ytd',

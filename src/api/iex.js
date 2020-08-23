@@ -111,6 +111,7 @@ export async function getProfile(options) {
     buildIexURL(`stock/${options.symbol}/company`),
     buildIexURL(`stock/${options.symbol}/stats`),
     buildIexURL(`stock/${options.symbol}/earnings/1`, { period: 'quarter' }),
+    buildIexURL(`stock/${options.symbol}/financials`),
   ]
 
   const data = await Promise.all(
