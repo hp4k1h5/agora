@@ -3,15 +3,21 @@ import blessed from '@hp4k1h5/blessed'
 // return clean shaped data
 export function shapePrices(options, data) {
   let priceData, indicatorData
+
   if (data && options.indicator) {
     priceData = data.chart
     indicatorData = data.indicator
-  } else {
-    priceData = data || []
+  } else if (data) {
+    priceData = data
+  }
+  // some indicators returns a blank {} off trading hours
+  if (!Object.keys(data).length) {
+    priceData = []
   }
 
   // keep track of last price, which fills in for null price points
-  let last = priceData.find((price) => price.close) || 0
+  // let last = priceData.find((price) => price.close) || 0
+  let last = 0
   // intraday vs daily keys
   const xKey = options.series == 'intra' ? 'minute' : 'date'
   priceData = priceData.reduce(
@@ -39,7 +45,7 @@ export function shapePrices(options, data) {
     vol: { x: priceData.x, y: priceData.vol, style: { line: [200, 250, 30] } },
   }
 
-  if (options.indicator) {
+  if (indicatorData) {
     shapedData.indicators = indicatorData.map((indicator) => {
       return {
         title: options.indicator.name,
