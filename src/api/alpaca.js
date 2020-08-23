@@ -1,7 +1,6 @@
 import fetch from 'node-fetch'
 
 import { config } from '../util/config.js'
-
 import { shapeAccount } from './shape.js'
 
 let alpacaTokens

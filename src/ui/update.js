@@ -36,7 +36,7 @@ export async function update(ws, options) {
     // make request(s)
     data = await updateMap[options.type].apiFn(options)
   } catch (e) {
-    return handleErr(ws, e)
+    handleErr(ws, e)
   }
 
   // update ui
