@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v0.0.11
+- filepath fixes
+
 ## v0.0.10
 - 📺 improved window handling. `new` keyword opens new windows. `x`
     closes targeted window. `all` updates all targetable windows.

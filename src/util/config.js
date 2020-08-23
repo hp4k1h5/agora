@@ -28,11 +28,10 @@ export const validUnits = [
   '5y',
   'max',
 ]
+
+const __dirname = path.dirname(new URL(import.meta.url).pathname)
 export const validIndicators = JSON.parse(
-  fs.readFileSync(
-    path.resolve(path.resolve(), './src/util/technicals.json'),
-    'utf8',
-  ),
+  fs.readFileSync(path.join(__dirname, './technicals.json'), 'utf8'),
 )
 
 export const config = parseConfig()
@@ -136,7 +135,7 @@ function loadConfig(location) {
   let config
   let possibleLocations = [
     path.resolve(os.homedir(), '.config/iexcli/config.json'),
-    path.resolve(path.resolve(), './config.json'),
+    path.resolve(path.join(__dirname, '../../config.json')),
   ]
   if (location) possibleLocations = [path.resolve(location)]
 
@@ -152,11 +151,8 @@ function loadConfig(location) {
     config = JSON.parse(config)
   } catch (e) {
     console.error(
-      `err: config.json not found in ${
-        location
-          ? location
-          : 'root directory of iexcli or in "~/.config/iexcli/config.json"'
-      }
+      `err: config.json not found in any of ${possibleLocations.join('\n- ')}
+
 see README or https://github.com/HP4k1h5/iexcli`,
     )
     process.exit(1)
