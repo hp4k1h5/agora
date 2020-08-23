@@ -8,6 +8,7 @@ import {
   shapeWatchlist,
   shapeProfile,
   shapeLists,
+  shapeSectors,
 } from './shape.js'
 
 import { config } from '../util/config.js'
@@ -147,4 +148,16 @@ export async function getLists(options) {
   )
 
   return shapeLists(data, options.listTypes)
+}
+
+export async function getSectors(_options) {
+  let url = buildIexURL('stock/market/sector-performance')
+
+  let response = await fetch(url)
+  if (!response.ok) {
+    throw response
+  }
+
+  response = await response.json()
+  return shapeSectors(response)
 }

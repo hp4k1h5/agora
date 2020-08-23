@@ -12,6 +12,7 @@ export const validComponentTypes = [
   'watchlist',
   'profile',
   'list',
+  'sectors',
   'account',
 ]
 export const validUnits = [
@@ -126,7 +127,7 @@ valid component types are ${validComponentTypes.join(' ')}`)
   if (!errors.length) return config
 
   // or print errors and exit
-  console.log(`err: the following errors were found with your config, which was found at ${location}
+  console.error(`err: the following errors were found with your config, which was found at ${location}
 ${errors.join('\n')}`)
   process.exit(1)
 }

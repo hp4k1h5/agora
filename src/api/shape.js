@@ -233,6 +233,17 @@ export function shapeLists(data, types) {
   return shaped
 }
 
+export function shapeSectors(data) {
+  return data
+    .map((datum) => {
+      table(
+        [`{#4be-fg}${datum.name}{/}`, (datum.performance * 100).toFixed(1)],
+        [15],
+      )
+    })
+    .join('\n')
+}
+
 export function shapeAccount(data) {
   const [accountData, positionsData] = data
   const shapedData = { account: '', positions: '' }

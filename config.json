@@ -105,6 +105,14 @@
             "iexvolume",
             "iexpercent"
           ]
+        },
+        {
+          "type": "watchlist",
+          "yxhw": [4, 0, 8, 12]
+        },
+        {
+          "type": "sectors",
+          "yxhw": [0, 9, 4, 3]
         }
       ]
     },
