@@ -32,6 +32,8 @@ export async function evaluate(ws, input) {
     list: 'list',
     '*': 'list',
     sectors: 'sectors',
+    '^': 'book',
+    book: 'book',
     '@': 'account',
   }
 

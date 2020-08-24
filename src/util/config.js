@@ -13,6 +13,7 @@ export const validComponentTypes = [
   'profile',
   'list',
   'sectors',
+  'book',
   'account',
 ]
 export const validUnits = [

@@ -9,6 +9,7 @@ import {
   shapeProfile,
   shapeLists,
   shapeSectors,
+  shapeBook,
 } from './shape.js'
 
 import { config } from '../util/config.js'
@@ -160,4 +161,16 @@ export async function getSectors(_options) {
 
   response = await response.json()
   return shapeSectors(response)
+}
+
+export async function getBook(options) {
+  const url = buildIexURL(`stock/${options.symbol}/book`)
+
+  let response = await fetch(url)
+  if (!response.ok) {
+    throw response
+  }
+
+  response = await response.json()
+  return shapeBook(response)
 }

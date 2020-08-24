@@ -8,10 +8,12 @@ export function buildProfile(ws, options, data) {
   options.box = ws.grid.set(...options.yxhw, blessed.box, {
     name: 'profile',
     label: `[${options.id} profile]`,
+    // inputs
     keys: false,
     input: true,
     mouse: false,
     scrollable: false,
+    // styles
     tags: true,
     style: {
       focus: { border: { fg: '#ddf' } },

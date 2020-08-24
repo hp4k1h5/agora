@@ -10,7 +10,7 @@ export function buildNewsList(ws, options, data) {
     label: `[${options.id} news]`,
     // inputs
     keys: false,
-    input: true,
+    input: false,
     mouse: true,
     scrollable: true,
     // styles
@@ -26,9 +26,5 @@ export function buildNewsList(ws, options, data) {
 
   // set data
   if (!data) return
-  data =
-    options.symbol +
-    '      ? hit {yellow-fg}esc{/} to return to repl, use mouse to scroll\n' +
-    data
-  options.box.setContent(data)
+  options.box.setContent([`{#bf6-fg}${options.symbol}{/}`, data].join('\n'))
 }

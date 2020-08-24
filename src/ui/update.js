@@ -3,20 +3,22 @@ import {
   getQuote,
   getNews,
   getWatchlist,
+  getLists,
   getProfile,
   getSectors,
-  getLists,
+  getBook,
 } from '../api/iex.js'
 import { getAccount } from '../api/alpaca.js'
 
+import { buildRepl } from './repl.js'
 import { buildPriceVolCharts } from './graph.js'
 import { buildQuoteList } from './quote.js'
 import { buildNewsList } from './news.js'
 import { buildWatchlist } from './watchlist.js'
-import { buildProfile } from './profile.js'
 import { buildLists } from './list.js'
-import { buildRepl } from './repl.js'
+import { buildProfile } from './profile.js'
 import { buildSectors } from './sectors.js'
+import { buildBook } from './book.js'
 import { buildAccount } from './account.js'
 
 import { handleErr } from '../util/error.js'
@@ -30,20 +32,31 @@ const updateMap = {
   list: { apiFn: getLists, uiFn: buildLists },
   account: { apiFn: getAccount, uiFn: buildAccount },
   sectors: { apiFn: getSectors, uiFn: buildSectors },
+  book: { apiFn: getBook, uiFn: buildBook },
   repl: { apiFn: () => {}, uiFn: buildRepl },
 }
 
 export async function update(ws, options) {
   let data
-  try {
-    // make request(s)
-    data = await updateMap[options.type].apiFn(options)
-  } catch (e) {
-    handleErr(ws, e)
+
+  if (options.pollMs) {
+    options.interval = setInterval(up, options.pollMs)
+  } else {
+    up()
   }
 
-  // update ui
-  updateMap[options.type].uiFn(ws, options, data)
+  async function up() {
+    ws.printLines && ws.printLines(Object.keys(options))
+    try {
+      // make request(s)
+      data = await updateMap[options.type].apiFn(options)
+    } catch (e) {
+      handleErr(ws, e)
+    }
 
-  ws.options.screen.render()
+    // update ui
+    updateMap[options.type].uiFn(ws, options, data)
+
+    ws.options.screen.render()
+  }
 }

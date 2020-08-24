@@ -244,6 +244,39 @@ export function shapeSectors(data) {
     .join('\n')
 }
 
+// descending from red to yellow
+const bookColors = [
+  '{#8fc-bg}',
+  '{#be7-bg}',
+  '{#db9-bg}',
+  '{#abd-bg}',
+  '{#9bf-bg}',
+]
+export function shapeBook(data) {
+  let { bids, asks, trades } = data
+  bids = shapeBidAsk(bids)
+  asks = shapeBidAsk(asks)
+  trades = shapeBidAsk(trades, true)
+
+  function shapeBidAsk(bidsOrAsks, timestamp) {
+    return bidsOrAsks
+      .slice(0, 5)
+      .map((ba, i) => {
+        timestamp = timestamp
+          ? new Date(ba.timestamp).toLocaleTimeString()
+          : null
+        return table(
+          [`${bookColors[i]}${ba.size}`, `{#000-fg}${ba.price}{/}`, timestamp],
+          [5, 7],
+          ' @ ',
+        )
+      })
+      .join('\n')
+  }
+
+  return { bids, asks, trades }
+}
+
 export function shapeAccount(data) {
   const [accountData, positionsData] = data
   const shapedData = { account: '', positions: '' }
@@ -280,15 +313,16 @@ function abbrevNum(num) {
   return num.toFixed(1) + l[c] || ''
 }
 
-function table(arr, widths) {
+function table(arr, widths, j = ': ') {
   return arr
+    .filter((el) => el)
     .map((el, i) => {
       const noTags = blessed.stripTags('' + el)
       if (noTags.length > widths[i]) {
         return ('' + el).replace(noTags, noTags.substring(0, widths[i]))
       } else if (widths[i]) {
-        return '' + el.padEnd(widths[i])
+        return el.replace(noTags, noTags.padEnd(widths[i]))
       } else return '' + el
     })
-    .join(': ')
+    .join(j)
 }

@@ -35,6 +35,11 @@ export function setTargets(ws, words, command) {
 
     if (command && target.type != command) {
       target = { ...defaults[command], ...target }
+      ws.options.components.splice(
+        ws.options.components.findIndex((c) => c.id == target.id),
+        1,
+        target,
+      )
     }
   } else if (_new) {
     target = defaults[command]

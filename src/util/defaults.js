@@ -47,6 +47,13 @@ const sectors = {
   yxhw: [0, 9, 4, 3],
 }
 
+const book = {
+  type: 'book',
+  symbol: 'qqq',
+  yxhw: [0, 0, 4, 4],
+  pollMs: 1000,
+}
+
 const account = {
   type: 'account',
   yxhw: [0, 0, 12, 9],
@@ -66,6 +73,7 @@ export const defaults = {
   profile,
   list,
   sectors,
+  book,
   account,
   help,
 }
