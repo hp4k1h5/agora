@@ -10,23 +10,16 @@
 
 ## alpha release
 
-### v0.0.10
-- better component window management
-  - keywords `[new`, `[all`, `x` to open new windows, update all windows, and
-      close the targeted window
-- improved help menus
-- iex premium data api endpoints
-  - technical indicators
-
-### v0.0.11
-- markdown analyst reports
+### v0.0.13
+- iex
+  - order book data
+  - message use info
+  - sectors/tags
 - alpaca
   - watchlist integration
   - orders
   - portfolio history
-- multiple config examples and walkthrough tutorial for how to build or
-    customize
-- more complete tutorial
+  - streaming data
 
 ---
 
@@ -35,13 +28,13 @@
 ### v0.1.0
 - set config options in iexcli
 - alpaca
-  - streaming
   - algo/bot management
 
 ---
 
 ## backlog
 
+- markdown analyst reports/news reader
 - chart types
   - bar (have to make a new drawille component since contrib bar is not made
       for financial data graphing)

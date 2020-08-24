@@ -1,0 +1,129 @@
+{
+  "IEX_PUB_KEY": "",
+  "APCA_API_KEY_ID": "",
+  "APCA_API_SECRET_KEY": "",
+  "alpacaAccountType": "paper",
+  "workspaces": [
+    {
+      "name": "home",
+      "watchlist": [
+        "amzn",
+        "aapl",
+        "msft",
+        "goog",
+        "qcom",
+        "fb",
+        "twtr",
+        "z",
+        "t",
+        "s",
+        "r",
+        "tsla",
+        "f",
+        "gm",
+        "tm",
+        "brk.a",
+        "aa",
+        "ge",
+        "de",
+        "cat",
+        "xom",
+        "c",
+        "gs",
+        "v",
+        "x",
+        "qqq",
+        "spy",
+        "oil",
+        "gld",
+        "l",
+        "hd"
+      ],
+      "components": [
+        {
+          "type": "repl",
+          "yxhw": [8, 9, 4, 3]
+        },
+        { "type": "quote", "yxhw": [0, 9, 3, 3], "symbol": "ge" },
+        { "type": "news", "yxhw": [3, 9, 5, 3], "symbol": "tsla" },
+        {
+          "type": "chart",
+          "chartType": "line",
+          "yxhw": [0, 0, 4, 9],
+          "symbol": "ge",
+          "time": "30min",
+          "vol": false,
+          "color": [230, 100, 200]
+        },
+        {
+          "type": "chart",
+          "chartType": "line",
+          "yxhw": [4, 0, 8, 9],
+          "symbol": "tsla",
+          "time": "60min",
+          "vol": true,
+          "color": "green"
+        }
+      ]
+    },
+    {
+      "name": "details",
+      "watchlist": ["tsla"],
+      "components": [
+        {
+          "type": "repl",
+          "yxhw": [0, 9, 4, 3]
+        },
+        { "type": "news", "yxhw": [0, 0, 4, 6], "symbol": "tsla" },
+        { "type": "quote", "yxhw": [0, 6, 4, 3], "symbol": "tsla" },
+        {
+          "type": "chart",
+          "chartType": "line",
+          "yxhw": [4, 0, 8, 4],
+          "symbol": "tsla",
+          "time": "1y",
+          "vol": true,
+          "color": "green"
+        },
+        {
+          "type": "profile",
+          "symbol": "tsla",
+          "yxhw": [4, 4, 8, 8]
+        }
+      ]
+    },
+    {
+      "name": "lists",
+      "components": [
+        {
+          "type": "list",
+          "yxhw": [0, 0, 4, 9],
+          "listTypes": [
+            "mostactive",
+            "gainers",
+            "losers",
+            "iexvolume",
+            "iexpercent"
+          ]
+        },
+        {
+          "type": "watchlist",
+          "yxhw": [4, 0, 8, 12]
+        },
+        {
+          "type": "sectors",
+          "yxhw": [0, 9, 4, 3]
+        }
+      ]
+    },
+    {
+      "name": "account info",
+      "components": [
+        {
+          "type": "account",
+          "yxhw": [0, 0, 12, 12]
+        }
+      ]
+    }
+  ]
+}

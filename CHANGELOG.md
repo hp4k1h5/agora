@@ -1,7 +1,7 @@
 # CHANGELOG
 
 ## v0.0.12
-- docs
+- config.json documentation. README updates
 
 ## v0.0.11
 - filepath fixes

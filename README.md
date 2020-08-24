@@ -1,25 +1,40 @@
 # iexcli
 
+<span style="display:inline-block; width:50% ">
+
 > view market info and charts and trade stocks in the terminal
 
-#### !!warning iexcli is in alpha and subject to change ⚠
-[contributions](./.github/CONTRIBUTING.md) and [bug
-reports](https://github.com/HP4k1h5/iexcli/issues/new?assignees=HP4k1h5&labels=bug&template=bug_report.md&title=basic)
-are_welcome_
+</span>
 
-![screen shot of iexcli with one price chart, one volume chart, a repl, and
-some stock quote data](img/iexcli.png)
+<span style="display:inline-block;top:0;float:right;padding:7px;border:3px #ddd solid">
 
 ##### Terms of Service for IEX data
-[Data provided by IEX Cloud](https://iexcloud.io)
+> [Data provided by IEX Cloud](https://iexcloud.io)
 
-- [CHANGELOG](#changelog)
-- [installation](#installation)
-- [usage](#usage)
-  - [commands](#commands)
+</span>
+
+
+##### !!warning iexcli is in _alpha_ and subject to change ⚠
+[contributions](./.github/CONTRIBUTING.md) and [bug
+reports](https://github.com/HP4k1h5/iexcli/issues/new?assignees=HP4k1h5&labels=bug&template=bug_report.md&title=basic)
+are _welcome_
+
+![screenshot of a terminal window displaying a stock chart, active
+gainers/losers, and stock related news](img/iexcli.png)
+> the workspace used to generate this image is defined in
+> [docs/example-configs/dense.json](./docs/example-configs/dense.json)
+
+##### table of contents
+
+- [changelog](#changelog)
+- **[installation](#installation)**
+- **[usage](#usage)**
+  - [getting started](#getting-started)
+  - [**workspaces**, focus and windows](#workspaces,-focus-and-windows)
+  - [**commands**](#commands)
 - [trading](#trading)
-- [thanks](#thanks)
-
+- [**config.json**](#config.json)
+- [thanks!](#thanks)
 
 ## CHANGELOG
 
@@ -63,7 +78,7 @@ some stock quote data](img/iexcli.png)
     ```bash
     cp  ~/.config/yarn/global/node_modules/@hp4k1h5/iexcli/config.json ~/.config/iexcli
     ```
-    You can copy the default config from this repo
+    See **[config.json](#config.json)** for configuration tips and example configs.
 
 #### register
 **for a free [iex account](https://iexcloud.io/cloud-login#/register)** and
@@ -74,22 +89,35 @@ copy the **publishable** api key. These typically start with `pk`
 
 ### getting started
 
-If you installed globally, you should be able to use the bash alias `iexcli`
-from anywhere. Be sure to refresh your terminal, e.g. `exec zsh` or start a
-new terminal window after installing so that the alias can be found. If you
-still cannot find an alias, try running `yarn link` from this project
-directory root. Otherwise, if you downloaded with git or to a local directory,
-RUN `node src/index.js` from the root of this directory, or `yarn run run`.
+If you installed globally, you should be able to use the shell alias `iexcli`
+from anywhere. If `which iexcli` does not return a path, refresh your
+terminal, e.g. `exec zsh` or start a new terminal window after installing so
+that the alias can be found. If you still cannot find an alias, try running
+`yarn link` from this project directory root. Otherwise, if you downloaded
+with git or to a local directory, RUN `node src/index.js` from the root of
+this directory, or `yarn run run`.
 
-Most interaction is through the repl emulator screen. It accepts commands and
-updates the charts and data windows. If a component has more data than fits on
-the screen, try scrolling it with the mouse. arrow keys <kbd>left</kbd> and
-<kbd>right</kbd> can be used to switch workspaces. See [configuring
-workspaces](#configuring-workspaces)
+Most interaction is through the repl emulator input field. It accepts commands
+and updates the charts and data windows. If a component has more data than
+fits on the screen, try scrolling it with the mouse. Arrow keys
+<kbd>left</kbd> and <kbd>right</kbd> can be used to switch workspaces. See
+[configuring workspaces](#configuring-workspaces)
 
 Type `help` or `h` for general information. Type e.g. `h $` or `h :` for
 command-specific help. If your terminal allows it, you can scroll through the
 help.
+
+#### note about iex message usage
+> if you receive <span style="color:red">"Payment required"</span> error
+> messages, this is iexcloud telling
+you that your remaining message allotment is insufficient for the data request
+you are making. You can visit your [iexcloud
+console](https://iexcloud.io/console/usage) for more information. If you wish
+to make the most use of your 500,000 free monthly iex messages, avoid longer
+time-range graph queries. For example a 5-year chart costs roughly 12,590
+messages (~252 trading days * 50 messages/day). Intraday time ranges such as
+`:1d` or `:100min` are free. Profile (`&`) data is also relatively expensive.
+
 
 ### workspaces, focus and windows
 
@@ -97,57 +125,59 @@ By default, iexcli comes with several workspaces that you can cycle through
 with left and right arrow keys. If a component is acting up or the workspace
 is erroring, try switching to another workspace and then back.
 
-If the cursor is not blinking in the repl you can use `tab` and `Shift-tab` to
+If the input field is not focused, you can use `tab` and `Shift-tab` to
 rotate through components. To return directly to repl hit `>`, the
-"greater-than" sign. Unless a window prefix-command has been entered, the last
-focused component will be the one targeted by the command. When you start
-typing in the repl, the last focused component should be highlighted with a
-yellow border. From the repl, to return to focus rotation,  hit `esc`.
+"greater-than" sign.
+
+Unless a window prefix-command, `[`, has been entered, the last focused
+component will be the one targeted by commands entered into the repl. When you
+start typing in the repl, the last focused component should be highlighted
+with a yellow border.
 
 Type `esc` from the repl to re-enter the focus-rotation. It can be confusing
 and if you return directly to the repl when you expected to rotate, try going
 in the other direction, i.e. `Shift-tab` instead of `tab` or vice-versa.
 
 Every targetable window in iexcli should have a number in the top-left corner
-of the screen. From the repl you can type a `[` window prefix to target a
-specific window with a command. For instance, in this example:
+of the window. From the repl you can type a `[` window prefix to target a
+specific window with a command. If a window is not visible, try rotating
+through components with e.g. `esc tab` or `esc Shift-tab`, until the desired
+component is at the front. Use `>` to return directly to repl, and target that
+component.
 
-![iexcli running with multiple open windows](img/targeting.png)
-
-the command `[3 $aapl !` would switch the 3 window to a news view of $appl.
-
-![after running the \[`3 $aapl !` command](img/targeted.png)
 
 ### commands
 
 #### `help` or `h`
 Typing `help` or `h` brings up a help menu. If you include another command
-name after, command-specific help is returned to the repl.  
+name after, command-specific help is returned to the repl. Type `x` in the
+repl to close the help menu  
 **examples**
 ```fortran
-help $   # show help for stock prefix command
-h :      # show help for time prefix command
-h #      # show help for chart command
-h        # show general help
+help $      --> show help for stock prefix command
+h :         --> show help for time prefix command
+h #         --> show help for chart command
+h           --> show general help
 ```
 
 #### `quit` or `exit`
 Typing `quit`, `exit` or `Ctrl-c` will exit the app
 
-#### <kbd>left</kbd>  <kbd>right</kbd>
-Switch workspace. By default, iexcli comes with several workspaces. Depending
-on you terminal and trading preferences, these can be configured in
-`config.json`. See [configuring config](#configuring-config)
+#### <kbd>left</kbd>  <kbd>right</kbd> switch workspaces
+Use left and right arrow-keys to switch between workspaces. By default,
+iexcli comes with several workspaces. Depending on you terminal and trading
+preferences, these can be configured in `config.json`. See [configuring
+workspaces](#configuring-workspaces)
 
 #### `>` return to repl
-If the repl is not active and the cursor is not blinking, hit `>` to return to
-repl. The last active window will be the target unless a window prefix-command
-has been issued.
+If the repl is not focused, hit `>` to return to repl. The last active window
+will be the target of the commands entered unless a window prefix-command has
+been issued.
 
 #### `esc`
 From the repl, hit `esc` to return to the focus rotation.
 
-#### `[` window id prefix
+#### `[` window prefix
 Typing a `[` followed immediately by a window id, or one of the keywords `all`
 or `new` will target the window(s) with the command. Window ids are found in the
 top-left corner of each targetable window.  
@@ -191,17 +221,6 @@ $TM              --> update symbol in active component to TSLA
 [2 $BRK.B :1.5h   --> update active symbol to BRK.B and update time to last 90 minutes
 ```
 
-#### `#` chart command
-Typing `#` brings up the price/volume chart display in the targeted window.
-You may also set time, technical-indicator, and stock symbol by including
-those prefix-commands in the query.  
-**examples**
-```c
-# :1dm $t     --> change the active window to a 1 day 5-minutes chart of $t
-[2 # %wma     --> change the second window to a chart with
-                  weighted-moving-average overlay
-```
-
 #### `:` time range prefix
 Typing `:` followed immediately by a combination of the following parameters
 will change the currently active time range and update the currently active
@@ -217,29 +236,23 @@ Can be combined with time prefix to update multiple values at the same time
                    to X
 ```
 
-#### `%` technical-indicator prefix
-> _iex paid subscribers only_  
-
-Typing `%` followed immediately by the abbreviated name of the technical
-indicator will overlay the active chart window with the technical indicator.
-This will only apply to chart windows.  
-**valid technical indicators** include `bbands, wma, ema, hma`. See [full
-list](./src/util/technicals.json). Can be combined with time, stock and window
-prefixes to update multiple values at the same time  
+#### `#` chart command
+Typing `#` brings up the price/volume chart display in the targeted window.
+You may also set time, stock symbol, and
+[technical-indicator](#%-technical-indicator-prefix) by including those
+prefix-commands in the query.  
 **examples**
-```bash
-%bbands         --> add bollinger bands overlay to current active chart
-[4 $qqq %wma    --> update fourth window with weighted moving average and $qqq
-%               --> % by itself with no indicator name will remove any
-                    indicator from the targeted window
+```c
+# :1dm $t     --> change the active window to a 1 day 5-minutes chart of $t
+[2 # %wma     --> change the second window to a chart with
+                  weighted-moving-average overlay
 ```
 
 #### `!` news command
-Typing `!` brings up the news display with the latest 20 results relevant to
-the active symbol. Use mouse to scroll the table. Use `tab` or `esc` to return
-to repl. Can be combined with stock prefix to update multiple values at the
-same time  
-![news display for iexcli](img/news.png)  
+Typing `!` brings up the news display with up to the latest 20 results
+relevant to the active symbol. Use mouse to scroll the table. Use `tab` or
+`esc` to return to repl. Can be combined with stock prefix to update multiple
+values at the same time  
 **examples**
 ```bash
 $de !          # show news and update active stock to DE
@@ -249,7 +262,9 @@ $de !          # show news and update active stock to DE
 #### `=` watchlist command
 Typing `=` brings up the watchlist display. Use mouse to scroll the table. Use
 `tab` or `esc` to return to repl.  ![watchlist display for
-iexcli](img/watchlist.png).
+iexcli](img/multi-chart.png). Watchlist is in the top-left corner. Use mouse
+to scroll. This workspace is defined in
+[dense.json](./docs/example-configs/dense.json)
 > note: Key values `open high low close` are only available to iex premium
 > data subscribers and during non-market hours to other api consumers  
 
@@ -286,6 +301,25 @@ window.
 ```bash
 [4 " $r
 ```
+
+#### `%` technical-indicator prefix
+> _iex paid subscribers only_  
+
+Typing `%` followed immediately by the abbreviated name of the technical
+indicator will overlay the active chart window with the technical indicator.
+This will only apply to chart windows.  
+**valid technical indicators** include `bbands, wma, ema, hma`. See [full
+list](./src/util/technicals.json). Can be combined with time, stock and window
+prefixes to update multiple values at the same time  
+**examples**
+```bash
+%bbands         --> add bollinger bands overlay to current active chart
+[4 $qqq %wma    --> update fourth window with weighted moving average and $qqq
+%               --> % by itself with no indicator name will remove any
+                    indicator from the targeted window
+```
+
+---
 
 ## trading
 **⚠ disclaimer: iexcli's trading integration is in early _alpha_ and it is not
@@ -341,29 +375,41 @@ follows. All orders must have three components:
 ---
 
 ## config.json
-## configuring workspaces
+
 By default iexcli will look for a config in two places on unix/free-bsd
 systems. First it will check `~/.config/iexcli/config.json`, and then it will
-look in the root directory of this repo wherever that is installed on your
+look in the root directory of this repo, wherever that is installed on your
 system. If the path `~/.config/iexcli/` does not exist, you will have to
 create it yourself. You can copy this config and adapt for your own purposes.
-Please feel free to share handy configurations by submitting an issue/pr.
+Please feel free to share handy configurations by submitting an issue or pr.
 
-Eventually, i will create a more comprehensive tutorial, but the main idea is
-that each component needs a "yxhw" key and a length 4 array, representing the
-starting positing, top-left corner (y,x), and the height (h) and width (w).
+## configuring workspaces
+
+See [example configurations](./docs/example-configs)
+
+Eventually, i will create a more comprehensive tutorial to configure your
+`config.json` workspaces, but the main idea is that each component needs a
+`"yxhw"` key representing the starting position of the top-left corner (y,x),
+and the height (h) and width (w) of the component. All workspaces are
+currently aligned on a 12x12 grid, so components should not be wider or taller
+than 12. If you add components that overlap, you can rotate through the
+focus-cycle to bring your desired component to the front, and return to repl
+directly using `>`, the "greater-than sign". Additionally, targeting your
+desired component window with the window-prefix `[`, will bring it the front.
 
 As an example, a workspace with 4 evenly spaced windows like
 ```boxcar
-┏━━━━┓┏━━━━┓
-┃    ┃┃    ┃
-┗━━━━┛┗━━━━┛
-┏━━━━┓┏━━━━┓
-┃    ┃┃    ┃
-┗━━━━┛┗━━━━┛
+                    ┏[1━━━━━┓┏[2━━━━━┓
+                    ┃    /- ┃┃---    ┃
+                    ┃_/\/   ┃┃ ----  ┃
+                    ┗━━━━━━━┛┗━━━━━━━┛
+                    ┏[3━━━━━┓┏[4━━━━━┓
+                    ┃ /--\  ┃┃-: --  ┃
+                    ┃ \__/  ┃┃-: ----┃
+                    ┗━━━━━━━┛┗━━━━━━━┛
 ```
 
-would have a config.json like the following:
+would have a `config.json` like the following:
 
 ```json
 {
@@ -371,21 +417,20 @@ would have a config.json like the following:
     {
       "name": "4 windows",
       "components":[
-      {"name": 1, "yxhw":[0, 0, 6, 6]},
-      {"name": 1, "yxhw":[0, 6, 6, 6]},
-      {"name": 1, "yxhw":[6, 0, 6, 6]},
-      {"name": 1, "yxhw":[6, 6, 6, 6]}
+      {"type": "chart", "yxhw":[0, 0, 6, 6]},
+      {"name": "news", "yxhw":[0, 6, 6, 6]},
+      {"name": "profile", "yxhw":[6, 0, 6, 6]},
+      {"name": "quote", "yxhw":[6, 6, 6, 6]}
       ]
     }
   ]
 }
 ```
 
-
-At the moment the workspace grid is blocked into 12 sections so it is probably
-best to ensure that components do not overlap too much, unless one doesn't
-mind tabbing through component or targeting them with `[` to bring them to the
-fore.
+Note that not including a repl in a workspace is not ideal at the moment. If
+you have "read-only" workspaces, try to avoid using keys other than
+<kbd>left</kbd>  <kbd>right</kbd>, as there is a ghost-repl that can catch
+focus and disrupt functionality.
 
 I appreciate your patience as the behavior of the app settles and as i work up
 some more thorough explanations of the app's behavior.

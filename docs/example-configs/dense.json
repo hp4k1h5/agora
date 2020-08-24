@@ -1,0 +1,129 @@
+{
+  "IEX_PUB_KEY": "",
+  "APCA_API_KEY_ID": "",
+  "APCA_API_SECRET_KEY": "",
+  "alpacaAccountType": "paper",
+  "config description": "This configuration is designed to maximize iexcli's capabilities. In general It is recommended to use a small terminal font with this config, as otherwise content will exceed component boundaries. The smaller your font-size and the larger the component window, the more accurate and representative the charts will be.",
+  "workspaces": [
+    {
+      "name": "home",
+      "components": [
+        {
+          "type": "repl",
+          "yxhw": [0, 10, 3, 2]
+        },
+        { "type": "quote", "yxhw": [0, 6, 3, 2], "symbol": "spy" },
+        { "type": "quote", "yxhw": [0, 8, 3, 2], "symbol": "qqq" },
+        {
+          "type": "list",
+          "chartType": "line",
+          "yxhw": [0, 0, 3, 6],
+          "color": [230, 100, 200],
+          "listTypes": [
+            "mostactive",
+            "gainers",
+            "losers",
+            "iexvolume",
+            "iexpercent"
+          ]
+        },
+        {
+          "type": "chart",
+          "chartType": "line",
+          "yxhw": [3, 0, 9, 8],
+          "symbol": "spy",
+          "time": "60min",
+          "vol": true,
+          "color": "green"
+        },
+        {
+          "type": "news",
+          "yxhw": [3, 8, 9, 4],
+          "symbol": "spy"
+        }
+      ]
+    },
+    {
+      "name": "charts!",
+      "components": [
+        {
+          "type": "repl",
+          "yxhw": [0, 10, 3, 2]
+        },
+        {
+          "type": "watchlist",
+          "yxhw": [0, 0, 3, 10]
+        },
+        {
+          "type": "chart",
+          "chartType": "line",
+          "yxhw": [3, 0, 4, 6],
+          "symbol": "aa",
+          "time": "1d",
+          "vol": false,
+          "color": [243, 210, 69]
+        },
+        {
+          "type": "chart",
+          "chartType": "line",
+          "yxhw": [3, 6, 4, 6],
+          "symbol": "bb",
+          "time": "1d",
+          "vol": false,
+          "color": [150, 140, 160]
+        },
+        {
+          "type": "chart",
+          "chartType": "line",
+          "yxhw": [7, 0, 5, 6],
+          "symbol": "cc",
+          "time": "1d",
+          "vol": true,
+          "color": [40, 150, 244]
+        },
+        {
+          "type": "chart",
+          "chartType": "line",
+          "yxhw": [7, 6, 5, 6],
+          "symbol": "dd",
+          "time": "1d",
+          "vol": true,
+          "color": [40, 250, 190]
+        }
+      ],
+      "watchlist": [
+        "amzn",
+        "aapl",
+        "msft",
+        "goog",
+        "qcom",
+        "fb",
+        "twtr",
+        "z",
+        "t",
+        "s",
+        "r",
+        "tsla",
+        "f",
+        "gm",
+        "tm",
+        "brk.a",
+        "aa",
+        "ge",
+        "de",
+        "cat",
+        "xom",
+        "c",
+        "gs",
+        "v",
+        "x",
+        "qqq",
+        "spy",
+        "oil",
+        "gld",
+        "l",
+        "hd"
+      ]
+    }
+  ]
+}

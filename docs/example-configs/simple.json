@@ -1,0 +1,28 @@
+{
+  "IEX_PUB_KEY": "",
+  "APCA_API_KEY_ID": "",
+  "APCA_API_SECRET_KEY": "",
+  "alpacaAccountType": "paper",
+  "config description": "This configuration is designed to be as simple as possible while providing a range of functionality. It includes only one workspace, but more can be added. The sole component window can always be changed to any component, even if you haven't added it here. If you use the `new` keyword, a new window will be created.",
+  "workspaces": [
+    {
+      "name": "home",
+      "watchlist": ["ge"],
+      "components": [
+        {
+          "type": "repl",
+          "yxhw": [0, 0, 12, 3]
+        },
+        {
+          "type": "chart",
+          "chartType": "line",
+          "yxhw": [0, 3, 12, 9],
+          "symbol": "ge",
+          "time": "60min",
+          "vol": true,
+          "color": "green"
+        }
+      ]
+    }
+  ]
+}
