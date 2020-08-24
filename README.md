@@ -32,7 +32,8 @@ some stock quote data](img/iexcli.png)
     overlay indicators, such as bollinger bands `%bbands`, weighted move
     average `%wma` and more. currently only a limited subset of iex's
     technical indicators will display correctly. _requires a paid iex
-    subscription._ See [technical indicator](./README.md#technical-indicator)
+    subscription._ See [technical
+    indicator](./README.md#technical-indicator-prefix)
 - 📊 sector performance
 
 ### v0.0.8
@@ -82,18 +83,26 @@ RUN `node src/index.js` from the root of this directory, or `yarn run run`.
 
 Most interaction is through the repl emulator screen. It accepts commands and
 updates the charts and data windows. If a component has more data than fits on
-the screen, try scrolling it with the mouse.
+the screen, try scrolling it with the mouse. arrow keys <kbd>left</kbd> and
+<kbd>right</kbd> can be used to switch workspaces. See [configuring
+workspaces](#configuring-workspaces)
 
 Type `help` or `h` for general information. Type e.g. `h $` or `h :` for
 command-specific help. If your terminal allows it, you can scroll through the
 help.
 
-### focus and windows
+### workspaces, focus and windows
 
-Use `tab` and `Shift-tab` to rotate through components. To return directly to
-repl hit `>`, the "greater-than" sign. The last focused component will be the
-one targeted by the command. When you start typing in the repl, the last
-focused component should be highlighted with a yellow border.
+By default, iexcli comes with several workspaces that you can cycle through
+with left and right arrow keys. If a component is acting up or the workspace
+is erroring, try switching to another workspace and then back.
+
+If the cursor is not blinking in the repl you can use `tab` and `Shift-tab` to
+rotate through components. To return directly to repl hit `>`, the
+"greater-than" sign. Unless a window prefix-command has been entered, the last
+focused component will be the one targeted by the command. When you start
+typing in the repl, the last focused component should be highlighted with a
+yellow border. From the repl, to return to focus rotation,  hit `esc`.
 
 Type `esc` from the repl to re-enter the focus-rotation. It can be confusing
 and if you return directly to the repl when you expected to rotate, try going
@@ -124,6 +133,19 @@ h        # show general help
 
 #### `quit` or `exit`
 Typing `quit`, `exit` or `Ctrl-c` will exit the app
+
+#### <kbd>left</kbd>  <kbd>right</kbd>
+Switch workspace. By default, iexcli comes with several workspaces. Depending
+on you terminal and trading preferences, these can be configured in
+`config.json`. See [configuring config](#configuring-config)
+
+#### `>` return to repl
+If the repl is not active and the cursor is not blinking, hit `>` to return to
+repl. The last active window will be the target unless a window prefix-command
+has been issued.
+
+#### `esc`
+From the repl, hit `esc` to return to the focus rotation.
 
 #### `[` window id prefix
 Typing a `[` followed immediately by a window id, or one of the keywords `all`
@@ -316,6 +338,59 @@ follows. All orders must have three components:
 -50 $qqq     -> sell (short or close) 50 shares of $qqq
 ```
 
+---
+
+## config.json
+## configuring workspaces
+By default iexcli will look for a config in two places on unix/free-bsd
+systems. First it will check `~/.config/iexcli/config.json`, and then it will
+look in the root directory of this repo wherever that is installed on your
+system. If the path `~/.config/iexcli/` does not exist, you will have to
+create it yourself. You can copy this config and adapt for your own purposes.
+Please feel free to share handy configurations by submitting an issue/pr.
+
+Eventually, i will create a more comprehensive tutorial, but the main idea is
+that each component needs a "yxhw" key and a length 4 array, representing the
+starting positing, top-left corner (y,x), and the height (h) and width (w).
+
+As an example, a workspace with 4 evenly spaced windows like
+```boxcar
+┏━━━━┓┏━━━━┓
+┃    ┃┃    ┃
+┗━━━━┛┗━━━━┛
+┏━━━━┓┏━━━━┓
+┃    ┃┃    ┃
+┗━━━━┛┗━━━━┛
+```
+
+would have a config.json like the following:
+
+```json
+{
+  "workspaces": [
+    {
+      "name": "4 windows",
+      "components":[
+      {"name": 1, "yxhw":[0, 0, 6, 6]},
+      {"name": 1, "yxhw":[0, 6, 6, 6]},
+      {"name": 1, "yxhw":[6, 0, 6, 6]},
+      {"name": 1, "yxhw":[6, 6, 6, 6]}
+      ]
+    }
+  ]
+}
+```
+
+
+At the moment the workspace grid is blocked into 12 sections so it is probably
+best to ensure that components do not overlap too much, unless one doesn't
+mind tabbing through component or targeting them with `[` to bring them to the
+fore.
+
+I appreciate your patience as the behavior of the app settles and as i work up
+some more thorough explanations of the app's behavior.
+
+---
 
 ## thanks
 - this project would not have been possible were it not for the incredible

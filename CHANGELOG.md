@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v0.0.12
+- docs
+
 ## v0.0.11
 - filepath fixes
 
