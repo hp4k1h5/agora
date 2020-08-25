@@ -1,22 +1,26 @@
 import blessed from '@hp4k1h5/blessed'
 
 import { clear } from '../util/clear.js'
+import { spin } from '../util/spin.js'
 
 export function buildAccount(ws, options, data) {
   clear(ws, options)
 
   options.box = ws.grid.set(...options.yxhw, blessed.text, {
     name: 'account',
-    label: `[${options.id} account]`,
+    label: `[${options.id}  account ${
+      options.pollMs ? ' .. polling ' + spin() : ''
+    }]`,
     // inputs
     keys: false,
+    // input is true for focus rotation
     input: true,
     mouse: false,
     scrollable: false,
     // styles
     tags: true,
     style: {
-      focus: { border: { fg: '#ddf' } },
+      focus: { border: { fg: '#fc5' } },
     },
   })
 

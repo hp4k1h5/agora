@@ -16,12 +16,13 @@ const chart = {
 const quote = {
   type: 'quote',
   yxhw: [0, 9, 6, 3],
+  symbol: 'qqq',
 }
 
 const watchlist = {
   type: 'watchlist',
   yxhw: [0, 0, 12, 9],
-  symbol: 'ge',
+  watchlist: ['ge'],
 }
 
 const news = {

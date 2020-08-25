@@ -1,0 +1,37 @@
+{
+  "IEX_PUB_KEY": "",
+  "APCA_API_KEY_ID": "",
+  "APCA_API_SECRET_KEY": "",
+  "alpacaAccountType": "paper",
+  "workspaces": [
+    {
+      "name": "home",
+      "watchlist": ["aa"],
+      "components": [
+        {
+          "type": "repl",
+          "yxhw": [8, 9, 4, 3]
+        },
+        {
+          "type": "book",
+          "yxhw": [3, 9, 5, 3],
+          "symbol": "tsla",
+          "pollMs": 5000
+        }
+      ]
+    },
+    {
+      "name": "account info",
+      "components": [
+        {
+          "type": "repl",
+          "yxhw": [8, 9, 4, 3]
+        },
+        {
+          "type": "quote",
+          "yxhw": [0, 0, 3, 3]
+        }
+      ]
+    }
+  ]
+}

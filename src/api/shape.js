@@ -259,6 +259,8 @@ export function shapeBook(data) {
   trades = shapeBidAsk(trades, true)
 
   function shapeBidAsk(bidsOrAsks, timestamp) {
+    if (!bidsOrAsks) return ''
+
     return bidsOrAsks
       .slice(0, 5)
       .map((ba, i) => {

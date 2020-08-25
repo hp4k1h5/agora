@@ -1,6 +1,7 @@
 import blessed from '@hp4k1h5/blessed'
 
 import { clear } from '../util/clear.js'
+import { spin } from '../util/spin.js'
 
 /** if no symbol is provided, it should stay in sync with a chart */
 export function buildBook(ws, options, data) {
@@ -8,11 +9,14 @@ export function buildBook(ws, options, data) {
 
   options.box = ws.grid.set(...options.yxhw, blessed.box, {
     name: 'book',
-    label: `[${options.id} book .. \$${options.symbol}]`,
+    label: `[${options.id}  book \$${options.symbol.toUpperCase()} ${
+      options.pollMs ? ' .. polling ' + spin() : ''
+    }]`,
     // inputs
     keys: false,
+    // input is true for focus rotation
     input: true,
-    mouse: true,
+    mouse: false,
     scrollable: false,
     // styles
     tags: true,
@@ -30,7 +34,7 @@ export function buildBook(ws, options, data) {
     label: `bids`,
     // inputs
     keys: false,
-    input: true,
+    input: false,
     mouse: true,
     scrollable: true,
     // styles
@@ -50,7 +54,7 @@ export function buildBook(ws, options, data) {
     label: 'asks',
     // inputs
     keys: false,
-    input: true,
+    input: false,
     mouse: true,
     scrollable: true,
     // styles
@@ -62,6 +66,7 @@ export function buildBook(ws, options, data) {
     style: {
       fg: '#555',
       border: { fg: '#555' },
+      focus: { border: { fg: '#fc5' } },
     },
   })
 
@@ -71,7 +76,7 @@ export function buildBook(ws, options, data) {
     label: 'trades',
     // inputs
     keys: false,
-    input: true,
+    input: false,
     mouse: true,
     scrollable: true,
     // styles

@@ -54,6 +54,7 @@ export const main = function () {
     screen,
     interval: 0,
     controlKeys: true,
+    rotate: true,
   }
   function startCarousel(pages, options) {
     const carousel = new contrib.carousel(pages, options)

@@ -1,5 +1,6 @@
 # iexcli
 
+
 <span style="display:inline-block; width:50% ">
 
 > view market info and charts and trade stocks in the terminal
@@ -9,12 +10,14 @@
 <span style="display:inline-block;top:0;float:right;padding:7px;border:3px #ddd solid">
 
 ##### Terms of Service for IEX data
+
 > [Data provided by IEX Cloud](https://iexcloud.io)
 
 </span>
 
 
 ##### !!warning iexcli is in _alpha_ and subject to change ⚠
+
 [contributions](./.github/CONTRIBUTING.md) and [bug
 reports](https://github.com/HP4k1h5/iexcli/issues/new?assignees=HP4k1h5&labels=bug&template=bug_report.md&title=basic)
 are _welcome_
@@ -25,6 +28,7 @@ gainers/losers, and stock related news](img/iexcli.png)
 > [docs/example-configs/dense.json](./docs/example-configs/dense.json)
 
 ##### table of contents
+
 
 - [changelog](#changelog)
 - **[installation](#installation)**
@@ -38,7 +42,9 @@ gainers/losers, and stock related news](img/iexcli.png)
 
 ## CHANGELOG
 
+
 ### v0.0.10
+
 - 📺 improved window handling. `[new` keyword opens new windows. `x`
     closes targeted window. `[all` updates all targetable windows.
 - ℹ new help component. type `h` or `help`
@@ -52,6 +58,7 @@ gainers/losers, and stock related news](img/iexcli.png)
 - 📊 sector performance
 
 ### v0.0.8
+
 - 🐛 bugfix for '>' return to repl command in carousel mode
 - 🐴 [alpaca](https://alpaca.markets/) integration. Users can now trade with
     alpaca api and see account and positions info. See
@@ -59,7 +66,9 @@ gainers/losers, and stock related news](img/iexcli.png)
 
 ## installation
 
+
 ### requirements
+
 - [nodeJs](https://nodeJs.org) ✅ tested with `v14.8.0`
 
 1) download or clone this repo
@@ -81,13 +90,16 @@ gainers/losers, and stock related news](img/iexcli.png)
     See **[config.json](#config.json)** for configuration tips and example configs.
 
 #### register
+
 **for a free [iex account](https://iexcloud.io/cloud-login#/register)** and
 copy the **publishable** api key. These typically start with `pk`
 
 
 ## usage
 
+
 ### getting started
+
 
 If you installed globally, you should be able to use the shell alias `iexcli`
 from anywhere. If `which iexcli` does not return a path, refresh your
@@ -108,6 +120,7 @@ command-specific help. If your terminal allows it, you can scroll through the
 help.
 
 #### note about iex message usage
+
 > if you receive <span style="color:red">"Payment required"</span> error
 > messages, this is iexcloud telling
 you that your remaining message allotment is insufficient for the data request
@@ -120,6 +133,7 @@ messages (~252 trading days * 50 messages/day). Intraday time ranges such as
 
 
 ### workspaces, focus and windows
+
 
 By default, iexcli comes with several workspaces that you can cycle through
 with left and right arrow keys. If a component is acting up or the workspace
@@ -148,7 +162,9 @@ component.
 
 ### commands
 
+
 #### `help` or `h`
+
 Typing `help` or `h` brings up a help menu. If you include another command
 name after, command-specific help is returned to the repl. Type `x` in the
 repl to close the help menu  
@@ -161,23 +177,28 @@ h           --> show general help
 ```
 
 #### `quit` or `exit`
+
 Typing `quit`, `exit` or `Ctrl-c` will exit the app
 
 #### <kbd>left</kbd>  <kbd>right</kbd> switch workspaces
+
 Use left and right arrow-keys to switch between workspaces. By default,
 iexcli comes with several workspaces. Depending on you terminal and trading
 preferences, these can be configured in `config.json`. See [configuring
 workspaces](#configuring-workspaces)
 
 #### `>` return to repl
+
 If the repl is not focused, hit `>` to return to repl. The last active window
 will be the target of the commands entered unless a window prefix-command has
 been issued.
 
 #### `esc`
+
 From the repl, hit `esc` to return to the focus rotation.
 
 #### `[` window prefix
+
 Typing a `[` followed immediately by a window id, or one of the keywords `all`
 or `new` will target the window(s) with the command. Window ids are found in the
 top-left corner of each targetable window.  
@@ -190,6 +211,7 @@ $aa [all       --> update all targetable windows with stock symobl $aa
 ```
 
 #### `x` close window
+
 Typing an x will close the active window. May be combined with window prefix
 to target a specific window.
 **examples**
@@ -199,6 +221,7 @@ x           --> closes the active window
 ```
 
 #### `?` search
+
 Typing `?` followed by search terms will query stock symbols and company names
 for approximate (fuzzy) matches. Capitalization and spacing is ignored as are
 quotes and most other non word symbols.
@@ -212,6 +235,7 @@ narrow down the result set
 ```
 
 #### `$` stock ticker symbol prefix
+
 Typing `$` followed immediately by a stock ticker symbol changes the symbol in
 the active window. Can be combined with window, technical-indicator and time
 prefixes to update multiple values at the same time  
@@ -222,6 +246,7 @@ $TM              --> update symbol in active component to TSLA
 ```
 
 #### `:` time range prefix
+
 Typing `:` followed immediately by a combination of the following parameters
 will change the currently active time range and update the currently active
 window. This will only apply to chart windows.  
@@ -237,6 +262,7 @@ Can be combined with time prefix to update multiple values at the same time
 ```
 
 #### `#` chart command
+
 Typing `#` brings up the price/volume chart display in the targeted window.
 You may also set time, stock symbol, and
 [technical-indicator](#%-technical-indicator-prefix) by including those
@@ -244,11 +270,13 @@ prefix-commands in the query.
 **examples**
 ```c
 # :1dm $t     --> change the active window to a 1 day 5-minutes chart of $t
+
 [2 # %wma     --> change the second window to a chart with
                   weighted-moving-average overlay
 ```
 
 #### `!` news command
+
 Typing `!` brings up the news display with up to the latest 20 results
 relevant to the active symbol. Use mouse to scroll the table. Use `tab` or
 `esc` to return to repl. Can be combined with stock prefix to update multiple
@@ -260,6 +288,7 @@ $de !          # show news and update active stock to DE
 ```
 
 #### `=` watchlist command
+
 Typing `=` brings up the watchlist display. Use mouse to scroll the table. Use
 `tab` or `esc` to return to repl.  ![watchlist display for
 iexcli](img/multi-chart.png). Watchlist is in the top-left corner. Use mouse
@@ -278,6 +307,7 @@ reset the workspace.
 ```
 
 #### `&` profile command
+
 Typing `&` brings up a profile of the active symbol in the targeted window.
 Use mouse to scroll components.
 ![profile display](img/profile.png)  
@@ -287,6 +317,7 @@ $qcom &
 ```
 
 #### `*` list command
+
 Typing `*` brings up a list of gainers/losers/active/etc in the targeted
 window. List can be customized in `config.json`.
 **examples**
@@ -295,6 +326,7 @@ window. List can be customized in `config.json`.
 ```
 
 #### `"` quote command
+
 Typing `"` displays a real-time quote for the active symbol in the targeted
 window.  
 **examples**
@@ -302,7 +334,21 @@ window.
 [4 " $r
 ```
 
+#### `poll` (interval in milliseconds)
+
+Components can update themselves periodically either by calling `poll`
+followed immediately by a number greater than 10, or by setting the `pollMs`
+key for the component in `config.json` to a number greater than 10, which
+equals 100 requests/s, which is the max allowable by iex's rate limits.
+
+If you poll multiple components at 10 ms intervals, you will quickly exceed
+iex's rate limit which is based on ip, and therefore anything lower than 100,
+is inadvisable, since you may have multiple polling components at the same
+time. Use command `poll` followed immediately by the interval to start or stop
+a component polling.
+
 #### `%` technical-indicator prefix
+
 > _iex paid subscribers only_  
 
 Typing `%` followed immediately by the abbreviated name of the technical
@@ -322,6 +368,7 @@ prefixes to update multiple values at the same time
 ---
 
 ## trading
+
 **⚠ disclaimer: iexcli's trading integration is in early _alpha_ and it is not
 recommended to use for real money accounts.** Per the [LICENSE](./LICENSE),
 neither hp4k1h5, nor iexcli makes any guarantees or claims regarding the
@@ -332,6 +379,7 @@ accounts with no real-money value, although the user is free to make their own
 judgement.
 
 ### setup
+
 You will need an [alpaca trading account](https://app.alpaca.markets/signup).
 Accounts are free as are trades. After signing up you can generate real or
 paper api keys. Use these to set env vars or `config.json` values as follows:
@@ -352,10 +400,12 @@ Though it is not recommended, you can set `config.json` value
 The default value is "paper"
 
 ## account
+
 if you have entered your information correctly, you should be able to display
 your account and positions info by typing `@`.
 
 ### placing orders
+
 While algo/robo trading is in development, users can execute manual trades as
 follows. All orders must have three components:
 1) order **side** buy or sell
@@ -376,6 +426,7 @@ follows. All orders must have three components:
 
 ## config.json
 
+
 By default iexcli will look for a config in two places on unix/free-bsd
 systems. First it will check `~/.config/iexcli/config.json`, and then it will
 look in the root directory of this repo, wherever that is installed on your
@@ -384,6 +435,7 @@ create it yourself. You can copy this config and adapt for your own purposes.
 Please feel free to share handy configurations by submitting an issue or pr.
 
 ## configuring workspaces
+
 
 See [example configurations](./docs/example-configs)
 
@@ -438,6 +490,7 @@ some more thorough explanations of the app's behavior.
 ---
 
 ## thanks
+
 - this project would not have been possible were it not for the incredible
 efforts of [blessed](https://github.com/chjj/blessed) and
 [blessed-contrib](https://github.com/yaronn/blessed-contrib) authors and

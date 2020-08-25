@@ -1,23 +1,27 @@
 import blessed from '@hp4k1h5/blessed'
 
 import { clear } from '../util/clear.js'
+import { spin } from '../util/spin.js'
 
 export function buildNewsList(ws, options, data) {
   clear(ws, options)
 
   options.box = ws.grid.set(...options.yxhw, blessed.text, {
     name: 'news',
-    label: `[${options.id} news]`,
+    label: `[${options.id}  news ${
+      options.pollMs ? ' .. polling ' + spin() : ''
+    }]`,
     // inputs
     keys: false,
-    input: false,
+    // input is true for focus rotation
+    input: true,
     mouse: true,
     scrollable: true,
     // styles
     tags: true,
     style: {
       fg: [60, 200, 250],
-      focus: { border: { fg: '#ddf' } },
+      focus: { border: { fg: '#fc5' } },
     },
   })
 

@@ -1,4 +1,5 @@
 import contrib from '@hp4k1h5/blessed-contrib'
+import { spin } from '../util/spin.js'
 
 import { clear } from '../util/clear.js'
 export function buildPriceVolCharts(ws, options, data) {
@@ -19,7 +20,7 @@ export function buildPriceVolCharts(ws, options, data) {
   options.box = graph(
     ws,
     priceData,
-    `[${options.id}  price]`,
+    `[${options.id}  price ${options.pollMs ? ' .. polling ' + spin() : ''}]`,
     y,
     x,
     h - (options.vol ? 2 : 0),
@@ -28,6 +29,7 @@ export function buildPriceVolCharts(ws, options, data) {
   ws.setListeners(options)
 
   if (!options.vol) return
+
   // put vol beneath price
   options.volChart = graph(
     ws,
@@ -47,10 +49,6 @@ export function graph(ws, data, label, row, col, height, width) {
 
   const minY = data ? Math.min(...data[0].y) : 0
 
-  if (!data) {
-    data = [{ title: 'no data', x: [0], y: [0] }]
-  }
-
   const line = ws.grid.set(row, col, height, width, contrib.line, {
     minY,
     xLabelPadding: 0,
@@ -60,13 +58,14 @@ export function graph(ws, data, label, row, col, height, width) {
     label,
     wholeNumbersOnly: false,
     showLegend: data ? !!data[0].title : false,
+    // input is true for focus rotation for price but not for volume
     input: label != 'volume',
     style: {
       line: [100, 100, 100],
       text: [180, 220, 180],
       baseline: [100, 100, 100],
       bold: true,
-      focus: { border: { fg: '#ddf' } },
+      focus: { border: { fg: '#fc5' } },
     },
   })
 

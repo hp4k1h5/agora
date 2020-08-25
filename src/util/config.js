@@ -54,39 +54,47 @@ export function parseConfig(location, config) {
 function vetConfig(config, location) {
   let errors = []
   if (!config || typeof config != 'object') {
-    return errors.push('no config found')
+    return pushErr({}, {}, 'no config found')
   }
 
   // vet workspaces
   if (!config.workspaces || !config.workspaces.length) {
-    errors.push('config must define key "workspaces')
+    return pushErr(
+      {},
+      {},
+      'user must define key "workspaces" in config.json. see README',
+    )
   }
 
   config.workspaces.forEach((workspace) => {
     workspace.components.forEach((component) => {
       // vet type
       if (!validComponentTypes.includes(component.type)) {
-        errors.push(`component type ${component.type} not supported
-valid component types are ${validComponentTypes.join(' ')}`)
-      }
-      const needsSymbol = ['chart', 'quote', 'profile']
-      if (needsSymbol.includes(component.type) && !component.symbol) {
-        errors.push(`component type ${component.type} needs a "symbol" key`)
-      }
-      const needsTime = ['chart']
-      if (needsTime.includes(component.type) && !component.time) {
-        errors.push(`component type ${component.type} needs a "time" key`)
+        pushErr(
+          workspace,
+          component,
+          `is not a supported component type
+valid component types are ${validComponentTypes.join(' ')}`,
+        )
       }
 
-      // merge repl
-      if (component.type == 'repl') {
-        // build repl separately.
-        workspace.repl = { ...defaults.repl, ...component }
+      // vet symbol
+      const needsSymbol = ['chart', 'quote', 'profile']
+      if (needsSymbol.includes(component.type) && !component.symbol) {
+        pushErr(workspace, component, 'needs a "symbol" key')
+      }
+
+      // vet time
+      const needsTime = ['chart']
+      if (needsTime.includes(component.type) && !component.time) {
+        pushErr(workspace, component, 'needs a "time" key')
+      }
+
+      // vet poll
+      if (component.pollMs && +component.pollMs < 10) {
+        pushErr(workspace, component, 'cannot set pollMs below 10')
       }
     })
-    if (!workspace.repl) {
-      workspace.repl = defaults.repl
-    }
   })
 
   if (
@@ -130,6 +138,10 @@ valid component types are ${validComponentTypes.join(' ')}`)
   console.error(`err: the following errors were found with your config, which was found at ${location}
 ${errors.join('\n')}`)
   process.exit(1)
+
+  function pushErr(workspace, component, msg) {
+    errors.push(`  -- in workspace ${workspace.name}, ${component.type} ${msg}`)
+  }
 }
 
 function loadConfig(location) {

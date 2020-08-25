@@ -1,6 +1,7 @@
 import blessed from '@hp4k1h5/blessed'
 
 import { clear } from '../util/clear.js'
+import { spin } from '../util/spin.js'
 
 export function buildWatchlist(ws, options, data) {
   clear(ws, options)
@@ -11,6 +12,7 @@ export function buildWatchlist(ws, options, data) {
     // label: `[${options.id} watchlist]`,
     // inputs
     keys: false,
+    // input is true for focus rotation
     input: true,
     mouse: true,
     scrollable: true,
@@ -21,7 +23,7 @@ export function buildWatchlist(ws, options, data) {
     pad: 1,
     border: { type: 'line' },
     style: {
-      focus: { border: { fg: '#ddf' } },
+      focus: { border: { fg: '#fc5' } },
       fg: '#ccd',
       cell: {
         selected: { bg: '#00cc55', fg: '#707070' },

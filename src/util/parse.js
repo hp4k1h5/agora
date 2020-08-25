@@ -45,8 +45,8 @@ export function setTargets(ws, words, command) {
     target = defaults[command]
     target.id = ws.id()
     ws.options.components.push(target)
-    // all
   } else {
+    // [all targets all targetable components
     target = ws.options.components.filter((c) => c.symbol)
   }
 
@@ -91,6 +91,20 @@ export function setSymbol(options, words) {
 
 // only set if component has time & user entered time
 export function setTime(ws, options, words) {
+  let poll = words.find((w) => /poll\d*/.test(w))
+  if (poll) {
+    poll = +poll.match(/\d+$/)
+    if (!poll) {
+      clearInterval(options.interval)
+      delete options.interval
+      delete options.pollMs
+    } else if (poll > 0 && poll < 10) {
+      throw 'cannot set polling interval below 10 milliseconds'
+    } else {
+      options.pollMs = poll
+    }
+  }
+
   if (!options.time) return
 
   // find time

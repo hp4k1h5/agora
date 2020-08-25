@@ -24,22 +24,46 @@ export class Workspace {
   }
 
   setListeners(options) {
-    const screen = this.options.screen
+    try {
+      const screen = this.options.screen
 
-    if (!this.prevFocus) this.prevFocus = options
+      // carousel listeners
+      screen.on('move', () => {
+        clearInterval(options.interval)
+        delete options.interval
+        delete options.pollMs
+      })
 
-    options.box.on('focus', () => {
-      options.box.setFront()
-      screen.render()
-    })
+      if (!this.prevFocus) this.prevFocus = options
 
-    options.box.on('blur', () => {
-      this.prevFocus.box.style.border = { fg: '#6fa' }
-      this.prevFocus = options
-      // this.prevFocus.box.style.border = { fg: '#fc5' }
-      screen.render()
-    })
+      options.box.on('focus', () => {
+        options.box.setFront()
+        options.box.style.border = { fg: '#fc5' }
+      })
 
-    screen.focusPush(options.box)
+      options.box.on('blur', () => {
+        if (this.input.focused) {
+          this.prevFocus.box.style.border = { fg: '#6ff' }
+          options.box.style.border = { fg: '#fc5' }
+        } else {
+          this.prevFocus.box.style.border = { fg: '#6ff' }
+        }
+        this.prevFocus = options
+        screen.render()
+      })
+
+      options.box.on('destroy', () => {
+        clearInterval(options.interval)
+        delete options.interval
+        delete options.pollMs
+      })
+
+      if (!options.interval || this.prevFocus === options) {
+        screen.focusPush(options.box)
+      }
+    } catch (e) {
+      console.log(e)
+      process.exit(1)
+    }
   }
 }

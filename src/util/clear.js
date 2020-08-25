@@ -8,8 +8,4 @@ export function clear(ws, options) {
   if (options.volChart) {
     ws.options.screen.remove(options.volChart)
   }
-
-  if (options.interval) {
-    clearInterval(options.interval)
-  }
 }

@@ -40,13 +40,14 @@ export async function update(ws, options) {
   let data
 
   if (options.pollMs) {
+    await up()
     options.interval = setInterval(up, options.pollMs)
   } else {
+    clearInterval(options.interval)
     up()
   }
 
   async function up() {
-    ws.printLines && ws.printLines(Object.keys(options))
     try {
       // make request(s)
       data = await updateMap[options.type].apiFn(options)

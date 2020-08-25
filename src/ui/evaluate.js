@@ -35,6 +35,15 @@ export async function evaluate(ws, input) {
     '^': 'book',
     book: 'book',
     '@': 'account',
+    // prefix commands are not included here and are treated separately
+    // they include the following symbols and words.
+    // // symbol prefixes
+    // :         time
+    // $         symbol
+    // [         window
+    // %         technical-indicator
+    // // word prefixes
+    // poll      poll
   }
 
   // parse input

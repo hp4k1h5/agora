@@ -40,24 +40,27 @@ export function buildRepl(ws, options) {
     inputOnFocus: true,
     // styles
     style: {
-      focus: { border: { fg: '#ddf' } },
+      focus: { border: { fg: '#fc5' } },
     },
   })
 
-  ws.options.screen.key('>', () => {
+  const screen = ws.options.screen
+
+  // app-wide return to repl hotkey
+  screen.key('>', () => {
     ws.input.focus()
   })
 
+  // exit from repl
   ws.input.key('C-c', function () {
     exit(ws)
   })
 
-  const screen = ws.options.screen
   ws.input.key('tab', function () {
     screen.focusNext()
   })
   ws.input.key('esc', function () {
-    screen.focusPrevious()
+    screen.focusNext()
   })
   // handle submit
   ws.input.key('enter', function () {
@@ -82,7 +85,6 @@ export function buildRepl(ws, options) {
   })
 
   ws.input.on('focus', function () {
-    ws.prevFocus.box.style.border = { fg: '#fc5' }
     output.setFront()
     ws.input.setFront()
   })

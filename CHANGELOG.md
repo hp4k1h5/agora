@@ -2,6 +2,12 @@
 
 ## v0.0.12
 - config.json documentation. README updates
+- 🐛 bugfix. windows are more persistent now within workspaces and across
+    carousel rotations.
+- 🌈 order book component. type `^` or `book` to see an order book for the
+    active symbol.
+- ⌚ polling now available for all components. Use command `poll` or set
+    config component key `pollMs` to a value greater than 10.
 
 ## v0.0.11
 - filepath fixes
