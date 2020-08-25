@@ -79,7 +79,7 @@ valid component types are ${validComponentTypes.join(' ')}`,
       }
 
       // vet symbol
-      const needsSymbol = ['chart', 'quote', 'profile']
+      const needsSymbol = ['chart', 'quote', 'profile', 'book', 'news']
       if (needsSymbol.includes(component.type) && !component.symbol) {
         pushErr(workspace, component, 'needs a "symbol" key')
       }

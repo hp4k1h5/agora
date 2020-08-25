@@ -1,6 +1,5 @@
 # iexcli
 
-
 <span style="display:inline-block; width:50% ">
 
 > view market info and charts and trade stocks in the terminal
@@ -9,12 +8,11 @@
 
 <span style="display:inline-block;top:0;float:right;padding:7px;border:3px #ddd solid">
 
-##### Terms of Service for IEX data
+###### Terms of Service for IEX data
 
 > [Data provided by IEX Cloud](https://iexcloud.io)
 
 </span>
-
 
 ##### !!warning iexcli is in _alpha_ and subject to change ⚠
 
@@ -37,7 +35,7 @@ gainers/losers, and stock related news](img/iexcli.png)
   - [**workspaces**, focus and windows](#workspaces,-focus-and-windows)
   - [**commands**](#commands)
 - [trading](#trading)
-- [**config.json**](#config.json)
+- [**config.json**](#config\.json)
 - [thanks!](#thanks)
 
 ## CHANGELOG
@@ -66,15 +64,14 @@ gainers/losers, and stock related news](img/iexcli.png)
 
 ## installation
 
-
 ### requirements
 
 - [nodeJs](https://nodeJs.org) ✅ tested with `v14.8.0`
 
 1) download or clone this repo
     1) either `git clone https://github.com/HP4k1h5/iexcli.git` and get
-      dependencies by running `yarn` in this directory
-    2) or run `yarn global add @hp4k1h5/iexcli`  OR  `npm i -g @hp4k1h5/iexcli`
+      dependencies by running `yarn` in this directory, or `npm i`.
+    2) or run `yarn global add @hp4k1h5/iexcli`  OR  `npm i -g @hp4k1h5/iexcli`.
 
 2) add a **publishable** iex api key
     1) either export an ENV var named [IEX_PUB_KEY](#register)  
@@ -87,19 +84,16 @@ gainers/losers, and stock related news](img/iexcli.png)
     ```bash
     cp  ~/.config/yarn/global/node_modules/@hp4k1h5/iexcli/config.json ~/.config/iexcli
     ```
-    See **[config.json](#config.json)** for configuration tips and example configs.
+    See **[config.json](#config\.json)** for configuration tips and example configs.
 
 #### register
 
 **for a free [iex account](https://iexcloud.io/cloud-login#/register)** and
 copy the **publishable** api key. These typically start with `pk`
 
-
 ## usage
 
-
 ### getting started
-
 
 If you installed globally, you should be able to use the shell alias `iexcli`
 from anywhere. If `which iexcli` does not return a path, refresh your
@@ -131,9 +125,7 @@ time-range graph queries. For example a 5-year chart costs roughly 12,590
 messages (~252 trading days * 50 messages/day). Intraday time ranges such as
 `:1d` or `:100min` are free. Profile (`&`) data is also relatively expensive.
 
-
 ### workspaces, focus and windows
-
 
 By default, iexcli comes with several workspaces that you can cycle through
 with left and right arrow keys. If a component is acting up or the workspace
@@ -141,12 +133,13 @@ is erroring, try switching to another workspace and then back.
 
 If the input field is not focused, you can use `tab` and `Shift-tab` to
 rotate through components. To return directly to repl hit `>`, the
-"greater-than" sign.
+"greater-than" sign. To leave the repl input and return to focus rotation hit
+`esc`.
 
 Unless a window prefix-command, `[`, has been entered, the last focused
 component will be the one targeted by commands entered into the repl. When you
-start typing in the repl, the last focused component should be highlighted
-with a yellow border.
+return to the repl, the last focused component should be highlighted with a
+yellow border.
 
 Type `esc` from the repl to re-enter the focus-rotation. It can be confusing
 and if you return directly to the repl when you expected to rotate, try going
@@ -159,9 +152,7 @@ through components with e.g. `esc tab` or `esc Shift-tab`, until the desired
 component is at the front. Use `>` to return directly to repl, and target that
 component.
 
-
 ### commands
-
 
 #### `help` or `h`
 
@@ -275,6 +266,19 @@ prefix-commands in the query.
                   weighted-moving-average overlay
 ```
 
+### `^` book command
+
+Typing `^` or `book` will bring up the order book for the active symbol.  
+**examples**
+```fortran
+$de ^ poll6e4       --> change the symbol in the active window to $de order
+                       book and poll every minute
+book $aa [3         --> order book for $aa in the third window
+```
+
+![rainbow colored order book for $tsla, showing active
+polling](./img/book.png)
+
 #### `!` news command
 
 Typing `!` brings up the news display with up to the latest 20 results
@@ -340,12 +344,28 @@ Components can update themselves periodically either by calling `poll`
 followed immediately by a number greater than 10, or by setting the `pollMs`
 key for the component in `config.json` to a number greater than 10, which
 equals 100 requests/s, which is the max allowable by iex's rate limits.
+scientific notation (i.e. `poll1e3`) is allowed.
 
 If you poll multiple components at 10 ms intervals, you will quickly exceed
 iex's rate limit which is based on ip, and therefore anything lower than 100,
 is inadvisable, since you may have multiple polling components at the same
-time. Use command `poll` followed immediately by the interval to start or stop
-a component polling.
+time.
+
+All polls are cleared when switching workstations. For now, you will have to
+manually restart them.
+
+Use command `poll` followed immediately by the interval to start or stop a
+component polling.  
+**examples**
+```bash
+[3 poll60000              --> poll the 3rd window every 60 seconds
+poll [2                   --> stop polling in window 2
+[new ^ $aapl poll1000     --> open a new book window with $aapl
+                              polling every 1 second
+poll6e4 [3                --> poll the 3rd window every minute (60,000
+                              milliseconds)
+```
+
 
 #### `%` technical-indicator prefix
 
@@ -383,11 +403,14 @@ judgement.
 You will need an [alpaca trading account](https://app.alpaca.markets/signup).
 Accounts are free as are trades. After signing up you can generate real or
 paper api keys. Use these to set env vars or `config.json` values as follows:
+
 ```bash
 export APCA_API_KEY_ID="YourAlpacaAPIid"
 export APCA_API_SECRET_KEY="YourAlpacaSecretKey"
 ```
+
 or
+
 ```json
 {
   "APCA_API_KEY_ID": "YourAlpacaAPIid",
@@ -426,7 +449,6 @@ follows. All orders must have three components:
 
 ## config.json
 
-
 By default iexcli will look for a config in two places on unix/free-bsd
 systems. First it will check `~/.config/iexcli/config.json`, and then it will
 look in the root directory of this repo, wherever that is installed on your
@@ -435,7 +457,6 @@ create it yourself. You can copy this config and adapt for your own purposes.
 Please feel free to share handy configurations by submitting an issue or pr.
 
 ## configuring workspaces
-
 
 See [example configurations](./docs/example-configs)
 

@@ -93,7 +93,7 @@ export function setSymbol(options, words) {
 export function setTime(ws, options, words) {
   let poll = words.find((w) => /poll\d*/.test(w))
   if (poll) {
-    poll = +poll.match(/\d+$/)
+    poll = +poll.match(/[\d|e]+$/)
     if (!poll) {
       clearInterval(options.interval)
       delete options.interval
