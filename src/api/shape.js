@@ -236,9 +236,14 @@ export function shapeLists(data, types) {
 export function shapeSectors(data) {
   return data
     .map((datum) => {
-      table(
-        [`{#4be-fg}${datum.name}{/}`, (datum.performance * 100).toFixed(1)],
-        [15],
+      return table(
+        [
+          `{#4be-fg}${datum.name}{/}`,
+          `{#${datum.performance >= 0 ? '4fb' : 'a25'}-fg}${(
+            datum.performance * 100
+          ).toFixed(1)}{/}%`,
+        ],
+        [23],
       )
     })
     .join('\n')

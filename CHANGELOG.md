@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.0.13
+- ℹ updated `help`
+- 🐛 bugfix for sectors
+
 ## v0.0.12
 - 📖 config.json documentation. README updates
 - 🐛 bugfix. windows are more persistent now within workspaces and across

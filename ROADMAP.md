@@ -12,9 +12,9 @@
 
 ### v0.0.13
 - iex
-  - order book data
   - message use info
   - sectors/tags
+  - update `help`
 - alpaca
   - watchlist integration
   - orders
@@ -26,7 +26,7 @@
 ## beta release
 
 ### v0.1.0
-- set config options in iexcli
+- set config options from iexcli repl
 - alpaca
   - algo/bot management
 
