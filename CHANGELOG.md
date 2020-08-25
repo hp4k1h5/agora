@@ -1,7 +1,7 @@
 # CHANGELOG
 
 ## v0.0.12
-- config.json documentation. README updates
+- 📖 config.json documentation. README updates
 - 🐛 bugfix. windows are more persistent now within workspaces and across
     carousel rotations.
 - 🌈 order book component. type `^` or `book` to see an order book for the
