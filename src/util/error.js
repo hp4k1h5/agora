@@ -1,7 +1,7 @@
 export function handleErr(ws, e) {
   // if no repl dump error
   if (!ws.printLines) {
-    return console.error(e)
+    return console.log(e)
   }
 
   // non-api errors

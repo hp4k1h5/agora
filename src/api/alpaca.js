@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
 
 import { config } from '../util/config.js'
-import { shapeAccount } from './shape.js'
+import { shapeAccountAlpaca } from './shape.js'
 
 let alpacaTokens
 if (config['APCA_API_KEY_ID'] && config['APCA_API_KEY_ID'].length) {
@@ -30,9 +30,9 @@ export function buildAlpacaURL(path, method, order) {
   return { url, httpOptions }
 }
 
-export async function getAccount(_options) {
+export async function getAccountAlpaca() {
   if (!alpacaTokens) {
-    throw 'user must provide APCA_API_KEY_ID and APCA_API_SECRET_KEY as env vars or in the config'
+    return
   }
 
   const { url: accountUrl, httpOptions } = buildAlpacaURL('account', 'GET')
@@ -51,7 +51,7 @@ export async function getAccount(_options) {
     }),
   )
 
-  return shapeAccount(data)
+  return shapeAccountAlpaca(data)
 }
 
 export async function submitOrder(ws, order) {

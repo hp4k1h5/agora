@@ -61,7 +61,7 @@ or use {#cd2-fg}tab/Shift-tab{/} to rotate through components
          :display watchlist in the active window
 {#bf6-fg}---------------------{/}
 {#cd2-fg}&/profile{/}:profile
-         :display profile in the active window
+         :display company profile in the active window
 {#bf6-fg}---------------------{/}
 {#cd2-fg}*/list{/}   :list
          :display active/gainers/losers list in the active window
@@ -159,18 +159,17 @@ Display quote.
 ex. {#2ea-fg}" $de{/}`
     const whatNews = `
     {bold}{#2ea-fg}help {#cd2-fg}!{/} news
-Display news. Can be combined with stock prefixes to update the active symbol
-and switch to news view
+Display news. 
 ex. {#2ea-fg}! $c{/}`
     const whatWatch = `
     {bold}{#2ea-fg}help {#cd2-fg}={/} watchlist
 Display watchlist. Watchlist symbols can be set in config.json`
     const whatProfile = `
     {bold}{#2ea-fg}help {#cd2-fg}&{/} profile
-Display profile`
+Display company financial profile information`
     const whatBook = `
     {bold}{#2ea-fg}help {#cd2-fg}^{/} book
-Display order book data`
+Display order book data for the active symbol`
     const whatSectors = `
     {bold}{#2ea-fg}help {#cd2-fg}sectors{/} sectors
 Display sectors info`
@@ -225,7 +224,7 @@ Exits iexcli`
       sectors: whatSectors,
       '=': whatWatch,
       '[': whatWindow,
-      '^': whatPoll,
+      poll: whatPoll,
       '@': whatAccount,
       '?': whatSearch,
       '+': whatBuy,

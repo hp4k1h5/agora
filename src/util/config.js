@@ -106,13 +106,16 @@ valid component types are ${validComponentTypes.join(' ')}`,
     errors.push('component "watchlist" must be a list of symbol names')
   }
 
-  // check for iex api key
+  // check for iex api keys
   if (!config.IEX_PUB_KEY || !config.IEX_PUB_KEY.length) {
     config.IEX_PUB_KEY = process.env.IEX_PUB_KEY
     if (!config.IEX_PUB_KEY || !config.IEX_PUB_KEY.length) {
       errors.push(`user must provide publishable api key as env var IEX_PUB_KEY, or as config.json value of "IEX_PUB_KEY".
     see README to learn how to obtain one.`)
     }
+  }
+  if (!config.IEX_SECRET_KEY || !config.IEX_SECRET_KEY.length) {
+    config.IEX_SECRET_KEY = process.env.IEX_SECRET_KEY
   }
 
   // check for alpaca keys
@@ -122,12 +125,11 @@ valid component types are ${validComponentTypes.join(' ')}`,
   if (!config['APCA_API_SECRET_KEY'] || !config['APCA_API_SECRET_KEY'].length) {
     config['APCA_API_SECRET_KEY'] = process.env.APCA_API_SECRET_KEY
   }
-  if (
-    (!!config['APCA_API_KEY_ID'] && !!config['APCA_API_KEY_ID'].length) ^
-    (!!config['APCA_API_SECRET_KEY'] && !!config['APCA_API_SECRET_KEY'].length)
-  ) {
+  if (config['APCA_API_KEY_ID'] ^ config['APCA_API_SECRET_KEY']) {
     errors.push(
-      `user must provide both alpaca keys ALPACA_API_ID, and ALPACA_SECRET_KEY`,
+      `user must provide both alpaca keys ${config['ALPACA_API_ID']}, and ${[
+        'ALPACA_SECRET_KEY',
+      ]} or neither`,
     )
   }
 

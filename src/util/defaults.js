@@ -52,7 +52,6 @@ const book = {
   type: 'book',
   symbol: 'qqq',
   yxhw: [0, 0, 4, 4],
-  pollMs: 1000,
 }
 
 const account = {

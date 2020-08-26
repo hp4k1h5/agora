@@ -85,7 +85,7 @@ export function setComponentOptions(ws, target, words, command) {
 export function setSymbol(options, words) {
   if (!options.symbol) return
 
-  const symbol = words.find((w) => /(?<=\$)[\w.]+/.test(w))
+  const symbol = words.find((w) => /(?<=^\$)[\w.]+/.test(w))
   if (symbol) options.symbol = symbol.slice(1)
 }
 

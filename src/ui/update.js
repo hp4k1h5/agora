@@ -7,8 +7,9 @@ import {
   getProfile,
   getSectors,
   getBook,
+  getAccountIex,
 } from '../api/iex.js'
-import { getAccount } from '../api/alpaca.js'
+import { getAccountAlpaca } from '../api/alpaca.js'
 
 import { buildRepl } from './repl.js'
 import { buildPriceVolCharts } from './graph.js'
@@ -30,10 +31,19 @@ const updateMap = {
   watchlist: { apiFn: getWatchlist, uiFn: buildWatchlist },
   profile: { apiFn: getProfile, uiFn: buildProfile },
   list: { apiFn: getLists, uiFn: buildLists },
-  account: { apiFn: getAccount, uiFn: buildAccount },
   sectors: { apiFn: getSectors, uiFn: buildSectors },
   book: { apiFn: getBook, uiFn: buildBook },
   repl: { apiFn: () => {}, uiFn: buildRepl },
+  account: {
+    apiFn: async () => {
+      // try {
+      return await Promise.all([getAccountIex(), getAccountAlpaca()])
+      // } catch (e) {
+      // handleErr(ws, e)
+      // }
+    },
+    uiFn: buildAccount,
+  },
 }
 
 export async function update(ws, options) {

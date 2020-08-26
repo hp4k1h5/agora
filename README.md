@@ -372,6 +372,8 @@ poll [2                   --> stop polling in window 2
                               polling every 1 second
 poll6e4 [3                --> poll the 3rd window every minute (60,000
                               milliseconds)
+[all poll                 --> STOP all windows from polling
+[all poll1000             --> all components poll at 1 second intervals
 ```
 
 
@@ -410,7 +412,8 @@ judgement.
 
 You will need an [alpaca trading account](https://app.alpaca.markets/signup).
 Accounts are free as are trades. After signing up you can generate real or
-paper api keys. Use these to set env vars or `config.json` values as follows:
+paper api keys. Use one set of these to set env vars or `config.json` values
+as follows:
 
 ```bash
 export APCA_API_KEY_ID="YourAlpacaAPIid"
@@ -428,7 +431,9 @@ or
 
 Though it is not recommended, you can set `config.json` value
 `"alpacaAccountType"` to "live" if you wish to trade real-money with iexcli.
-The default value is "paper"
+The default value is "paper". If you have entered "live" account keys, you
+will need to see the value of `"alpacaAccountType"` to "live" in order for
+them to work.
 
 ## account
 

@@ -10,20 +10,23 @@ import {
   shapeLists,
   shapeSectors,
   shapeBook,
+  shapeAccountIex,
 } from './shape.js'
+import { handleErr } from '../util/error.js'
 
 import { config } from '../util/config.js'
 
 const iexToken = config.IEX_PUB_KEY
+const iexTokenSecret = config.IEX_SECRET_KEY
 
 /*
  * create a url from path: string, and params: any, a flat object that can be
  * encoded as escaped query parameters by 'querystring'. at minimum will ship
  * query with private key as urlEncoded query parameter.
  * */
-export function buildIexURL(path, params = {}) {
+export function buildIexURL(path, params = {}, token = iexToken) {
   const baseURL = 'https://cloud.iexapis.com/stable'
-  const queryString = qs.encode({ ...params, token: iexToken })
+  const queryString = qs.encode({ ...params, token })
 
   return `${baseURL}/${path}?${queryString}`
 }
@@ -173,4 +176,22 @@ export async function getBook(options) {
 
   response = await response.json()
   return shapeBook(response)
+}
+
+export async function getAccountIex() {
+  if (!iexTokenSecret || !iexTokenSecret.length) {
+    return handleErr(
+      {},
+      'cannot access iex account without setting IEX_SECRET_KEY in config.json or as env var',
+    )
+  }
+  const url = buildIexURL('account/usage', {}, iexTokenSecret)
+
+  let response = await fetch(url)
+  if (!response.ok) {
+    throw response
+  }
+
+  const data = await response.json()
+  return shapeAccountIex(data)
 }

@@ -8,6 +8,7 @@ import {
 } from '../util/parse.js'
 import { search as fuzzySearch } from './search.js'
 import { help } from './help.js'
+import { handleErr } from '../util/error.js'
 
 export async function evaluate(ws, input) {
   // define command to execute
@@ -21,19 +22,19 @@ export async function evaluate(ws, input) {
     undefined,
     chart: 'chart',
     '#': 'chart',
+    '^': 'book',
+    book: 'book',
+    quote: 'quote',
+    '"': 'quote',
     news: 'news',
     '!': 'news',
     watchlist: 'watchlist',
     '=': 'watchlist',
     profile: 'profile',
     '&': 'profile',
-    quote: 'quote',
-    '"': 'quote',
     list: 'list',
     '*': 'list',
     sectors: 'sectors',
-    '^': 'book',
-    book: 'book',
     '@': 'account',
     // prefix commands are not included here and are treated separately
     // they include the following symbols and words.
@@ -69,11 +70,15 @@ export async function evaluate(ws, input) {
     setTime(ws, target, words)
   })
 
-  await Promise.all(
-    targets.map(async (target) => {
-      await update(ws, target)
-    }),
-  )
+  try {
+    await Promise.all(
+      targets.map(async (target) => {
+        await update(ws, target)
+      }),
+    )
+  } catch (e) {
+    handleErr(e)
+  }
 }
 
 export function exit(ws) {

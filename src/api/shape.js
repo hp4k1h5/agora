@@ -284,7 +284,7 @@ export function shapeBook(data) {
   return { bids, asks, trades }
 }
 
-export function shapeAccount(data) {
+export function shapeAccountAlpaca(data) {
   const [accountData, positionsData] = data
   const shapedData = { account: '', positions: '' }
   shapedData.account = Object.entries(accountData)
@@ -307,6 +307,36 @@ export function shapeAccount(data) {
     .join('\n{#eb3-fg}-----------------------{/}\n')
 
   return shapedData
+}
+
+export function shapeAccountIex(data) {
+  const stats = {
+    mu: data.messages.monthlyUsage,
+    payg: data.messages.monthlyPayAsYouGo,
+  }
+
+  const dailyUsage = [Object.values(data.messages.dailyUsage).map((m) => +m)]
+
+  const total = stats.mu + stats.payg
+
+  const r = () => Math.floor(Math.random() * 255)
+  let keyUsage = Object.entries(data.messages.keyUsage)
+    .map((m) => {
+      const stroke = [r(), r(), r()]
+      return {
+        percent: Math.ceil((+m[1] / total) * 100),
+        stroke,
+        key: `{#${stroke
+          .map((s) => Math.floor(s / 16).toString(16))
+          .join('')}-fg}${m[0]
+          .split('_')
+          .map((k) => k.substring(0, 5).toLowerCase())
+          .join(' ')}{/}`,
+      }
+    })
+    .filter((m) => m.percent > 4)
+
+  return { stats, dailyUsage, keyUsage }
 }
 
 function abbrevNum(num) {
