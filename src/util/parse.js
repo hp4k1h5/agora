@@ -16,10 +16,13 @@ export function setTargets(ws, words, command) {
     target = ws.options.components.find((c) => c.id == tId)
     if (tId && !target) {
       ws.printLines(`{red-fg}err:{/} no such component id ${tId}`)
-      return
+      return []
     }
 
     target = target ? target : ws.prevFocus
+    if (target.interval) {
+      clearInterval(target.interval)
+    }
 
     // handle close component window
     const x = words.find((w) => w == 'x')

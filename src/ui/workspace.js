@@ -58,7 +58,7 @@ export class Workspace {
     })
 
     if (!options.interval || this.prevFocus === options) {
-      screen.focusPush(options.box)
+      setTimeout(() => screen.focusPush(options.box), 100)
     }
   }
 }

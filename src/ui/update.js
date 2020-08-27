@@ -43,6 +43,10 @@ const updateMap = {
   },
 }
 
+export const msgQ = {
+  // componentID: timestamp
+}
+
 export async function update(ws, options) {
   let data
 

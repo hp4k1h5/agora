@@ -13,7 +13,7 @@ import {
   shapeAccountIex,
 } from '../shape/shapeIex.js'
 // import { handleErr } from '../util/error.js'
-
+import { msgQ } from '../ui/update.js'
 import { config } from '../util/config.js'
 
 const iexToken = config.IEX_PUB_KEY
@@ -169,12 +169,25 @@ export async function getSectors(_options) {
 export async function getBook(options) {
   const url = buildIexURL(`stock/${options.symbol}/book`)
 
-  let response = await fetch(url)
-  if (!response.ok) {
-    throw response
+  async function qFetch(options, url) {
+    const d = new Date().getTime()
+
+    let response = await fetch(url)
+    if (!response.ok) {
+      throw response
+    }
+
+    if (msgQ[options.id] > d) {
+      throw `[${options.id} old message discarded`
+    }
+
+    msgQ[options.id] = d
+
+    return await response.json()
   }
 
-  response = await response.json()
+  let response = await qFetch(options, url)
+
   return shapeBook(response)
 }
 
