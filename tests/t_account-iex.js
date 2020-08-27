@@ -1,10 +1,9 @@
-import { shapeAccountIex } from '../src/api/shape.js'
-import { shapeAccountAlpaca } from '../src/api/shape.js'
+// import { shapeAccountIex } from '../src/shape/shapeIex.js'
+import { accountAlpacaData } from '../data/account_alpaca.js'
 
-import { accountData } from '../data/account_iex.js'
+import { shapeAccountAlpaca } from '../src/shape/shapeAlpaca.js'
+import { accountAlpacaPortfolio } from '../data/account_alpaca-portfolio.js'
 
-console.log(accountData)
+const result = shapeAccountAlpaca(accountAlpacaPortfolio)
 
-const result = shapeAccountIex(accountData)
-
-console.log(result)
+console.log(result.portfolio)

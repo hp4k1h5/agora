@@ -1,8 +1,8 @@
 import fetch from 'node-fetch'
-import fs from 'fs'
+import qs from 'querystring'
 
 import { config } from '../util/config.js'
-import { shapeAccountAlpaca } from './shape.js'
+import { shapeAccountAlpaca } from '../shape/shapeAlpaca.js'
 
 let alpacaTokens
 if (config['APCA_API_KEY_ID'] && config['APCA_API_KEY_ID'].length) {
@@ -18,14 +18,17 @@ const baseURLs = {
 }
 const baseURL = baseURLs[config.alpacaAccountType]
 
-export function buildAlpacaURL(path, method, order) {
-  const url = `${baseURL}/${path}`
+export function buildAlpacaURL(method, path, params, body) {
+  const queryString = qs.encode(params)
+  const url = `${baseURL}/${path}?${queryString}`
+
   const httpOptions = {
     method,
     headers: alpacaTokens,
   }
-  if (order) {
-    httpOptions.body = JSON.stringify(order)
+
+  if (body) {
+    httpOptions.body = JSON.stringify(body)
     httpOptions.headers['Content-Type'] = 'application/json'
   }
 
@@ -37,9 +40,23 @@ export async function getAccountAlpaca() {
     return
   }
 
-  const { url: accountUrl, httpOptions } = buildAlpacaURL('account', 'GET')
-  const { url: positionsUrl } = buildAlpacaURL('positions', 'GET')
-  const urls = [accountUrl, positionsUrl]
+  const { url: accountUrl, httpOptions } = buildAlpacaURL('GET', 'account')
+  const { url: positionsUrl } = buildAlpacaURL('GET', 'positions')
+  const portfolioUrls = [
+    { period: '1D' },
+    { period: '1W' },
+    { period: '1M' },
+    { period: '1A' },
+  ].map((params) => {
+    const { url: portfolioUrl } = buildAlpacaURL(
+      'GET',
+      'account/portfolio/history',
+      params,
+    )
+    return portfolioUrl
+  })
+
+  const urls = [accountUrl, positionsUrl, ...portfolioUrls]
 
   const data = await Promise.all(
     urls.map(async (url) => {
@@ -59,7 +76,7 @@ export async function getAccountAlpaca() {
 export async function submitOrder(ws, order) {
   order.time_in_force = 'day'
   order.type = 'market'
-  const { url, httpOptions } = buildAlpacaURL('orders', 'POST', order)
+  const { url, httpOptions } = buildAlpacaURL('orders', 'POST', null, order)
 
   let response = await fetch(url, httpOptions)
   if (!response.ok) {

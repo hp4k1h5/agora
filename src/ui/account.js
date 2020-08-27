@@ -1,6 +1,7 @@
 import blessed from '@hp4k1h5/blessed'
 import contrib from '@hp4k1h5/blessed-contrib'
 
+import { graph } from '../ui/graph.js'
 import { clear } from '../util/clear.js'
 import { spin } from '../util/spin.js'
 
@@ -21,6 +22,7 @@ export function buildAccount(ws, options, data) {
     if (!alpaca) alpaca = { account: empty[1], positions: empty[1] }
   }
 
+  // options.box = ws.grid.set(...[6, 6, 6, 6], blessed.text, {
   options.box = ws.grid.set(...options.yxhw, blessed.text, {
     name: 'account',
     label: `[${options.id}  account ${
@@ -45,6 +47,12 @@ export function buildAccount(ws, options, data) {
   const width = Math.floor(options.box.width / 3) - 1
   const height = Math.floor(options.box.height / 2) - 1
 
+  const graphHeight = Math.floor(12 / alpaca.portfolio.length)
+  alpaca.portfolio.forEach((pg, i) => {
+    const g = graph(ws, pg, pg.title, graphHeight * i, 5, graphHeight, 2)
+    g.setFront()
+  })
+
   const accountAlpaca = blessed.text({
     parent: options.box,
     name: 'alpaca account',
@@ -53,7 +61,9 @@ export function buildAccount(ws, options, data) {
     mouse: true,
     scrollable: true,
     // styles
-    width: width * 2,
+    top: height,
+    left: width * 2,
+    width,
     height,
     tags: true,
     border: { type: 'line' },
@@ -70,9 +80,7 @@ export function buildAccount(ws, options, data) {
     mouse: true,
     scrollable: true,
     // styles
-    top: height,
-    width: width * 2,
-    height,
+    width,
     tags: true,
     border: { type: 'line' },
     style: {
@@ -84,9 +92,7 @@ export function buildAccount(ws, options, data) {
   const iexBox = blessed.box({
     parent: options.box,
     name: 'iex',
-    label: `[${options.id}  iex  ${
-      options.pollMs ? ' .. polling ' + spin() : ''
-    }]`,
+    label: 'iex account',
     keys: false,
     // input is true for focus rotation
     input: true,
@@ -128,7 +134,7 @@ export function buildAccount(ws, options, data) {
     // styles
     tags: true,
     top: 7,
-    height: 5,
+    height: 4,
     width: width - 2,
   })
 

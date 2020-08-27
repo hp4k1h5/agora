@@ -11,8 +11,8 @@ import {
   shapeSectors,
   shapeBook,
   shapeAccountIex,
-} from './shape.js'
-import { handleErr } from '../util/error.js'
+} from '../shape/shapeIex.js'
+// import { handleErr } from '../util/error.js'
 
 import { config } from '../util/config.js'
 
