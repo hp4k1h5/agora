@@ -2,14 +2,14 @@ import {
   getPrices,
   getQuote,
   getNews,
-  getWatchlist,
+  getWatchlistIex,
   getLists,
   getProfile,
   getSectors,
   getBook,
   getAccountIex,
 } from '../api/iex.js'
-import { getAccountAlpaca } from '../api/alpaca.js'
+import { getAccountAlpaca, getWatchlistAlpaca } from '../api/alpaca.js'
 
 import { buildRepl } from './repl.js'
 import { buildPriceVolCharts } from './graph.js'
@@ -28,7 +28,8 @@ const updateMap = {
   quote: { apiFn: getQuote, uiFn: buildQuoteList },
   chart: { apiFn: getPrices, uiFn: buildPriceVolCharts },
   news: { apiFn: getNews, uiFn: buildNewsList },
-  watchlist: { apiFn: getWatchlist, uiFn: buildWatchlist },
+  watchlist: { apiFn: getWatchlistIex, uiFn: buildWatchlist },
+  watchlistAlpaca: { apiFn: getWatchlistAlpaca, uiFn: buildWatchlist },
   profile: { apiFn: getProfile, uiFn: buildProfile },
   list: { apiFn: getLists, uiFn: buildLists },
   sectors: { apiFn: getSectors, uiFn: buildSectors },

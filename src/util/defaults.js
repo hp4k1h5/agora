@@ -22,7 +22,6 @@ const quote = {
 const watchlist = {
   type: 'watchlist',
   yxhw: [0, 0, 12, 9],
-  watchlist: ['ge'],
 }
 
 const news = {

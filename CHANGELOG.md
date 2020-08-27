@@ -1,8 +1,11 @@
 # CHANGELOG
 
 ## v0.0.13
+- 🐴 alpaca watchlist integration. set config.json key "watchlist" to "alpaca"
+- 🏦 more iex/alpaca account information. alpaca daily/weekly/monthly/yearly
+    profit loss charts, orders, iex message use and more.
 - ℹ updated `help`
-- 🐛 bugfix for sectors
+- 🐛 bugfixes for sectors, polling
 
 ## v0.0.12
 - 📖 config.json documentation. README updates

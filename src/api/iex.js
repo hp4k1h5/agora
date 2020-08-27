@@ -96,13 +96,13 @@ export async function getNews(options) {
   return shapeNews(response)
 }
 
-export async function getWatchlist(options) {
+export async function getWatchlistIex(options) {
   const url = buildIexURL('stock/market/batch', {
     symbols: options.watchlist.join(','),
     types: 'quote',
   })
-  let response = await fetch(url)
 
+  let response = await fetch(url)
   if (!response.ok) {
     throw response
   }

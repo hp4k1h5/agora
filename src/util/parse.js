@@ -78,6 +78,9 @@ export function setComponentOptions(ws, target, words, command) {
     }
   } else if (target.type == 'watchlist') {
     target.watchlist = target.watchlist || ws.options.watchlist || ['goog']
+    if (target.watchlist == 'alpaca') {
+      target.type = 'watchlistAlpaca'
+    }
   }
 }
 

@@ -99,11 +99,11 @@ valid component types are ${validComponentTypes.join(' ')}`,
 
   if (
     config.watchlist &&
-    (!typeof config.watchlist == 'object' ||
-      !config.watchlist.length ||
-      !config.watchlist.every((symbol) => typeof symbol == 'string'))
+    (!typeof config.watchlist == 'object' || !config.watchlist.length)
   ) {
-    errors.push('component "watchlist" must be a list of symbol names')
+    errors.push(
+      'component "watchlist" must be an arry of symbol names, or the string "alpaca"',
+    )
   }
 
   // check for iex api keys

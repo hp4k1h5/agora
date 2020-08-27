@@ -1,7 +1,9 @@
 import fetch from 'node-fetch'
 import qs from 'querystring'
+import fs from 'fs'
 
 import { config } from '../util/config.js'
+import { getWatchlistIex } from './iex.js'
 import { shapeAccountAlpaca } from '../shape/shapeAlpaca.js'
 
 let alpacaTokens
@@ -87,4 +89,35 @@ export async function submitOrder(ws, order) {
 
   ws.printLines(JSON.stringify(response, null, 2))
   return
+}
+
+export async function getWatchlistAlpaca(options) {
+  const { url, httpOptions } = buildAlpacaURL('GET', 'watchlists')
+
+  let response = await fetch(url, httpOptions)
+  if (!response.ok) {
+    throw response
+  }
+  response = await response.json()
+
+  const urls = response
+    .map((s) => s.id)
+    .map((id) => {
+      return buildAlpacaURL('GET', `watchlists/${id}`)
+    })
+
+  response = await Promise.all(
+    urls.map(async (url) => {
+      let r = await fetch(url.url, url.httpOptions)
+      if (!r.ok) {
+        throw r
+      }
+      return await r.json()
+    }),
+  )
+  options.watchlist = response.map((w) => w.assets.map((a) => a.symbol))
+
+  response = await getWatchlistIex(options)
+
+  return response
 }
