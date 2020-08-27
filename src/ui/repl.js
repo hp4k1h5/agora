@@ -56,9 +56,6 @@ export function buildRepl(ws, options) {
     exit(ws)
   })
 
-  ws.input.key('tab', function () {
-    screen.focusNext()
-  })
   ws.input.key('esc', function () {
     screen.focusNext()
   })

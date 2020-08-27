@@ -1,4 +1,5 @@
 import fetch from 'node-fetch'
+import fs from 'fs'
 
 import { config } from '../util/config.js'
 import { shapeAccountAlpaca } from './shape.js'
@@ -11,13 +12,14 @@ if (config['APCA_API_KEY_ID'] && config['APCA_API_KEY_ID'].length) {
   }
 }
 
-export function buildAlpacaURL(path, method, order) {
-  const baseURLs = {
-    paper: 'https://paper-api.alpaca.markets/v2',
-    live: 'https://api.alpaca.markets/v2',
-  }
-  const url = `${baseURLs[config.alpacaAccountType]}/${path}`
+const baseURLs = {
+  paper: 'https://paper-api.alpaca.markets/v2',
+  live: 'https://api.alpaca.markets/v2',
+}
+const baseURL = baseURLs[config.alpacaAccountType]
 
+export function buildAlpacaURL(path, method, order) {
+  const url = `${baseURL}/${path}`
   const httpOptions = {
     method,
     headers: alpacaTokens,

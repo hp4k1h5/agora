@@ -36,11 +36,7 @@ const updateMap = {
   repl: { apiFn: () => {}, uiFn: buildRepl },
   account: {
     apiFn: async () => {
-      // try {
       return await Promise.all([getAccountIex(), getAccountAlpaca()])
-      // } catch (e) {
-      // handleErr(ws, e)
-      // }
     },
     uiFn: buildAccount,
   },

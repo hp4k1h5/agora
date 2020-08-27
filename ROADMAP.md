@@ -34,6 +34,8 @@
 
 ## backlog
 
+- portfolio management
+- stock screener
 - markdown analyst reports/news reader
 - chart types
   - bar (have to make a new drawille component since contrib bar is not made

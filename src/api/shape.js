@@ -95,7 +95,7 @@ export function shapeQuote(data) {
 
 export function shapeNews(data) {
   const m = {
-    datetime: (d) => [d[0], new Date(d[1]).toString()],
+    datetime: (d) => [d[0], new Date(d[1]).toLocaleTimeString()],
     headline: (d) => [d[0], `{#ee7-fg}${d[1]}{/}`],
     source: (d) => [d[0], `{#fff-fg}${d[1]}{/}`],
     summary: (d) => [d[0], `{#bfc-fg}${d[1]}{/}`],
@@ -194,7 +194,7 @@ export function shapeProfile(data) {
 
 export function shapeLists(data, types) {
   const m = {
-    mostactive: (d) => table([d.symbol, '' + d.volume.toLocaleString()], [5]),
+    mostactive: (d) => table([d.symbol, d.volume.toLocaleString()], [5]),
     changePercent: (d) =>
       table(
         [
@@ -205,19 +205,13 @@ export function shapeLists(data, types) {
         ],
         [5],
       ),
-    iexvolume: (d) =>
-      table([d.symbol, ('' + d.iexVolume).toLocaleString()], [5]),
-    iexpercent: (d) =>
-      table(
-        [d.symbol, d.iexMarketPercent ? d.iexMarketPercent.toFixed(4) : ''],
-        [5],
-      ),
+    iexvolume: (d) => table([d.symbol, d.iexVolume.toLocaleString()], [5]),
   }
 
   let shaped = {}
   types.forEach((type, i) => {
     let _type = type
-    if (['gainers', 'losers'].includes(type)) {
+    if (['gainers', 'losers', 'iexpercent'].includes(type)) {
       _type = 'changePercent'
     }
     shaped[type] = data[i]
@@ -285,27 +279,74 @@ export function shapeBook(data) {
 }
 
 export function shapeAccountAlpaca(data) {
-  const [accountData, positionsData] = data
+  let [accountData, positionsData] = data
   const shapedData = { account: '', positions: '' }
-  shapedData.account = Object.entries(accountData)
-    .map((d) => {
-      d[0] = `{#4be-fg}${d[0]}{/}`
-      return table(d, [35])
-    })
-    .join('\n')
 
-  shapedData.positions = positionsData
-    .map((position) => {
-      return Object.entries(position)
-        .map((d) => {
-          d[1] = d[0] == 'symbol' ? `{#cd2-fg}${d[1]}{/}` : d[1]
-          d[0] = `{#4be-fg}${d[0]}{/}`
-          return table(d, [40])
-        })
-        .join('\n')
-    })
-    .join('\n{#eb3-fg}-----------------------{/}\n')
+  let toLocStr = [
+    'buying_power',
+    'regt_buying_power',
+    'daytrading_buying_power',
+    'cash',
+    'portfolio_value',
+    'equity',
+    'last_equity',
+    'long_market_value',
+    'short_market_value',
+    'initial_margin',
+    'maintenance_margin',
+    'last_maintenance_margin',
+  ]
+  // preshape account
+  Object.keys(accountData).forEach((k) => {
+    if (toLocStr.includes(k)) {
+      accountData[k] = (+accountData[k]).toLocaleString()
+    }
+  })
 
+  toLocStr = [
+    'qty',
+    'avg_entry_price',
+    'market_value',
+    'cost_basis',
+    'unrealized_intraday_pl',
+    'current_price',
+    'lastday_price',
+  ]
+  const percent = [
+    'unrealized_plpc',
+    'unrealized_intraday_plpc',
+    'change_today',
+  ]
+  // preshape positions
+  positionsData = positionsData.map((position) => {
+    Object.keys(position).forEach((k) => {
+      let val = position[k]
+      let color = val >= 0 ? '{#4fb-fg}' : '{#a25-fg}'
+      if (toLocStr.includes(k)) {
+        position[k] = `${color}${(+val).toLocaleString()}{/}`
+      } else if (percent.includes(k)) {
+        position[k] = `${color}${(val * 100).toFixed(2)}{/}%`
+      }
+    })
+    return position
+  })
+
+  const shapeArrOfObjs = (arr) => {
+    return arr
+      .map((position) => {
+        return Object.entries(position)
+          .map((d) => {
+            d[1] = d[0] == 'symbol' ? `{#cd2-fg}${d[1]}{/}` : d[1]
+            d[0] = `{#4be-fg}${d[0].split('_').join(' ')}{/}`
+            return table(d, [25])
+          })
+          .join('\n')
+      })
+      .join('\n{#eb3-fg}-----------------------{/}\n')
+  }
+
+  shapedData.account = shapeArrOfObjs([accountData])
+  shapedData.positions = shapeArrOfObjs(positionsData)
   return shapedData
 }
 
@@ -328,13 +369,10 @@ export function shapeAccountIex(data) {
         stroke,
         key: `{#${stroke
           .map((s) => Math.floor(s / 16).toString(16))
-          .join('')}-fg}${m[0]
-          .split('_')
-          .map((k) => k.substring(0, 5).toLowerCase())
-          .join(' ')}{/}`,
+          .join('')}-fg}${m[0].toLowerCase().split('_').join(' ')}{/}`,
       }
     })
-    .filter((m) => m.percent > 4)
+    .filter((m) => m.percent > 1)
 
   return { stats, dailyUsage, keyUsage }
 }

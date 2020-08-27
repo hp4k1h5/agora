@@ -1,4 +1,5 @@
 import { shapeAccountIex } from '../src/api/shape.js'
+import { shapeAccountAlpaca } from '../src/api/shape.js'
 
 import { accountData } from '../data/account_iex.js'
 

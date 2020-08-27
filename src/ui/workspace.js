@@ -24,46 +24,41 @@ export class Workspace {
   }
 
   setListeners(options) {
-    try {
-      const screen = this.options.screen
+    const screen = this.options.screen
 
-      // carousel listeners
-      screen.on('move', () => {
-        clearInterval(options.interval)
-        delete options.interval
-        delete options.pollMs
-      })
+    // carousel listeners
+    screen.on('move', () => {
+      clearInterval(options.interval)
+      delete options.interval
+      delete options.pollMs
+    })
 
-      if (!this.prevFocus) this.prevFocus = options
+    if (!this.prevFocus) this.prevFocus = options
 
-      options.box.on('focus', () => {
-        options.box.setFront()
+    options.box.on('focus', () => {
+      options.box.setFront()
+      options.box.style.border = { fg: '#fc5' }
+    })
+
+    options.box.on('blur', () => {
+      if (this.input.focused) {
+        this.prevFocus.box.style.border = { fg: '#6ff' }
         options.box.style.border = { fg: '#fc5' }
-      })
-
-      options.box.on('blur', () => {
-        if (this.input.focused) {
-          this.prevFocus.box.style.border = { fg: '#6ff' }
-          options.box.style.border = { fg: '#fc5' }
-        } else {
-          this.prevFocus.box.style.border = { fg: '#6ff' }
-        }
-        this.prevFocus = options
-        screen.render()
-      })
-
-      options.box.on('destroy', () => {
-        clearInterval(options.interval)
-        delete options.interval
-        delete options.pollMs
-      })
-
-      if (!options.interval || this.prevFocus === options) {
-        screen.focusPush(options.box)
+      } else {
+        this.prevFocus.box.style.border = { fg: '#6ff' }
       }
-    } catch (e) {
-      console.log(e)
-      process.exit(1)
+      this.prevFocus = options
+      screen.render()
+    })
+
+    options.box.on('destroy', () => {
+      clearInterval(options.interval)
+      delete options.interval
+      delete options.pollMs
+    })
+
+    if (!options.interval || this.prevFocus === options) {
+      screen.focusPush(options.box)
     }
   }
 }

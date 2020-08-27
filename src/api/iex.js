@@ -180,11 +180,9 @@ export async function getBook(options) {
 
 export async function getAccountIex() {
   if (!iexTokenSecret || !iexTokenSecret.length) {
-    return handleErr(
-      {},
-      'cannot access iex account without setting IEX_SECRET_KEY in config.json or as env var',
-    )
+    return
   }
+
   const url = buildIexURL('account/usage', {}, iexTokenSecret)
 
   let response = await fetch(url)

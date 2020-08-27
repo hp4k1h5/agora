@@ -6,7 +6,10 @@ export function handleErr(ws, e) {
 
   // non-api errors
   if (!e.status || !e.statusText)
-    return ws.printLines('{red-fg}internal err:{/} ' + e.toString())
+    return ws.printLines(
+      '{red-fg}internal err:{/} ' +
+        e.toString().replace(/pk.*/, 'iex_public_key'),
+    )
 
   // api errors
   let msg = `{red-fg}err:{/} 

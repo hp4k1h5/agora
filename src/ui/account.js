@@ -7,14 +7,18 @@ import { spin } from '../util/spin.js'
 export function buildAccount(ws, options, data) {
   clear(ws, options)
 
+  const empty = [
+    '{red-fg}no iex account data, enter config val or env var IEX_SECRET_KEY{/}',
+    '{red-fg}no alapaca account data{/}',
+  ]
+
   let [iex, alpaca] = []
   if (!data) {
-    ;[iex, alpaca] = [
-      '{red-fg}no iex account data{/}',
-      '{red-fg}no alapaca account data{/}',
-    ]
+    ;[iex, alpaca] = empty
   } else {
     ;[iex, alpaca] = data
+    if (!iex) iex = empty[0]
+    if (!alpaca) alpaca = { account: empty[1], positions: empty[1] }
   }
 
   options.box = ws.grid.set(...options.yxhw, blessed.text, {
@@ -127,21 +131,22 @@ export function buildAccount(ws, options, data) {
     height: 5,
     width: width - 2,
   })
-  // can't find reason why this is necessary in contrib
-  iexBox.append(keyUsage)
 
   const keyNames = blessed.text({
     parent: iexBox,
+    // inputs
+    keys: false,
     inputs: false,
+    mouse: true,
+    scrollable: true,
     // styles
     tags: true,
-    height: 1,
-    width: width - 2,
     top: 12,
+    width: width - 2,
   })
 
   // set data with or without data
-  if (!iex || !iex.stats) {
+  if (!data || !iex.stats) {
     headerIex.setContent(iex)
   } else {
     headerIex.setContent(
@@ -152,12 +157,13 @@ export function buildAccount(ws, options, data) {
       [`daily iex msg ${date.getMonth() + 1}/${date.getFullYear()}`],
       iex.dailyUsage,
     )
+
+    // can't find reason why this is necessary in contrib
+    iexBox.append(keyUsage)
     keyUsage.setStack(iex.keyUsage)
-    keyNames.setContent(iex.keyUsage.map((k) => k.key).join(' '))
+    keyNames.setContent(iex.keyUsage.map((k) => k.key).join('|'))
   }
 
   accountAlpaca.setContent(alpaca.account)
-  if (alpaca) {
-    positionsAlpaca.setContent(alpaca.positions)
-  }
+  positionsAlpaca.setContent(alpaca.positions)
 }
