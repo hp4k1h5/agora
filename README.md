@@ -403,6 +403,14 @@ prefixes to update multiple values at the same time
                     indicator from the targeted window
 ```
 
+#### `@` account
+
+Typing `@` will bring up the account window if you have set your
+`IEX_SECRET_KEY` in the config.json or as an env var.
+
+![account view showing iex and alpaca account information such as buying power
+and message use](img/account.png)
+
 ---
 
 ## trading
