@@ -50,7 +50,7 @@ export async function getAccountAlpaca(options) {
     { period: '1M' },
     { period: '1A' },
   ].map((params) => {
-    const { url: portfolioUrl } = buildAlpacaURL(
+    const portfolioUrl = buildAlpacaURL(
       'GET',
       'account/portfolio/history',
       params,

@@ -36,8 +36,11 @@ const updateMap = {
   book: { apiFn: getBook, uiFn: buildBook },
   repl: { apiFn: () => {}, uiFn: buildRepl },
   account: {
-    apiFn: async () => {
-      return await Promise.all([getAccountIex(), getAccountAlpaca()])
+    apiFn: async (options) => {
+      return await Promise.all([
+        getAccountIex(options),
+        getAccountAlpaca(options),
+      ])
     },
     uiFn: buildAccount,
   },
