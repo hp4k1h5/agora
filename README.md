@@ -40,7 +40,16 @@ gainers/losers, and stock related news](img/iexcli.png)
 
 ## CHANGELOG
 
+## v0.0.13
+- 🐴 alpaca watchlist integration. set config.json key "watchlist" to
+    "alpaca". for now all watchlists are displayed together
+- 🏦 more iex/alpaca account information. alpaca daily/weekly/monthly/yearly
+    profit loss charts, orders, iex message use and more.
+- ℹ updated `help`
+- 🐛 bugfixes for sectors, polling, and workspace switch
+
 ## v0.0.12
+
 - 📖 config.json documentation. README updates
 - 🐛 bugfix. windows are more persistent now within workspaces and across
     carousel rotations.
@@ -63,12 +72,7 @@ gainers/losers, and stock related news](img/iexcli.png)
     indicator](./README.md#technical-indicator-prefix)
 - 📊 sector performance
 
-### v0.0.8
-
-- 🐛 bugfix for '>' return to repl command in carousel mode
-- 🐴 [alpaca](https://alpaca.markets/) integration. Users can now trade with
-    alpaca api and see account and positions info. See
-    [trading](#trading)
+---
 
 ## installation
 
