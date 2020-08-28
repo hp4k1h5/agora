@@ -1,6 +1,5 @@
 import fetch from 'node-fetch'
 import qs from 'querystring'
-import fs from 'fs'
 
 import { config } from '../util/config.js'
 import { getWatchlistIex } from './iex.js'
@@ -100,11 +99,11 @@ export async function getWatchlistAlpaca(options) {
   }
   response = await response.json()
 
-  const urls = response
-    .map((s) => s.id)
-    .map((id) => {
-      return buildAlpacaURL('GET', `watchlists/${id}`)
-    })
+  const wlNames = []
+  const urls = response.map((r) => {
+    wlNames.push(r.name)
+    return buildAlpacaURL('GET', `watchlists/${r.id}`)
+  })
 
   response = await Promise.all(
     urls.map(async (url) => {
@@ -115,9 +114,18 @@ export async function getWatchlistAlpaca(options) {
       return await r.json()
     }),
   )
-  options.watchlist = response.map((w) => w.assets.map((a) => a.symbol))
 
-  response = await getWatchlistIex(options)
+  response = await Promise.all(
+    response.map(async (wl) => {
+      options.watchlist = wl.assets.map((a) => a.symbol)
+      return await getWatchlistIex(options)
+    }),
+  )
 
-  return response
+  return response.reduce((a, v, i) => {
+    let line = v[0].map(() => '--')
+    line[1] = wlNames[i]
+    v.unshift(line)
+    return [...a, ...v]
+  }, [])
 }

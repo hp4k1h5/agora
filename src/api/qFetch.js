@@ -13,6 +13,9 @@ export async function qFetch(options, url) {
   }
 
   if (!response.ok) {
+    if (options.d > d) {
+      throw { q: `[${options.id} old message discarded` }
+    }
     throw response
   }
 

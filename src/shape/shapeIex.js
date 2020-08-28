@@ -137,6 +137,7 @@ export function shapeWatchlist(data) {
     peRatio: (d) => ['p/e', '' + d[1]],
     marketCap: (d) => ['mktCap', abbrevNum(d[1])],
   }
+
   let shapedList = []
   Object.keys(data).forEach((d) => {
     let quote = data[d].quote
