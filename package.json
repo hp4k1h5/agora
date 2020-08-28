@@ -34,6 +34,7 @@
   "dependencies": {
     "@hp4k1h5/blessed": "^0.0.2",
     "@hp4k1h5/blessed-contrib": "^0.0.3",
+    "abort-controller": "^3.0.0",
     "fuzzysort": "^1.1.4",
     "node-fetch": "^2.6.0"
   },

@@ -21,7 +21,7 @@ export function buildBook(ws, options, data) {
     // styles
     tags: true,
     style: {
-      focus: { border: { fg: '#ddf' } },
+      focus: { border: { fg: '#fc5' } },
     },
   })
 
@@ -66,7 +66,6 @@ export function buildBook(ws, options, data) {
     style: {
       fg: '#555',
       border: { fg: '#555' },
-      focus: { border: { fg: '#fc5' } },
     },
   })
 

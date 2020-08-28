@@ -11,8 +11,9 @@ function buildScreen() {
   const screen = blessed.screen({
     title: 'iexcli',
     smartCSR: true,
-    // log: 'data/log.txt',
+    log: 'data/log.txt',
   })
+
   // set app-wide screen keys
   // app-wide exit
   screen.key('C-c', function () {
@@ -26,6 +27,7 @@ function buildScreen() {
   screen.key(['S-tab'], function () {
     screen.focusPrevious()
   })
+
   return screen
 }
 const screen = buildScreen()
@@ -40,6 +42,23 @@ export const main = function () {
       await Promise.all(
         ws.options.components.map(async (cOptions) => {
           cOptions.id = ws.id()
+          cOptions.wsId = wsOptions.id
+
+          wsOptions.screen.on('move', () => {
+            screen.log(`
+car page ${carousel.currPage}
+ws  id   ${wsOptions.id}
+co  wsid ${cOptions.wsId}
+co  id   ${cOptions.id}
+co  d    ${cOptions.d}
+`)
+            if (carousel.currPage != cOptions.wsId) {
+              cOptions.d = Infinity
+            } else {
+              delete cOptions.d
+            }
+          })
+
           setComponentOptions(ws, cOptions, [], null)
           setTime(ws, cOptions, [`:${cOptions.time}`])
 
@@ -58,9 +77,10 @@ export const main = function () {
   }
   function startCarousel(pages, options) {
     const carousel = new contrib.carousel(pages, options)
+    workspaces.forEach((workspace) => (workspace.carousel = carousel))
     carousel.start()
+    return carousel
   }
-  startCarousel(workspaces, carouselOptions)
+  return startCarousel(workspaces, carouselOptions)
 }
-
-main()
+export const carousel = main()

@@ -66,7 +66,8 @@ function vetConfig(config, location) {
     )
   }
 
-  config.workspaces.forEach((workspace) => {
+  config.workspaces.forEach((workspace, i) => {
+    workspace.id = i
     workspace.components.forEach((component) => {
       // vet type
       if (!validComponentTypes.includes(component.type)) {

@@ -43,10 +43,6 @@ const updateMap = {
   },
 }
 
-export const msgQ = {
-  // componentID: timestamp
-}
-
 export async function update(ws, options) {
   let data
 
@@ -63,10 +59,15 @@ export async function update(ws, options) {
       // make request(s)
       data = await updateMap[options.type].apiFn(options)
     } catch (e) {
+      if (e.q) {
+        handleErr(ws, e.q)
+        return
+      }
       handleErr(ws, e)
     }
 
     // update ui
+    delete options.d
     updateMap[options.type].uiFn(ws, options, data)
 
     ws.options.screen.render()

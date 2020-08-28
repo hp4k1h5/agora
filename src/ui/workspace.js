@@ -1,4 +1,5 @@
 import contrib from '@hp4k1h5/blessed-contrib'
+import { carousel } from '../index.js'
 
 /*
  * blessed-contrib grid controller

@@ -47,6 +47,9 @@ export function setTargets(ws, words, command) {
   } else if (_new) {
     target = defaults[command]
     target.id = ws.id()
+    ws.options.screen.on('move', () => {
+      target.d = Infinity
+    })
     ws.options.components.push(target)
   } else {
     // [all targets all targetable components
