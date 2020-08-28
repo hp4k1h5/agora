@@ -1,7 +1,8 @@
-import fetch from 'node-fetch'
 import qs from 'querystring'
+import fs from 'fs'
 
 import { config } from '../util/config.js'
+import { qFetch } from './qFetch.js'
 import { getWatchlistIex } from './iex.js'
 import { shapeAccountAlpaca } from '../shape/shapeAlpaca.js'
 
@@ -36,13 +37,13 @@ export function buildAlpacaURL(method, path, params, body) {
   return { url, httpOptions }
 }
 
-export async function getAccountAlpaca() {
+export async function getAccountAlpaca(options) {
   if (!alpacaTokens) {
     return
   }
 
-  const { url: accountUrl, httpOptions } = buildAlpacaURL('GET', 'account')
-  const { url: positionsUrl } = buildAlpacaURL('GET', 'positions')
+  const accountUrl = buildAlpacaURL('GET', 'account')
+  const positionsUrl = buildAlpacaURL('GET', 'positions')
   const portfolioUrls = [
     { period: '1D' },
     { period: '1W' },
@@ -61,43 +62,27 @@ export async function getAccountAlpaca() {
 
   const data = await Promise.all(
     urls.map(async (url) => {
-      let response = await fetch(url, httpOptions)
-      if (!response.ok) {
-        throw response
-      }
-
-      response = await response.json()
-      return response
+      return await qFetch(options, url.url, url.httpOptions)
     }),
   )
 
   return shapeAccountAlpaca(data)
 }
 
-export async function submitOrder(ws, order) {
+export async function submitOrder(_ws, order) {
   order.time_in_force = 'day'
   order.type = 'market'
   const { url, httpOptions } = buildAlpacaURL('orders', 'POST', null, order)
 
-  let response = await fetch(url, httpOptions)
-  if (!response.ok) {
-    throw response
-  }
+  let response = await qFetch(options, url, httpOptions)
 
-  response = await response.json()
-
-  ws.printLines(JSON.stringify(response, null, 2))
-  return
+  return response
 }
 
 export async function getWatchlistAlpaca(options) {
   const { url, httpOptions } = buildAlpacaURL('GET', 'watchlists')
 
-  let response = await fetch(url, httpOptions)
-  if (!response.ok) {
-    throw response
-  }
-  response = await response.json()
+  let response = await qFetch(options, url, httpOptions)
 
   const wlNames = []
   const urls = response.map((r) => {
@@ -107,11 +92,7 @@ export async function getWatchlistAlpaca(options) {
 
   response = await Promise.all(
     urls.map(async (url) => {
-      let r = await fetch(url.url, url.httpOptions)
-      if (!r.ok) {
-        throw r
-      }
-      return await r.json()
+      return await qFetch(options, url.url, url.httpOptions)
     }),
   )
 

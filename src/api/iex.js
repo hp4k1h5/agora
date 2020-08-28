@@ -1,5 +1,4 @@
 import qs from 'querystring'
-import fetch from 'node-fetch'
 import { qFetch } from './qFetch.js'
 
 import {
@@ -60,39 +59,23 @@ export async function getPrices(options) {
     url = buildIexURL(`stock/${options.symbol}/chart/${options._time}`)
   }
 
-  let response = await fetch(url)
-  if (!response.ok) {
-    response._errMeta = {
-      url,
-      params,
-    }
-    throw response
-  }
+  const data = await qFetch(options, url)
 
-  const data = await response.json()
   return shapePrices(options, data)
 }
 
 export async function getQuote(options) {
   const url = buildIexURL(`stock/${options.symbol}/quote`)
-  let response = await fetch(url)
-  if (!response.ok) {
-    throw response
-  }
+  const data = await qFetch(options, url)
 
-  response = await response.json()
-  return shapeQuote(response)
+  return shapeQuote(data)
 }
 
 export async function getNews(options) {
   const url = buildIexURL(`stock/${options.symbol}/news/last/10`)
-  let response = await fetch(url)
-  if (!response.ok) {
-    throw response
-  }
+  const data = await qFetch(options, url)
 
-  response = await response.json()
-  return shapeNews(response)
+  return shapeNews(data)
 }
 
 export async function getWatchlistIex(options) {
@@ -101,9 +84,9 @@ export async function getWatchlistIex(options) {
     types: 'quote',
   })
 
-  let response = await qFetch(options, url)
+  const data = await qFetch(options, url)
 
-  return shapeWatchlist(response)
+  return shapeWatchlist(data)
 }
 
 export async function getProfile(options) {
@@ -116,13 +99,7 @@ export async function getProfile(options) {
 
   const data = await Promise.all(
     urls.map(async (url) => {
-      let response = await fetch(url)
-      if (!response.ok) {
-        throw response
-      }
-
-      response = await response.json()
-      return response
+      return await qFetch(options, url)
     }),
   )
 
@@ -136,51 +113,37 @@ export async function getLists(options) {
 
   const data = await Promise.all(
     urls.map(async (url) => {
-      let response = await fetch(url)
-      if (!response.ok) {
-        throw response
-      }
-
-      response = await response.json()
-      return response
+      return await qFetch(options, url)
     }),
   )
 
   return shapeLists(data, options.listTypes)
 }
 
-export async function getSectors(_options) {
-  let url = buildIexURL('stock/market/sector-performance')
+export async function getSectors(options) {
+  const url = buildIexURL('stock/market/sector-performance')
 
-  let response = await fetch(url)
-  if (!response.ok) {
-    throw response
-  }
+  const data = await qFetch(options, url)
 
-  response = await response.json()
-  return shapeSectors(response)
+  return shapeSectors(data)
 }
 
 export async function getBook(options) {
   const url = buildIexURL(`stock/${options.symbol}/book`)
 
-  let response = await qFetch(options, url)
+  const data = await qFetch(options, url)
 
-  return shapeBook(response)
+  return shapeBook(data)
 }
 
-export async function getAccountIex() {
+export async function getAccountIex(options) {
   if (!iexTokenSecret || !iexTokenSecret.length) {
     return
   }
 
   const url = buildIexURL('account/usage', {}, iexTokenSecret)
 
-  let response = await fetch(url)
-  if (!response.ok) {
-    throw response
-  }
+  const data = await qFetch(options, url)
 
-  const data = await response.json()
   return shapeAccountIex(data)
 }

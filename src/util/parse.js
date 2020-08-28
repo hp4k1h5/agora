@@ -47,6 +47,7 @@ export function setTargets(ws, words, command) {
   } else if (_new) {
     target = defaults[command]
     target.id = ws.id()
+    target.q = {}
     ws.options.screen.on('move', () => {
       target.d = Infinity
     })

@@ -43,13 +43,17 @@ export const main = function () {
         ws.options.components.map(async (cOptions) => {
           cOptions.id = ws.id()
           cOptions.wsId = wsOptions.id
+          cOptions.q = {}
 
           wsOptions.screen.on('move', () => {
-            if (carousel.currPage != cOptions.wsId) {
-              cOptions.d = Infinity
-            } else {
-              delete cOptions.d
-            }
+            // cancel all requests from last ws in flight
+            Object.keys(cOptions.q).forEach((url) => {
+              if (carousel.currPage != cOptions.wsId) {
+                cOptions.q[url] = Infinity
+              } else {
+                delete cOptions.q[url]
+              }
+            })
           })
 
           setComponentOptions(ws, cOptions, [], null)
