@@ -38,14 +38,14 @@ export class Workspace {
 
     options.box.on('focus', () => {
       options.box.setFront()
-      options.box.style.border = { fg: '#fc5' }
+      if (!options.pollMs) options.box.style.border = { fg: '#fc5' }
     })
 
     options.box.on('blur', () => {
       if (this.input.focused) {
         this.prevFocus.box.style.border = { fg: '#6ff' }
         options.box.style.border = { fg: '#fc5' }
-      } else {
+      } else if (!options.pollMs) {
         this.prevFocus.box.style.border = { fg: '#6ff' }
       }
       this.prevFocus = options

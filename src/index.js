@@ -11,7 +11,7 @@ function buildScreen() {
   const screen = blessed.screen({
     title: 'iexcli',
     smartCSR: true,
-    log: 'data/log.txt',
+    // log: 'data/log.txt',
   })
 
   // set app-wide screen keys
@@ -45,13 +45,6 @@ export const main = function () {
           cOptions.wsId = wsOptions.id
 
           wsOptions.screen.on('move', () => {
-            screen.log(`
-car page ${carousel.currPage}
-ws  id   ${wsOptions.id}
-co  wsid ${cOptions.wsId}
-co  id   ${cOptions.id}
-co  d    ${cOptions.d}
-`)
             if (carousel.currPage != cOptions.wsId) {
               cOptions.d = Infinity
             } else {

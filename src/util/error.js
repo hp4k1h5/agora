@@ -1,7 +1,8 @@
 export function handleErr(ws, e) {
   // if no repl dump error
   if (!ws.printLines) {
-    return console.log(e)
+    // TODO set up a logger
+    return // console.log(e)
   }
 
   // non-api errors

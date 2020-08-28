@@ -60,13 +60,14 @@ export async function update(ws, options) {
       data = await updateMap[options.type].apiFn(options)
     } catch (e) {
       if (e.q) {
+        // if the response is older than what is in the q, discard it, and don't update
         handleErr(ws, e.q)
         return
       }
       handleErr(ws, e)
     }
 
-    // update ui
+    // update ui if workspace hasnt changed
     delete options.d
     updateMap[options.type].uiFn(ws, options, data)
 
