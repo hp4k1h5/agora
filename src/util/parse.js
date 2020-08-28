@@ -152,7 +152,7 @@ export function setTime(ws, options, words) {
   }
 }
 
-export async function setOrder(ws, words) {
+export async function setOrder(ws, options, words) {
   // execute orders first cannot be combined with other commands
   const orderCmd = words.find((w) => /^[+-]\d+$/.test(w))
   if (!orderCmd) {
@@ -166,7 +166,7 @@ export async function setOrder(ws, words) {
   order.side = orderCmd[0] == '+' ? 'buy' : 'sell'
 
   try {
-    await submitOrder(ws, order)
+    await submitOrder(ws, options, order)
   } catch (e) {
     handleErr(ws, e)
   }

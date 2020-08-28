@@ -51,7 +51,7 @@ export async function evaluate(ws, input) {
   const words = input.split(/\s+/g)
 
   // handle orders separately
-  const order = await setOrder(ws, words)
+  const order = await setOrder(ws, { wsId: ws.id, q: {} }, words)
   if (order) return
 
   // find ui commands

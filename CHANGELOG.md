@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v0.0.14
+- 🐛 bugfix for manual trading
+
 ## v0.0.13
 - 🐴 alpaca watchlist integration. set config.json key "watchlist" to
     "alpaca". for now all watchlists are displayed together

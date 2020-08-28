@@ -69,14 +69,15 @@ export async function getAccountAlpaca(options) {
   return shapeAccountAlpaca(data)
 }
 
-export async function submitOrder(_ws, order) {
+export async function submitOrder(ws, options, order) {
   order.time_in_force = 'day'
   order.type = 'market'
-  const { url, httpOptions } = buildAlpacaURL('orders', 'POST', null, order)
+  const { url, httpOptions } = buildAlpacaURL('POST', 'orders', null, order)
 
-  let response = await qFetch(options, url, httpOptions)
+  let data = await qFetch(options, url, httpOptions)
 
-  return response
+  ws.printLines(JSON.stringify(data, null, 2))
+  return data
 }
 
 export async function getWatchlistAlpaca(options) {
