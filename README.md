@@ -44,7 +44,9 @@ gainers/losers, and stock related news](img/iexcli.png)
 - 🐴 alpaca watchlist integration. set config.json key "watchlist" to
     "alpaca". for now all watchlists are displayed together
 - 🏦 more iex/alpaca account information. alpaca daily/weekly/monthly/yearly
-    profit loss charts, orders, iex message use and more.
+    profit loss charts, orders, iex message use and more. Set env var or
+    config val `IEX_SECRET_KEY` to obtain iex account information in the
+    account component.
 - ℹ updated `help`
 - 🐛 bugfixes for sectors, polling, and workspace switch
 
@@ -133,7 +135,7 @@ you that your remaining message allotment is insufficient for the data request
 you are making. You can visit your [iexcloud
 console](https://iexcloud.io/console/usage) for more information. If you wish
 to make the most use of your 500,000 free monthly iex messages, avoid longer
-time-range graph queries. For example a 5-year chart costs roughly 12,590
+time-range graph queries. For example a 1-year chart costs roughly 12,590
 messages (~252 trading days * 50 messages/day). Intraday time ranges such as
 `:1d` or `:100min` are free. Profile (`&`) data is also relatively expensive.
 
@@ -278,7 +280,7 @@ prefix-commands in the query.
                   weighted-moving-average overlay
 ```
 
-### `^` book command
+#### `^` book command
 
 Typing `^` or `book` will bring up the order book for the active symbol.  
 **examples**
@@ -316,7 +318,10 @@ to scroll. This workspace is defined in
 If the watchlist expands beyond its defined boundaries and is occluding other
 components, try rotating through your other components with `tab` or
 `Shift-tab`. Alternatively, use the arrow-keys 'right' and then 'left' to
-reset the workspace.  
+reset the workspace
+
+> 🐴 set watchlist to string value "alpaca" to source your alpaca watchlists.
+
 **examples**
 ```bash
 = [4
@@ -364,10 +369,10 @@ is inadvisable, since you may have multiple polling components at the same
 time.
 
 All polls are cleared when switching workstations. For now, you will have to
-manually restart them.
+manually restart them. Try `[all poll1.5e3` to set all components polling at
+1.5 second intervals. This is the same as calling `[all poll1500`. Use `[all
+poll` to stop all components polling.
 
-Use command `poll` followed immediately by the interval to start or stop a
-component polling.  
 **examples**
 ```bash
 [3 poll60000              --> poll the 3rd window every 60 seconds
@@ -379,7 +384,6 @@ poll6e4 [3                --> poll the 3rd window every minute (60,000
 [all poll                 --> STOP all windows from polling
 [all poll1000             --> all components poll at 1 second intervals
 ```
-
 
 #### `%` technical-indicator prefix
 

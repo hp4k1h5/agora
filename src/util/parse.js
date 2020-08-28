@@ -101,7 +101,7 @@ export function setSymbol(options, words) {
 
 // only set if component has time & user entered time
 export function setTime(ws, options, words) {
-  let poll = words.find((w) => /poll\d*/.test(w))
+  let poll = words.find((w) => /poll[\d.]*/.test(w))
   if (poll) {
     poll = +poll.match(/[\d|e]+$/)
     if (!poll) {

@@ -4,7 +4,9 @@
 - 🐴 alpaca watchlist integration. set config.json key "watchlist" to
     "alpaca". for now all watchlists are displayed together
 - 🏦 more iex/alpaca account information. alpaca daily/weekly/monthly/yearly
-    profit loss charts, orders, iex message use and more.
+    profit loss charts, orders, iex message use and more. Set env var or
+    config val `IEX_SECRET_KEY` to obtain iex account information in the
+    account component.
 - ℹ updated `help`
 - 🐛 bugfixes for sectors, polling, and workspace switch
 
