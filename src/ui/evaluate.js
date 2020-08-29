@@ -86,7 +86,7 @@ export function exit(ws) {
   setTimeout(() => {
     ws.options.screen.destroy()
     process.exit(0)
-  }, 800)
+  }, 730)
 }
 
 function search(ws, words) {

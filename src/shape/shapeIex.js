@@ -195,18 +195,18 @@ export function shapeProfile(data) {
 
 export function shapeLists(data, types) {
   const m = {
-    mostactive: (d) => table([d.symbol, d.volume.toLocaleString()], [5]),
+    mostactive: (d) => table([d.symbol, d.volume?.toLocaleString()], [5]),
     changePercent: (d) =>
       table(
         [
           d.symbol,
           `{#${
             d.changePercent >= 0 ? '4fb' : 'a25'
-          }-fg}${d.changePercent.toFixed(1)}{/}%`,
+          }-fg}${d.changePercent?.toFixed(1)}{/}%`,
         ],
         [5],
       ),
-    iexvolume: (d) => table([d.symbol, d.iexVolume.toLocaleString()], [5]),
+    iexvolume: (d) => table([d.symbol, d.iexVolume?.toLocaleString()], [5]),
   }
 
   let shaped = {}
