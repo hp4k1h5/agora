@@ -1,5 +1,4 @@
 import qs from 'querystring'
-import fs from 'fs'
 
 import { config } from '../util/config.js'
 import { qFetch } from './qFetch.js'
@@ -70,8 +69,7 @@ export async function getAccountAlpaca(options) {
 }
 
 export async function submitOrder(ws, options, order) {
-  order.time_in_force = 'day'
-  order.type = 'market'
+  ws.printLines(3)
   const { url, httpOptions } = buildAlpacaURL('POST', 'orders', null, order)
 
   let data = await qFetch(options, url, httpOptions)

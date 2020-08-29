@@ -153,6 +153,7 @@ export function setTime(ws, options, words) {
 }
 
 export async function setOrder(ws, options, words) {
+  ws.printLines(1)
   // execute orders first cannot be combined with other commands
   const orderCmd = words.find((w) => /^[+-]\d+$/.test(w))
   if (!orderCmd) {
@@ -164,8 +165,24 @@ export async function setOrder(ws, options, words) {
   order.symbol = order.symbol.toUpperCase()
   order.qty = +orderCmd.substring(1)
   order.side = orderCmd[0] == '+' ? 'buy' : 'sell'
+  order.type =
+    words.find((w) => ['market', 'limit', 'stop', 'stop_limit'].includes(w)) ||
+    'market'
+  order.limit_price = words.find((w) => /^[<>][\d.]+$/.test(w))
+  if (order.type == 'limit' && !order.limit_price) {
+    handleErr('limit order must include limit_price, e.g. {yellow-fg}<3.16{/}')
+    ws.printLines(
+      'limit order must include limit_price, e.g. {yellow-fg}<3.16{/}',
+    )
+    return true
+  }
+  order.limit_price = +order.limit_price?.slice(1)
+  order.time_in_force =
+    words.find((w) => ['day', 'gtc', 'opg', 'cls', 'ioc', 'fok'].includes(w)) ||
+    'day'
 
   try {
+    ws.printLines(2)
     await submitOrder(ws, options, order)
   } catch (e) {
     handleErr(ws, e)
