@@ -102,7 +102,7 @@ export function shapeAccountAlpaca(data) {
 
   shapedData.portfolio = portfolioData
   shapedData.account = shapeArrOfObjs([accountData])
-  shapedData.orders = ordersData //shapeArrOfObjs(orders)
+  shapedData.orders = JSON.stringify(ordersData, null, 2) //shapeArrOfObjs(orders)
   shapedData.positions = shapeArrOfObjs(positionsData)
 
   return shapedData

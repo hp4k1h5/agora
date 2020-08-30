@@ -3,12 +3,12 @@ import blessed from '@hp4k1h5/blessed'
 import { clear } from '../util/clear.js'
 import { spin } from '../util/spin.js'
 
-export function buildOrders(ws, options, data) {
+export function buildBots(ws, options, data) {
   clear(ws, options)
 
   options.box = ws.grid.set(...options.yxhw, blessed.text, {
-    name: 'orders',
-    label: `[${options.id}  orders ${
+    name: 'bots',
+    label: `[${options.id}  bots ${
       options.pollMs ? ' .. polling ' + spin() : ''
     }]`,
     // inputs
@@ -29,5 +29,5 @@ export function buildOrders(ws, options, data) {
 
   // set data
   if (!data) return
-  options.box.setContent(data.orders)
+  options.box.setContent(data)
 }

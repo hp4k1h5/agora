@@ -23,6 +23,7 @@ import { buildBook } from './book.js'
 import { buildOrders } from './orders.js'
 import { buildPositions } from './positions.js'
 import { buildAccount } from './account.js'
+import { buildBots } from './bots.js'
 
 import { handleErr } from '../util/error.js'
 
@@ -58,6 +59,7 @@ const updateMap = {
     },
     uiFn: buildAccount,
   },
+  bots: { apiFn: () => {}, uiFn: buildBots },
 }
 
 export async function update(ws, options) {

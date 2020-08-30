@@ -43,14 +43,18 @@ export async function getAccountAlpaca(options, which) {
 
   if (options.accountTypes) which = options.accountTypes
   else if (!which || !which.length)
-    which = ['account', 'positions', 'portfolio', 'orders']
+    which = ['account', 'positions', 'orders', 'portfolio']
 
+  // order of these calls matters
   const urls = []
   if (which.includes('account')) {
-    url.push(buildAlpacaURL('GET', 'account'))
+    urls.push(buildAlpacaURL('GET', 'account'))
   }
   if (which.includes('positions')) {
-    url.push(buildAlpacaURL('GET', 'positions'))
+    urls.push(buildAlpacaURL('GET', 'positions'))
+  }
+  if (which.includes('orders')) {
+    urls.push(buildAlpacaURL('GET', 'orders'))
   }
   if (which.includes('portfolio')) {
     urls.push(
@@ -68,9 +72,6 @@ export async function getAccountAlpaca(options, which) {
         return portfolioUrl
       }),
     )
-  }
-  if (which.includes('orders')) {
-    urls.push(buildAlpacaURL('GET', 'orders'))
   }
 
   const data = await Promise.all(

@@ -29,5 +29,5 @@ export function buildPositions(ws, options, data) {
 
   // set data
   if (!data) return
-  options.box.setContent(data)
+  options.box.setContent(data.positions)
 }

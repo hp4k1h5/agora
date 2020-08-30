@@ -7,6 +7,7 @@ import { spin } from '../util/spin.js'
 
 export function buildAccount(ws, options, data) {
   clear(ws, options)
+  ws.options.screen.log(JSON.stringify(data, null, 2))
 
   const empty = [
     '{red-fg}no iex account data, enter config val or env var IEX_SECRET_KEY{/}',
