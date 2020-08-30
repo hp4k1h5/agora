@@ -26,9 +26,8 @@ export function buildOrders(ws, options, data) {
 
   // add focus listeners
   ws.setListeners(options)
-  ws.options.screen.log(JSON.stringify(data, null, 2))
 
   // set data
   if (!data) return
-  options.box.setContent(data.orders)
+  options.box.setContent(data)
 }

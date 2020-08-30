@@ -1,9 +1,14 @@
 import qs from 'querystring'
+import fs from 'fs'
 
 import { config } from '../util/config.js'
 import { qFetch } from './qFetch.js'
 import { getWatchlistIex } from './iex.js'
-import { shapeAccountAlpaca } from '../shape/shapeAlpaca.js'
+import {
+  shapeAccountAlpaca,
+  shapeOrders,
+  shapePositions,
+} from '../shape/shapeAlpaca.js'
 
 let alpacaTokens
 if (config['APCA_API_KEY_ID'] && config['APCA_API_KEY_ID'].length) {
@@ -122,4 +127,18 @@ export async function getWatchlistAlpaca(options) {
     v.unshift(line)
     return [...a, ...v]
   }, [])
+}
+
+export async function getOrders(options) {
+  const url = buildAlpacaURL('GET', 'orders')
+  const data = await qFetch(options, url.url, url.httpOptions)
+
+  return shapeOrders(data)
+}
+
+export async function getPositions(options) {
+  const url = buildAlpacaURL('GET', 'positions')
+  const data = await qFetch(options, url.url, url.httpOptions)
+
+  return shapePositions(data)
 }

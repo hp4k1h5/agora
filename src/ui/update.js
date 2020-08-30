@@ -9,7 +9,12 @@ import {
   getBook,
   getAccountIex,
 } from '../api/iex.js'
-import { getAccountAlpaca, getWatchlistAlpaca } from '../api/alpaca.js'
+import {
+  getAccountAlpaca,
+  getWatchlistAlpaca,
+  getOrders,
+  getPositions,
+} from '../api/alpaca.js'
 
 import { buildRepl } from './repl.js'
 import { buildPriceVolCharts } from './graph.js'
@@ -38,18 +43,8 @@ const updateMap = {
   sectors: { apiFn: getSectors, uiFn: buildSectors },
   book: { apiFn: getBook, uiFn: buildBook },
   repl: { apiFn: () => {}, uiFn: buildRepl },
-  orders: {
-    apiFn: (options) => {
-      getAccountAlpaca(options, ['orders'])
-    },
-    uiFn: buildOrders,
-  },
-  positions: {
-    apiFn: (options) => {
-      getAccountAlpaca(options, ['positions'])
-    },
-    uiFn: buildPositions,
-  },
+  orders: { apiFn: getOrders, uiFn: buildOrders },
+  positions: { apiFn: getPositions, uiFn: buildPositions },
   account: {
     apiFn: async (options) => {
       return await Promise.all([
