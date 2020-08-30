@@ -3,11 +3,13 @@
 export async function alpha(ws, options) {
   ws.printLines('{#afa-fg}alpha{/} bot, go')
 
+  const up = Math.floor(Math.random() * 2) ? -1 : 1
   const pFunc = () =>
     options.print({
       bot: 'alpha',
       symbol: options.symbol || 'SYM',
-      pl: (Math.floor(Math.random() * 2) ? -1 : 1) * Math.random() * 10000,
+      pl: up * Math.random() * 10000,
+      percent: up * Math.random() * 30,
       qty: Math.floor(Math.random() * 1e6),
       msg: `{green-fg}order filled{/} + ${Math.floor(Math.random() * 10000)}
   {green-fg}heavy asks{/}`,

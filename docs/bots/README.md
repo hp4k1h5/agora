@@ -45,8 +45,8 @@ fine. The function prints to the repl output if one is available.
 The options object has the following shape, and should be treated as
 read-only:
 
-```json
-{
+```javascript
+const options = {
   symbol: 'symbol value',
   time: 'parsed time value',
   print: print(botInfo),
@@ -64,6 +64,7 @@ async function meanRev(ws, options){
     bot: 'meanRev',
     symbol: options.symbol,
     pl: 123,
+    percent: 4.3,
     qty: 100,
     msg: `the message you wish to be displayed below the bots\' listing.
 Use {red-fg}ansi{/} {#00f-fg}escape codes{/} to color your own output`
@@ -81,11 +82,13 @@ one parameter, `botInfo`, that has the following shape:
 
 ```javascript
 const botInfo ={
-  bot: 'the name of the bot. Must match the function name!',
-  symbol: 'the stock your bot is trading',
-  pl: 'profit/loss',
-  qty: 'size of position',
-  msg: 'the message you wish to be displayed below the bots\' listing'
+  bot: '(string) the name of the bot. Must match the function name!',
+  symbol: '(string) the stock your bot is trading',
+  pl: '(number) profit/loss',
+  percent: '(number) percent pl',
+  qty: '(number) size of position',
+  msg: `(string) the message you wish to be displayed
+  below the bots\' listing`
 }
 ```
 The function will format this in a convenient way for the bot component and
@@ -94,7 +97,11 @@ print it there with along with all the other bot info.
 ![a workspace with a bots component displaying profit/loss and other bot
 related information](../../img/bots.png)
 
-`options.print(botInfo)`
+Feel free to import any functions that might be of use such as `qFetch()` which
+will discard old messages (useful if you are polling frequently and want only
+the latest message), and `buildPriceVolCharts()`. There are few comments and
+while they are under active development the documentation is a TODO. Their
+param and return signatures are liable to change.
 
 ## development
 

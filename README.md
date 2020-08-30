@@ -40,7 +40,12 @@ gainers/losers, and stock related news](img/iexcli.png)
 
 ## CHANGELOG
 
-## v0.0.13
+### v0.0.15
+- 🐴 alpaca bot integration. See [bots README](docs/bots/README.md) for more
+    information
+- limit orders. Use `<` limit price prefix to set limit on order
+
+### v0.0.13
 - 🐴 alpaca watchlist integration. set config.json key "watchlist" to
     "alpaca". for now all watchlists are displayed together
 - 🏦 more iex/alpaca account information. alpaca daily/weekly/monthly/yearly
@@ -50,7 +55,7 @@ gainers/losers, and stock related news](img/iexcli.png)
 - ℹ updated `help`
 - 🐛 bugfixes for sectors, polling, and workspace switch
 
-## v0.0.12
+### v0.0.12
 
 - 📖 config.json documentation. README updates
 - 🐛 bugfix. windows are more persistent now within workspaces and across
@@ -456,10 +461,23 @@ them to work.
 if you have entered your information correctly, you should be able to display
 your account and positions info by typing `@`.
 
+## watchlist
+
+Setting config.json key "watchlist" to "alpaca" will query your set of alpaca
+watchlists. This can be set at the config level, the workspace level, or on
+the watchlist component itself.
+
+### bots
+
+Algo-trading support is under active development. As a first step, there is a
+new `bots` component that can display relevant information to your trading
+bots. There is a [bots README](docs/bots/README.md) available in the bots
+folder, as well as some example bots.
+
 ### placing orders
 
-While algo/robo trading is in development, users can execute manual trades as
-follows. All orders must have three components:
+Users can execute manual trades as follows. All orders must have three
+components:
 1) order **side** buy or sell
     - use the `+` buy-prefix to buy. use the `-` sell-prefix to sell.
     - selling when you own no shares will be considered a short sale.

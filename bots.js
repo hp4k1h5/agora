@@ -21,11 +21,13 @@ async function beta(ws, options) {
   // instantiate an interval and return it. from the repl you can stop and
   // start this bot with `bots start beta` or `bots stop beta`
 
+  const up = Math.floor(Math.random() * 2) ? -1 : 1
   const pFunc = () =>
     options.print({
       bot: 'beta',
       symbol: options.symbol || 'demo',
-      pl: (Math.floor(Math.random() * 2) ? -1 : 1) * Math.random() * 10000,
+      pl: up * Math.random() * 10000,
+      percent: up * Math.random() * 100,
       qty: Math.floor(Math.random() * 1e6),
       msg: `{green-fg}order filled{/} + ${Math.floor(Math.random() * 10000)}
   ! {red-fg}low volume!{/}`,
