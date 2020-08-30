@@ -35,7 +35,7 @@ gainers/losers, and stock related news](img/iexcli.png)
   - [**workspaces**, focus and windows](#workspaces,-focus-and-windows)
   - [**commands**](#commands)
 - [trading](#trading)
-  - [**bots**](bots)
+  - [**bots**](#bots)
 - [**config.json**](#config\.json)
 - [thanks!](#thanks)
 
