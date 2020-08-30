@@ -12,31 +12,29 @@
       "components": [
         {
           "type": "repl",
-          "yxhw": [6, 0, 6, 4]
+          "yxhw": [6, 0, 6, 3]
         },
         {
           "type": "book",
-          "yxhw": [0, 0, 6, 4],
+          "yxhw": [0, 0, 6, 3],
           "symbol": "spy",
           "quote": true
         },
         {
           "type": "orders",
-          "yxhw": [0, 4, 12, 3]
+          "yxhw": [0, 3, 12, 2]
         },
         {
           "type": "positions",
-          "yxhw": [0, 7, 12, 3]
+          "yxhw": [0, 5, 12, 2]
+        },
+        {
+          "type": "bots",
+          "yxhw": [0, 7, 6, 5]
         },
         {
           "type": "chart",
-          "yxhw": [0, 4, 6, 4],
-          "symbol": "spy",
-          "time": "1d"
-        },
-        {
-          "type": "chart",
-          "yxhw": [6, 4, 6, 7],
+          "yxhw": [6, 7, 6, 5],
           "symbol": "spy",
           "time": "1h"
         }
@@ -48,6 +46,31 @@
         {
           "type": "account",
           "yxhw": [0, 0, 12, 12]
+        }
+      ]
+    },
+    {
+      "name": "lists",
+      "components": [
+        {
+          "type": "list",
+          "yxhw": [0, 0, 4, 9],
+          "listTypes": [
+            "mostactive",
+            "gainers",
+            "losers",
+            "iexvolume",
+            "iexpercent"
+          ]
+        },
+        {
+          "type": "watchlist",
+          "yxhw": [4, 0, 8, 12],
+          "watchlist": "alpaca"
+        },
+        {
+          "type": "sectors",
+          "yxhw": [0, 9, 4, 3]
         }
       ]
     }
