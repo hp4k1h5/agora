@@ -29,5 +29,21 @@ export function buildPositions(ws, options, data) {
 
   // set data
   if (!data) return
-  options.box.setContent(data.positions)
+  // shape data again for narrow box
+  data = data
+    .map((d) => {
+      return `{#cd2-fg}${d.symbol}{/}   {#${
+        d.side == 'long' ? 'bfa' : 'fab'
+      }-fg}${d.side.toUpperCase()}{/}
+${d.qty} @ ${d.avg_entry_price}/shr
+mktval ${d.market_value}
+- cost ${d.cost_basis}
+= pl   ${d.unrealized_pl} -> ${d.unrealized_plpc}
+
+day pl ${d.unrealized_intraday_pl} -> ${d.unrealized_intraday_plpc}
+price  ${d.current_price}
+last price ${d.lastday_price}`
+    })
+    .join('\n{bold}{#bbb-fg}---------------{/}\n')
+  options.box.setContent(data)
 }

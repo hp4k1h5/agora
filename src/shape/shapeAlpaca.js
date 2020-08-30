@@ -121,31 +121,37 @@ ${
 }
 
 export function shapePositions(positionsData) {
-  let toLocStr = [
-    'buying_power',
-    'regt_buying_power',
-    'daytrading_buying_power',
-    'cash',
-    'portfolio_value',
-    'equity',
-    'last_equity',
-    'long_market_value',
-    'short_market_value',
-    'initial_margin',
-    'maintenance_margin',
-    'last_maintenance_margin',
+  const toLocStr = [
+    'qty',
+    'avg_entry_price',
+    'market_value',
+    'cost_basis',
+    'unrealized_pl',
+    'unrealized_intraday_pl',
+    'current_price',
+    'lastday_price',
   ]
-  return positionsData.map((position) => {
-    Object.keys(position).forEach((k) => {
-      let val = position[k]
-      let color = val >= 0 ? '{#4fb-fg}' : '{#a25-fg}'
-      if (toLocStr.includes(k)) {
-        position[k] = `${color}${(+val).toLocaleString()}{/}`
-      } else if (percent.includes(k)) {
-        position[k] = `${color}${(val * 100).toFixed(2)}{/}%`
-      }
-    })
+  const percent = [
+    'unrealized_plpc',
+    'unrealized_intraday_plpc',
+    'change_today',
+  ]
 
-    return position
-  })
+  return positionsData
+    .sort((l, r) => {
+      return l.symbol.localeCompare(r.symbol)
+    })
+    .map((position) => {
+      Object.keys(position).forEach((k) => {
+        let val = position[k]
+        let color = val >= 0 ? '{#4fb-fg}' : '{#a25-fg}'
+        if (toLocStr.includes(k)) {
+          position[k] = `${color}${(+val).toLocaleString()}{/}`
+        } else if (percent.includes(k)) {
+          position[k] = `${color}${(val * 100).toFixed(2)}{/}%`
+        }
+      })
+
+      return position
+    })
 }
