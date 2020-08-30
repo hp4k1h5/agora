@@ -35,12 +35,13 @@ export default {
 //
 // print(info) takes one parameter info that has the following shape:
 // {
+//   bot: 'the name of the bot',
 //   symbol: 'the stock your bot is trading',
 //   pl: 'profit/loss',
-//   position: 'size of position'
-//   msg: 'whatever message you wish to be displayed in the two lines below the
-//        bots listing. DO NOT include ansi with symbol, pl or position. but
-//        you are free to use colors in msg'
+//   qty: 'size of position',
+//   msg: 'the message you wish to be displayed in the two lines below the
+//   bots' listing. DO NOT include ansi with bot, symbol, pl or position. but
+//   you are free to use colors in msg'
 async function beta(ws, options) {
   ws.printLines('{bold}{blue-fg}beta{/} bot, go')
 
@@ -50,9 +51,10 @@ async function beta(ws, options) {
   const interval = setInterval(
     () =>
       options.print({
+        bot: 'beta',
         symbol: 'demo',
-        pl: Math.random() * 10000,
-        position: Math.floor(Math.random() * 1e6),
+        pl: (Math.floor(Math.random() * 2) ? -1 : 1) * Math.random() * 10000,
+        qty: Math.floor(Math.random() * 1e6),
         msg: `{green-fg}order filled{/} + ${Math.floor(Math.random() * 10000)}
   ! {red-fg}low volume!{/}`,
       }),

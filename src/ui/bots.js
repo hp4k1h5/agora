@@ -24,10 +24,8 @@ export function buildBots(ws, options, data) {
     },
   })
 
-  // add focus listeners
-  ws.setListeners(options)
-
   // set data
   if (!data) return
   options.box.setContent(data)
+  ws.options.screen.render()
 }
