@@ -7,6 +7,7 @@ import {
   setSymbol,
 } from '../util/parse.js'
 import { search as fuzzySearch } from './search.js'
+import { bots } from '../bots/bots.js'
 import { help } from './help.js'
 import { handleErr } from '../util/error.js'
 
@@ -19,6 +20,7 @@ export async function evaluate(ws, input) {
     h: help,
     '?': search,
     search,
+    bots,
     undefined,
     chart: 'chart',
     '#': 'chart',
@@ -35,6 +37,8 @@ export async function evaluate(ws, input) {
     list: 'list',
     '*': 'list',
     sectors: 'sectors',
+    orders: 'orders',
+    positions: 'positions',
     '@': 'account',
     // prefix commands are not included here and are treated separately
     // they include the following symbols and words.

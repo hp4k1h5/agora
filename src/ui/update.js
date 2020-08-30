@@ -20,6 +20,8 @@ import { buildLists } from './list.js'
 import { buildProfile } from './profile.js'
 import { buildSectors } from './sectors.js'
 import { buildBook } from './book.js'
+import { buildOrders } from './orders.js'
+import { buildPositions } from './positions.js'
 import { buildAccount } from './account.js'
 
 import { handleErr } from '../util/error.js'
@@ -35,6 +37,18 @@ const updateMap = {
   sectors: { apiFn: getSectors, uiFn: buildSectors },
   book: { apiFn: getBook, uiFn: buildBook },
   repl: { apiFn: () => {}, uiFn: buildRepl },
+  orders: {
+    apiFn: (options) => {
+      getAccountAlpaca(options, ['orders'])
+    },
+    uiFn: buildOrders,
+  },
+  positions: {
+    apiFn: (options) => {
+      getAccountAlpaca(options, ['positions'])
+    },
+    uiFn: buildPositions,
+  },
   account: {
     apiFn: async (options) => {
       return await Promise.all([

@@ -58,6 +58,21 @@ const account = {
   yxhw: [0, 0, 12, 9],
 }
 
+const orders = {
+  type: 'orders',
+  yxhw: [0, 0, 6, 3],
+}
+
+const positions = {
+  type: 'positions',
+  yxhw: [0, 3, 6, 3],
+}
+
+const bots = {
+  type: 'bots',
+  yxhw: [0, 6, 6, 6],
+}
+
 const help = {
   type: 'help',
   yxhw: [1, 1, 9, 9],
@@ -74,5 +89,8 @@ export const defaults = {
   sectors,
   book,
   account,
+  orders,
+  positions,
+  bots,
   help,
 }

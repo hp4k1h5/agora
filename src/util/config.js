@@ -7,15 +7,19 @@ import { defaults } from './defaults.js'
 export const validComponentTypes = [
   'repl',
   'quote',
+  'book',
   'chart',
   'news',
   'watchlist',
   'profile',
   'list',
   'sectors',
-  'book',
   'account',
+  'orders',
+  'positions',
+  'bots',
 ]
+
 export const validUnits = [
   '1d',
   '5d',

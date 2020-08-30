@@ -1,0 +1,55 @@
+{
+  "IEX_PUB_KEY": "",
+  "IEX_SECRET_KEY": "",
+  "APCA_API_KEY_ID": "",
+  "APCA_API_SECRET_KEY": "",
+  "alpacaAccountType": "paper",
+  "config description": "this config is optimized for alpaca trading and algo management, though iex is not required for alpaca trading, this config uses various iex-dependent components which can be removed or adjusted to your needs.",
+  "workspaces": [
+    {
+      "name": "home",
+      "watchlist": "alpaca",
+      "components": [
+        {
+          "type": "repl",
+          "yxhw": [6, 0, 6, 4]
+        },
+        {
+          "type": "book",
+          "yxhw": [0, 0, 6, 4],
+          "symbol": "spy",
+          "quote": true
+        },
+        {
+          "type": "orders",
+          "yxhw": [0, 4, 12, 3]
+        },
+        {
+          "type": "positions",
+          "yxhw": [0, 7, 12, 3]
+        },
+        {
+          "type": "chart",
+          "yxhw": [0, 4, 6, 4],
+          "symbol": "spy",
+          "time": "1d"
+        },
+        {
+          "type": "chart",
+          "yxhw": [6, 4, 6, 7],
+          "symbol": "spy",
+          "time": "1h"
+        }
+      ]
+    },
+    {
+      "name": "account info",
+      "components": [
+        {
+          "type": "account",
+          "yxhw": [0, 0, 12, 12]
+        }
+      ]
+    }
+  ]
+}

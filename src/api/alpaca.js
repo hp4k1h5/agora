@@ -36,28 +36,42 @@ export function buildAlpacaURL(method, path, params, body) {
   return { url, httpOptions }
 }
 
-export async function getAccountAlpaca(options) {
+export async function getAccountAlpaca(options, which) {
   if (!alpacaTokens) {
     return
   }
 
-  const accountUrl = buildAlpacaURL('GET', 'account')
-  const positionsUrl = buildAlpacaURL('GET', 'positions')
-  const portfolioUrls = [
-    { period: '1D' },
-    { period: '1W' },
-    { period: '1M' },
-    { period: '1A' },
-  ].map((params) => {
-    const portfolioUrl = buildAlpacaURL(
-      'GET',
-      'account/portfolio/history',
-      params,
-    )
-    return portfolioUrl
-  })
+  if (options.accountTypes) which = options.accountTypes
+  else if (!which || !which.length)
+    which = ['account', 'positions', 'portfolio', 'orders']
 
-  const urls = [accountUrl, positionsUrl, ...portfolioUrls]
+  const urls = []
+  if (which.includes('account')) {
+    url.push(buildAlpacaURL('GET', 'account'))
+  }
+  if (which.includes('positions')) {
+    url.push(buildAlpacaURL('GET', 'positions'))
+  }
+  if (which.includes('portfolio')) {
+    urls.push(
+      ...[
+        { period: '1D' },
+        { period: '1W' },
+        { period: '1M' },
+        { period: '1A' },
+      ].map((params) => {
+        const portfolioUrl = buildAlpacaURL(
+          'GET',
+          'account/portfolio/history',
+          params,
+        )
+        return portfolioUrl
+      }),
+    )
+  }
+  if (which.includes('orders')) {
+    urls.push(buildAlpacaURL('GET', 'orders'))
+  }
 
   const data = await Promise.all(
     urls.map(async (url) => {
@@ -69,7 +83,6 @@ export async function getAccountAlpaca(options) {
 }
 
 export async function submitOrder(ws, options, order) {
-  ws.printLines(3)
   const { url, httpOptions } = buildAlpacaURL('POST', 'orders', null, order)
 
   let data = await qFetch(options, url, httpOptions)

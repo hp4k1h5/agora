@@ -153,7 +153,6 @@ export function setTime(ws, options, words) {
 }
 
 export async function setOrder(ws, options, words) {
-  ws.printLines(1)
   // execute orders first cannot be combined with other commands
   const orderCmd = words.find((w) => /^[+-]\d+$/.test(w))
   if (!orderCmd) {
@@ -161,8 +160,10 @@ export async function setOrder(ws, options, words) {
   }
 
   let order = { symbol: true }
+
   setSymbol(order, words)
   order.symbol = order.symbol.toUpperCase()
+
   order.qty = +orderCmd.substring(1)
   order.side = orderCmd[0] == '+' ? 'buy' : 'sell'
   order.type =
@@ -170,8 +171,8 @@ export async function setOrder(ws, options, words) {
     'market'
   order.limit_price = words.find((w) => /^[<>][\d.]+$/.test(w))
   if (order.type == 'limit' && !order.limit_price) {
-    handleErr('limit order must include limit_price, e.g. {yellow-fg}<3.16{/}')
-    ws.printLines(
+    handleErr(
+      ws,
       'limit order must include limit_price, e.g. {yellow-fg}<3.16{/}',
     )
     return true
@@ -182,7 +183,6 @@ export async function setOrder(ws, options, words) {
     'day'
 
   try {
-    ws.printLines(2)
     await submitOrder(ws, options, order)
   } catch (e) {
     handleErr(ws, e)

@@ -1,8 +1,13 @@
 import { table } from './shapers.js'
 
 export function shapeAccountAlpaca(data) {
-  let [accountData, positionsData, ...portfolioData] = data
-  const shapedData = { account: '', positions: '', portfolio: [] }
+  let [accountData, positionsData, ordersData, ...portfolioData] = data
+  const shapedData = {
+    account: '',
+    positions: '',
+    orders: '',
+    portfolio: [],
+  }
 
   // shape portfolioData charts
   const periods = [
@@ -41,11 +46,12 @@ export function shapeAccountAlpaca(data) {
     'last_maintenance_margin',
   ]
   // preshape account
-  Object.keys(accountData).forEach((k) => {
-    if (toLocStr.includes(k)) {
-      accountData[k] = (+accountData[k]).toLocaleString()
-    }
-  })
+  accountData &&
+    Object.keys(accountData).forEach((k) => {
+      if (toLocStr.includes(k)) {
+        accountData[k] = (+accountData[k]).toLocaleString()
+      }
+    })
 
   toLocStr = [
     'qty',
@@ -63,21 +69,24 @@ export function shapeAccountAlpaca(data) {
     'change_today',
   ]
   // preshape positions
-  positionsData = positionsData.map((position) => {
-    Object.keys(position).forEach((k) => {
-      let val = position[k]
-      let color = val >= 0 ? '{#4fb-fg}' : '{#a25-fg}'
-      if (toLocStr.includes(k)) {
-        position[k] = `${color}${(+val).toLocaleString()}{/}`
-      } else if (percent.includes(k)) {
-        position[k] = `${color}${(val * 100).toFixed(2)}{/}%`
-      }
-    })
+  if (positionsData) {
+    positionsData = positionsData.map((position) => {
+      Object.keys(position).forEach((k) => {
+        let val = position[k]
+        let color = val >= 0 ? '{#4fb-fg}' : '{#a25-fg}'
+        if (toLocStr.includes(k)) {
+          position[k] = `${color}${(+val).toLocaleString()}{/}`
+        } else if (percent.includes(k)) {
+          position[k] = `${color}${(val * 100).toFixed(2)}{/}%`
+        }
+      })
 
-    return position
-  })
+      return position
+    })
+  }
 
   const shapeArrOfObjs = (arr) => {
+    if (!arr) return ''
     return arr
       .map((position) => {
         return Object.entries(position)
@@ -93,6 +102,7 @@ export function shapeAccountAlpaca(data) {
 
   shapedData.portfolio = portfolioData
   shapedData.account = shapeArrOfObjs([accountData])
+  shapedData.orders = ordersData //shapeArrOfObjs(orders)
   shapedData.positions = shapeArrOfObjs(positionsData)
 
   return shapedData
