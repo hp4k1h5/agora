@@ -1,8 +1,8 @@
 # CHANGELOG
 
 ## v0.0.15
-- 🐴 alpaca bot integration. See [bots README](docs/bots/README.md) for more
-    information
+- 🐴 alpaca bot integration. Type `bots ls` to see active bots. See [bots
+    README](docs/bots/README.md) for more information
 - limit orders. Use `<` limit price prefix to set floor on limit orders
 
 ## v0.0.14

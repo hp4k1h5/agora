@@ -103,8 +103,19 @@ the latest message), and `buildPriceVolCharts()`. There are few comments and
 while they are under active development the documentation is a TODO. Their
 param and return signatures are liable to change.
 
+## running the bots
+
+From the command line, type `bots ls` to view your available bots. To start a
+bot, type `bots start {yourbotname}`. To stop one, type `bots stop
+{yourbotname}`. You can change the active symbol on the options passed down,
+by adding a `$symbol` to the command.
+
+If you start a bot twice, the first bot will be stopped before the bot is
+started again with new params.
+
 ## development
 
- Work is in development on a socket based interface to allow independent bot
- runtimes that can be monitored from the iexcli interface.
+Work is in development on a socket based interface to allow independent bot
+runtimes that can be monitored from the iexcli interface.
+
 

@@ -35,15 +35,16 @@ gainers/losers, and stock related news](img/iexcli.png)
   - [**workspaces**, focus and windows](#workspaces,-focus-and-windows)
   - [**commands**](#commands)
 - [trading](#trading)
+  - [**bots**](bots)
 - [**config.json**](#config\.json)
 - [thanks!](#thanks)
 
 ## CHANGELOG
 
 ### v0.0.15
-- 🐴 alpaca bot integration. See [bots README](docs/bots/README.md) for more
-    information
-- limit orders. Use `<` limit price prefix to set limit on order
+- 🐴 alpaca bot integration. Type `bots ls` to see active bots. See [bots
+    README](docs/bots/README.md) for more information
+- limit orders. Use `<` limit price prefix to set floor on limit orders
 
 ### v0.0.13
 - 🐴 alpaca watchlist integration. set config.json key "watchlist" to
@@ -62,22 +63,6 @@ gainers/losers, and stock related news](img/iexcli.png)
     carousel rotations.
 - 🌈 order book component. type `^` or `book` to see an order book for the
     active symbol.
-- ⌚ polling now available for all components. Use prefix-command `poll` or
-    set config component key `pollMs` to a value greater than 10.
-
-### v0.0.10
-
-- 📺 improved window handling. `[new` keyword opens new windows. `x`
-    closes targeted window. `[all` updates all targetable windows.
-- ℹ new help component. type `h` or `help`
-- `>` better repl focus and front behavior. English keywords for all commands.
-- 📉📈 technical indicators. use `%` indicator prefix to
-    overlay indicators, such as bollinger bands `%bbands`, weighted move
-    average `%wma` and more. currently only a limited subset of iex's
-    technical indicators will display correctly. _requires a paid iex
-    subscription._ See [technical
-    indicator](./README.md#technical-indicator-prefix)
-- 📊 sector performance
 
 ---
 
@@ -450,6 +435,9 @@ or
 }
 ```
 
+Also see [alpaca config](docs/example-configs/alpaca.json) for a sample
+trading work station.
+
 Though it is not recommended, you can set `config.json` value
 `"alpacaAccountType"` to "live" if you wish to trade real-money with iexcli.
 The default value is "paper". If you have entered "live" account keys, you
@@ -473,6 +461,9 @@ Algo-trading support is under active development. As a first step, there is a
 new `bots` component that can display relevant information to your trading
 bots. There is a [bots README](docs/bots/README.md) available in the bots
 folder, as well as some example bots.
+
+Also see [alpaca config](docs/example-configs/alpaca.json) for a sample
+trading work station.
 
 ### placing orders
 
