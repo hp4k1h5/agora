@@ -59,7 +59,7 @@ async function beta(ws, options) {
   ! {red-fg}low volume!{/}`,
       }),
     // 10 seconds
-    10000,
+    1000,
   )
 
   // in order for iexcli to be able to start and stop your bot, you must return

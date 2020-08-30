@@ -1,4 +1,5 @@
 import robots from '../../bots.js'
+import { carousel } from '../index.js'
 
 import { shapeBots } from '../shape/shapeBots.js'
 import { buildBots } from '../ui/bots.js'
@@ -36,8 +37,8 @@ export async function bots(ws, words) {
     }
   }
 
-  let botOptions = {}
-  botOptions = ws.options.components.find((c) => c.type == 'bots')
+  let botOptions
+  botOptions = ws.options.components.find((c) => c.type == 'bots') || {}
 
   botOptions.print = (botInfo) => {
     if (!botOptions.id) {
@@ -47,7 +48,9 @@ export async function bots(ws, words) {
 
     botInfo = shapeBots(botInfo)
 
-    buildBots(ws, botOptions, botInfo)
+    if (carousel.currPage == botOptions.wsId) {
+      buildBots(ws, botOptions, botInfo)
+    }
   }
 
   if (!robots[bot]) {

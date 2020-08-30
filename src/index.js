@@ -34,7 +34,7 @@ const screen = buildScreen()
 
 export const main = function () {
   // build workspaces to send to carousel
-  const workspaces = config.workspaces.map((wsOptions) => {
+  const workspaces = config.workspaces.map((wsOptions, i) => {
     return async function () {
       wsOptions.screen = screen
 
@@ -42,7 +42,7 @@ export const main = function () {
       await Promise.all(
         ws.options.components.map(async (cOptions) => {
           cOptions.id = ws.id()
-          cOptions.wsId = wsOptions.id
+          cOptions.wsId = i
           cOptions.q = {}
 
           wsOptions.screen.on('move', () => {
@@ -74,7 +74,6 @@ export const main = function () {
   }
   function startCarousel(pages, options) {
     const carousel = new contrib.carousel(pages, options)
-    workspaces.forEach((workspace) => (workspace.carousel = carousel))
     carousel.start()
     return carousel
   }
