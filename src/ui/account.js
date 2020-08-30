@@ -48,11 +48,13 @@ export function buildAccount(ws, options, data) {
   const width = Math.floor(options.box.width / 3) - 1
   const height = Math.floor(options.box.height / 2) - 1
 
-  const graphHeight = Math.floor(12 / alpaca.portfolio.length)
-  alpaca.portfolio.forEach((pg, i) => {
-    const g = graph(ws, pg, pg.title, graphHeight * i, 5, graphHeight, 2)
-    g.setFront()
-  })
+  if (alpaca.portfolio) {
+    const graphHeight = Math.floor(12 / alpaca.portfolio.length)
+    alpaca.portfolio.forEach((pg, i) => {
+      const g = graph(ws, pg, pg.title, graphHeight * i, 5, graphHeight, 2)
+      g.setFront()
+    })
+  }
 
   const accountAlpaca = blessed.text({
     parent: options.box,
