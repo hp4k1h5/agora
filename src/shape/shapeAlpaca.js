@@ -100,18 +100,17 @@ export function shapeOrders(ordersData) {
   const m = (order) =>
     `{#cd2-fg}${order.symbol}{/} {#${
       order.side == 'buy' ? 'bfa' : 'fab'
-    }-fg}${order.side.toUpperCase()}{/}
+    }-fg}${order.side.toUpperCase()}{/} :: ${order.status}
 {#6bf-fg}id:${order.id.slice(
       0,
-      4,
-    )}{/}::{#bf6-fg}c_id:${order.client_order_id.slice(0, 5)}{/}
-${order.filled_qty}/${order.qty}     |  ${order.type}
+      7,
+    )}{/}::{#bf6-fg}c_id:${order.client_order_id.slice(0, 7)}{/}
+${order.filled_qty}/${order.qty} | ${order.type} <${order.limit_price || ''} >${
+      order.stop_price || ''
+    }
 submit @ ${new Date(order.submitted_at).toLocaleString()}
-${
-  order.filled_at
-    ? `filled @ ${new Date(order.filled_at)?.toLocaleString()}`
-    : ''
-}`
+filled @ ${order.filled_at ? new Date(order.filled_at).toLocaleString() : ''}`
+
   return ordersData
     .sort((l, r) => {
       return l.symbol.localeCompare(r.symbol)

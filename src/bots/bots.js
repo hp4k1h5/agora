@@ -1,6 +1,7 @@
 import robots from '../../bots.js'
 import { carousel } from '../index.js'
 
+import { setSymbol, setTime } from '../util/parse.js'
 import { shapeBots } from '../shape/shapeBots.js'
 import { buildBots } from '../ui/bots.js'
 import { handleErr } from '../util/error.js'
@@ -10,7 +11,14 @@ export const botMap = {}
 export async function bots(ws, words) {
   // bots list
   if (words.findIndex((w) => ['list', 'ls'].includes(w)) > -1) {
-    ws.printLines(Object.keys(robots))
+    ws.printLines(
+      Object.keys(robots).map(
+        (robot) =>
+          `${robot} ..${
+            botMap[robot] ? '{#cfe-fg}running{/}' : '{#e7a-fg}stopped{/}'
+          }`,
+      ),
+    )
     return
   }
 
@@ -38,7 +46,12 @@ export async function bots(ws, words) {
   }
 
   let botOptions
-  botOptions = ws.options.components.find((c) => c.type == 'bots') || {}
+  botOptions = {
+    ...(ws.options.components.find((c) => c.type == 'bots') || {}),
+    symbol: true,
+  }
+  setSymbol(botOptions, words)
+  setTime(ws, botOptions, words)
 
   botOptions.print = (botInfo) => {
     if (!botOptions.id) {
@@ -58,5 +71,6 @@ export async function bots(ws, words) {
     return bots(ws, ['ls'])
   }
 
+  clearInterval(botMap[bot])
   botMap[bot] = await robots[bot](ws, botOptions)
 }

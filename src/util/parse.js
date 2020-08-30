@@ -94,7 +94,7 @@ export function setComponentOptions(ws, target, words, command) {
 // only set if component has symbol & user entered symbol
 export function setSymbol(options, words) {
   if (!options.symbol) return
-
+  if (options.symbol === true) options.symbol = ''
   const symbol = words.find((w) => /(?<=^\$)[\w.]+/.test(w))
   if (symbol) options.symbol = symbol.slice(1)
 }
@@ -155,13 +155,21 @@ export function setTime(ws, options, words) {
 export async function setOrder(ws, options, words) {
   // execute orders first cannot be combined with other commands
   const orderCmd = words.find((w) => /^[+-]\d+$/.test(w))
-  if (!orderCmd) {
+  const closeCmd = words.find((w) => w == 'close')
+  if (!orderCmd && !closeCmd) {
     return false
   }
 
   let order = { symbol: true }
 
   setSymbol(order, words)
+  if (closeCmd) {
+    if (words.find((w) => w == 'all')) {
+      closeAllPositions(order)
+      ws.printLines(`closing all positions...`)
+    }
+    return
+  }
   order.symbol = order.symbol.toUpperCase()
 
   order.qty = +orderCmd.substring(1)
