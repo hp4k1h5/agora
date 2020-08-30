@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v0.0.16
+- log fix
+
 ## v0.0.15
 - 🐴 alpaca bot integration. Type `bots ls` to see active bots. See [bots
     README](docs/bots/README.md) for more information
