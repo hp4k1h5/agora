@@ -58,8 +58,8 @@ export class Workspace {
       delete options.pollMs
     })
 
-    if (!options.interval || this.prevFocus === options) {
-      setTimeout(() => screen.focusPush(options.box), 100)
+    if (!options.interval) {
+      screen.focusPush(options.box)
     }
   }
 }
