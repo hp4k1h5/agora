@@ -18,9 +18,10 @@ Steps to reproduce the behavior:
 If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
- - OS: [e.g. iOS]
+ - OS: [e.g. macOS]
  - Terminal [e.g. iTerm2, mac terminal, alacritty]
- - Version [e.g. 22]
+ - Version [e.g. 3.3.11]
+ - Shell [e.g. zsh, bash, csh]
 
 **Additional context**
 Add any other context about the problem here.

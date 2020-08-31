@@ -11,31 +11,29 @@
 ## current state
 
 Currently the app allows iex api subscribers to query and view a range of
-financial information. Also, limited beta testing of trading is enabled.
+financial information. Also, limited beta testing of trading is enabled
+through alpaca.
 
-Alpha release will include an algo-manager that will make it easier to
-start/stop/schedule/monitor/adjust algorithmic trading robots.
+There are numerous known bugs and undesirable behaviors, see
+[BUGS](.github/ISSUE_TEMPLATES/bug_reports.md). Many are only fixable through
+blessed and/or blessed-contrib fixes. This project is using forked versions
+that mainly address bugs encountered and missing functionalities. These bugs
+require a bit more investment in time since it's not a project I am familiar
+without outside of this endeavor. Nevertheless I am very happy with the tools
+available through the blessed & co. libs and will continue to use and
+develop on the forked versions.
 
 ## alpha release
 
-### v0.0.14
-- iex
-  - chart types
-    - bar (have to make a new drawille component since contrib bar is not made
-        for financial data graphing)
-    - ohlc (same as above)
-- alpaca
-  - streaming data
+v0.0.17
+- bug fixes
 
-### v0.0.13
-- iex
-  - message use info
-  - sectors/tags
-  - update `help`
-- alpaca
-  - watchlist integration
-  - orders
-  - portfolio history
+v0.0.18
+- charts
+  - more types
+  - bot charts
+    - profit/loss
+    - the currently trading stock
 
 ---
 
@@ -53,8 +51,10 @@ start/stop/schedule/monitor/adjust algorithmic trading robots.
 - portfolio management
 - stock screener
 - markdown analyst reports/news reader
-- chart types
-  - bar (have to make a new drawille component since contrib bar is not made
-      for financial data graphing)
-  - ohlc (same as above)
-
+- iex
+  - chart types
+    - bar (have to make a new drawille component since contrib bar is not made
+        for financial data graphing)
+    - ohlc (same as above)
+- alpaca
+  - streaming data
