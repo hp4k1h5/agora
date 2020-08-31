@@ -1,3 +1,4 @@
+import { carousel } from '../index.js'
 import { defaults } from './defaults.js'
 import { validUnits, validIndicators } from './config.js'
 import { submitOrder } from '../api/alpaca.js'
@@ -46,11 +47,8 @@ export function setTargets(ws, words, command) {
     }
   } else if (_new) {
     target = defaults[command]
-    target.id = ws.id()
-    target.q = {}
-    ws.options.screen.on('move', () => {
-      target.d = Infinity
-    })
+    initComponent(ws, target)
+    setSymbol(target, words)
     ws.options.components.push(target)
   } else {
     // [all targets all targetable components
@@ -196,4 +194,24 @@ export async function setOrder(ws, options, words) {
     handleErr(ws, e)
   }
   return true
+}
+
+export function initComponent(ws, options) {
+  options.id = ws.id()
+  options.wsId = ws.options.id
+  options.q = {}
+
+  ws.options.screen.on('move', () => {
+    // cancel all requests from last ws in flight
+    Object.keys(options.q).forEach((url) => {
+      if (carousel.currPage != options.wsId) {
+        options.q[url] = Infinity
+      } else {
+        delete options.q[url]
+      }
+    })
+  })
+
+  setComponentOptions(ws, options, [], null)
+  setTime(ws, options, [`:${options.time}`])
 }

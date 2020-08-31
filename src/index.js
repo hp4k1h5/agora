@@ -3,9 +3,8 @@ import contrib from '@hp4k1h5/blessed-contrib'
 
 import { config } from './util/config.js'
 import { Workspace } from './ui/workspace.js'
-import { setComponentOptions } from './util/parse.js'
+import { initComponent } from './util/parse.js'
 import { update } from './ui/update.js'
-import { setTime } from './util/parse.js'
 
 function buildScreen() {
   const screen = blessed.screen({
@@ -37,27 +36,12 @@ export const main = function () {
   const workspaces = config.workspaces.map((wsOptions, i) => {
     return async function () {
       wsOptions.screen = screen
+      wsOptions.id = i
 
       const ws = new Workspace(wsOptions)
       await Promise.all(
         ws.options.components.map(async (cOptions) => {
-          cOptions.id = ws.id()
-          cOptions.wsId = i
-          cOptions.q = {}
-
-          wsOptions.screen.on('move', () => {
-            // cancel all requests from last ws in flight
-            Object.keys(cOptions.q).forEach((url) => {
-              if (carousel.currPage != cOptions.wsId) {
-                cOptions.q[url] = Infinity
-              } else {
-                delete cOptions.q[url]
-              }
-            })
-          })
-
-          setComponentOptions(ws, cOptions, [], null)
-          setTime(ws, cOptions, [`:${cOptions.time}`])
+          initComponent(ws, cOptions)
 
           await update(ws, cOptions)
         }),

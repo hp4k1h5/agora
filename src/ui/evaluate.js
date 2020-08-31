@@ -21,11 +21,11 @@ export async function evaluate(ws, input) {
     '?': search,
     search,
     bots,
-    undefined,
+    b0ts: 'bots',
     chart: 'chart',
     '#': 'chart',
-    '^': 'book',
     book: 'book',
+    '^': 'book',
     quote: 'quote',
     '"': 'quote',
     news: 'news',
@@ -39,7 +39,9 @@ export async function evaluate(ws, input) {
     sectors: 'sectors',
     orders: 'orders',
     positions: 'positions',
+    account: 'account',
     '@': 'account',
+    undefined,
     // prefix commands are not included here and are treated separately
     // they include the following symbols and words.
     // // symbol prefixes
@@ -58,7 +60,6 @@ export async function evaluate(ws, input) {
   const order = await setOrder(ws, { wsId: ws.id, q: {} }, words)
   if (order) return
 
-  // find ui commands
   const command = commands[words.find((w) => commands[w])]
 
   // execute repl fns next
