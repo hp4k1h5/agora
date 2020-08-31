@@ -9,7 +9,7 @@ export function buildOrders(ws, options, data) {
   options.box = ws.grid.set(...options.yxhw, blessed.text, {
     name: 'orders',
     label: `[${options.id}  orders ${
-      options.pollMs ? ' .. polling ' + spin() : ''
+      options.pollMs ? '..polling' + spin() : ''
     }]`,
     // inputs
     keys: false,

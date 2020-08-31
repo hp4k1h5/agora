@@ -97,19 +97,21 @@ export function shapeAccountAlpaca(data) {
 }
 
 export function shapeOrders(ordersData) {
-  const m = (order) =>
-    `{#cd2-fg}${order.symbol}{/} {#${
-      order.side == 'buy' ? 'bfa' : 'fab'
-    }-fg}${order.side.toUpperCase()}{/} :: ${order.status}
+  const m = (order) => `
+${order.status} {#cd2-fg}${order.symbol}{/} {#${
+    order.side == 'buy' ? 'bfa' : 'fab'
+  }-fg}${order.side.toUpperCase()}{/} 
 {#6bf-fg}id:${order.id.slice(
-      0,
-      7,
-    )}{/}::{#bf6-fg}c_id:${order.client_order_id.slice(0, 7)}{/}
-${order.filled_qty}/${order.qty} | ${order.type} <${order.limit_price || ''} >${
-      order.stop_price || ''
-    }
-submit @ ${new Date(order.submitted_at).toLocaleString()}
-filled @ ${order.filled_at ? new Date(order.filled_at).toLocaleString() : ''}`
+    0,
+    5,
+  )}{/}={#bf6-fg}c_id:${order.client_order_id.slice(0, 5)}{/}
+${order.filled_qty}/${order.qty} | {#b5d-fg}${order.type}{/} <${
+    order.limit_price || ''
+  } >${order.stop_price || ''}
+submit {#eb4-fg}${order.time_in_force}{/} @ ${new Date(
+    order.submitted_at,
+  ).toLocaleString()}`
+  // filled @ ${order.filled_at ? new Date(order.filled_at).toLocaleString() : ''}`
 
   return ordersData
     .sort((l, r) => {

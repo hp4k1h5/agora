@@ -52,7 +52,9 @@ export function setTargets(ws, words, command) {
     ws.options.components.push(target)
   } else {
     // [all targets all targetable components
-    target = ws.options.components.filter((c) => c.symbol)
+    target = ws.options.components.filter(
+      (c) => c.id && !['bots'].includes(c.type),
+    )
   }
 
   return Array.isArray(target) ? target : [target]
@@ -100,7 +102,7 @@ export function setSymbol(options, words) {
 // only set if component has time & user entered time
 export function setTime(ws, options, words) {
   let poll = words.find((w) => /poll[\d.]*/.test(w))
-  if (poll) {
+  if (poll && !['bots'].includes(options.type)) {
     poll = +poll.match(/[\d|e]+$/)
     if (!poll) {
       clearInterval(options.interval)
@@ -161,14 +163,15 @@ export async function setOrder(ws, options, words) {
   let order = { symbol: true }
 
   setSymbol(order, words)
+  order.symbol = order.symbol.toUpperCase()
+
   if (closeCmd) {
     if (words.find((w) => w == 'all')) {
-      closeAllPositions(order)
-      ws.printLines(`closing all positions...`)
+      // closeAllPositions(order)
+      // ws.printLines(`closing all positions...`)
     }
     return
   }
-  order.symbol = order.symbol.toUpperCase()
 
   order.qty = +orderCmd.substring(1)
   order.side = orderCmd[0] == '+' ? 'buy' : 'sell'
@@ -182,8 +185,11 @@ export async function setOrder(ws, options, words) {
       'limit order must include limit_price, e.g. {yellow-fg}<3.16{/}',
     )
     return true
+  } else if (order.limit_price) {
+    order.type = 'limit'
+    order.limit_price = +order.limit_price?.slice(1)
   }
-  order.limit_price = +order.limit_price?.slice(1)
+  ws
   order.time_in_force =
     words.find((w) => ['day', 'gtc', 'opg', 'cls', 'ioc', 'fok'].includes(w)) ||
     'day'
