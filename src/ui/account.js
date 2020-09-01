@@ -23,8 +23,7 @@ export function buildAccount(ws, options, data) {
     if (!alpaca) alpaca = { account: empty[1], positions: empty[1] }
   }
 
-  // options.box = ws.grid.set(...[6, 6, 6, 6], blessed.text, {
-  options.box = ws.grid.set(...options.yxhw, blessed.text, {
+  options.box = ws.grid.set(...options.yxhw, blessed.box, {
     name: 'account',
     label: `[${options.id}  account ${
       options.pollMs ? ' .. polling ' + spin() : ''
@@ -48,11 +47,27 @@ export function buildAccount(ws, options, data) {
   const width = Math.floor(options.box.width / 3) - 1
   const height = Math.floor(options.box.height / 2) - 1
 
+  // set portfolio charts
+  const portfolio = blessed.box({
+    parent: options.box,
+    name: 'portfolio',
+    label: 'portfolio',
+    // inputs
+    mouse: true,
+    scrollable: true,
+    // styles
+    left: width,
+    width,
+    tags: true,
+    border: { type: 'line' },
+    style: {
+      border: { fg: '#44bbee' },
+    },
+  })
   if (alpaca.portfolio) {
-    const graphHeight = Math.floor(12 / alpaca.portfolio.length)
+    const graphHeight = Math.floor(portfolio.height / alpaca.portfolio.length)
     alpaca.portfolio.forEach((pg, i) => {
-      const g = graph(ws, pg, pg.title, graphHeight * i, 5, graphHeight, 2)
-      g.setFront()
+      graph(ws, portfolio, pg, graphHeight * i, graphHeight)
     })
   }
 
@@ -131,7 +146,7 @@ export function buildAccount(ws, options, data) {
   })
 
   const keyUsage = contrib.gauge({
-    // parent: iexBox, // see next comment
+    parent: iexBox,
     label: 'key usage',
     inputs: false,
     // styles

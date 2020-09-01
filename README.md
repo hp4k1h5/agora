@@ -41,6 +41,11 @@ gainers/losers, and stock related news](img/iexcli.png)
 
 ## CHANGELOG
 
+## v0.0.17
+- 💹 chart improvements, larger, more adherent
+- `>` repl fixes/changes. components can no longer be focused at all while
+    input fixes are afoot.
+
 ### v0.0.15
 - 🐴 alpaca bot integration. Type `bots ls` to see active bots. See [bots
     README](docs/bots/README.md) for more information
@@ -55,14 +60,6 @@ gainers/losers, and stock related news](img/iexcli.png)
     account component.
 - ℹ updated `help`
 - 🐛 bugfixes for sectors, polling, and workspace switch
-
-### v0.0.12
-
-- 📖 config.json documentation. README updates
-- 🐛 bugfix. windows are more persistent now within workspaces and across
-    carousel rotations.
-- 🌈 order book component. type `^` or `book` to see an order book for the
-    active symbol.
 
 ---
 

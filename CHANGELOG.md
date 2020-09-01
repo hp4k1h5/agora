@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v0.0.17
+- 💹 chart improvements, larger, more adherent
+- `>` repl fixes/changes. components can no longer be focused at all while
+    input fixes are afoot.
+
 ## v0.0.16
 - log fix
 
