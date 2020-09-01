@@ -6,6 +6,26 @@ import { clear } from './clear.js'
 import { help } from '../ui/help.js'
 import { handleErr } from './error.js'
 
+export function initComponent(ws, options) {
+  options.id = ws.id()
+  options.wsId = ws.options.id
+  options.q = {}
+
+  ws.options.screen.on('move', () => {
+    // cancel all requests from last ws in flight
+    Object.keys(options.q).forEach((url) => {
+      if (carousel.currPage != options.wsId) {
+        options.q[url] = Infinity
+      } else {
+        delete options.q[url]
+      }
+    })
+  })
+
+  setComponentOptions(ws, options, [], null)
+  setTime(ws, options, [`:${options.time}`])
+}
+
 export function setTargets(ws, words, command) {
   // find target component
   let targets
@@ -160,7 +180,7 @@ export function setTime(ws, options, words) {
 
 export async function setOrder(ws, options, words) {
   // execute orders first cannot be combined with other commands
-  const orderCmd = words.find((w) => /^[+-]\d+$/.test(w))
+  const orderCmd = words.find((w) => /^[+-][\d,_]+$/.test(w))
   const closeCmd = words.find((w) => w == 'close')
   if (!orderCmd && !closeCmd) {
     return false
@@ -179,7 +199,11 @@ export async function setOrder(ws, options, words) {
     return
   }
 
-  order.qty = +orderCmd.substring(1)
+  order.qty = +orderCmd.replace(/[,\-+_]/g, '')
+  if (isNaN(order.qty)) {
+    handleErr(ws, `not a valid lot size ${order.qty}`)
+    return true
+  }
   order.side = orderCmd[0] == '+' ? 'buy' : 'sell'
   order.type =
     words.find((w) => ['market', 'limit', 'stop', 'stop_limit'].includes(w)) ||
@@ -193,9 +217,8 @@ export async function setOrder(ws, options, words) {
     return true
   } else if (order.limit_price) {
     order.type = 'limit'
-    order.limit_price = +order.limit_price?.slice(1)
+    order.limit_price = +order.limit_price.replace(/[,\-+_]/g, '')
   }
-  ws
   order.time_in_force =
     words.find((w) => ['day', 'gtc', 'opg', 'cls', 'ioc', 'fok'].includes(w)) ||
     'day'
@@ -206,24 +229,4 @@ export async function setOrder(ws, options, words) {
     handleErr(ws, e)
   }
   return true
-}
-
-export function initComponent(ws, options) {
-  options.id = ws.id()
-  options.wsId = ws.options.id
-  options.q = {}
-
-  ws.options.screen.on('move', () => {
-    // cancel all requests from last ws in flight
-    Object.keys(options.q).forEach((url) => {
-      if (carousel.currPage != options.wsId) {
-        options.q[url] = Infinity
-      } else {
-        delete options.q[url]
-      }
-    })
-  })
-
-  setComponentOptions(ws, options, [], null)
-  setTime(ws, options, [`:${options.time}`])
 }
