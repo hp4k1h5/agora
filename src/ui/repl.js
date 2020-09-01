@@ -45,7 +45,6 @@ export function buildRepl(ws, options) {
   })
 
   const screen = ws.options.screen
-
   // app-wide return to repl hotkey
   screen.key('>', () => {
     ws.input.focus()
@@ -78,7 +77,7 @@ export function buildRepl(ws, options) {
     }
 
     // wait to focus until evaluation completes
-    ws.input.focus()
+    !ws.input.focused && ws.input.focus()
   })
 
   ws.input.on('focus', function () {

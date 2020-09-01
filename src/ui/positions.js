@@ -9,7 +9,7 @@ export function buildPositions(ws, options, data) {
   options.box = ws.grid.set(...options.yxhw, blessed.text, {
     name: 'positions',
     label: `[${options.id}  positions ${
-      options.pollMs ? ' .. polling ' + spin() : ''
+      options.pollMs ? '..poll' + spin() : ''
     }]`,
     // inputs
     keys: false,
@@ -32,7 +32,8 @@ export function buildPositions(ws, options, data) {
   // shape data again for narrow box
   data = data
     .map((d) => {
-      return `{#cd2-fg}${d.symbol}{/}   {#${
+      return `
+{#cd2-fg}${d.symbol}{/}   {#${
         d.side == 'long' ? 'bfa' : 'fab'
       }-fg}${d.side.toUpperCase()}{/}
 ${d.qty} @ ${d.avg_entry_price}/shr
@@ -45,5 +46,6 @@ price  ${d.current_price}
 last price ${d.lastday_price}`
     })
     .join('\n{bold}{#bbb-fg}---------------{/}\n')
+
   options.box.setContent(data)
 }

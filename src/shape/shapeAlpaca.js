@@ -138,6 +138,7 @@ export function shapePositions(positionsData) {
     'change_today',
   ]
 
+  // add blank line for narrow component wrapping
   return positionsData
     .sort((l, r) => {
       return l.symbol.localeCompare(r.symbol)
