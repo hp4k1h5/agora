@@ -59,7 +59,6 @@ export async function evaluate(ws, input) {
   // handle orders separately
   const order = await setOrder(ws, { wsId: ws.id, q: {} }, words)
   if (order) return
-
   const command = commands[words.find((w) => commands[w])]
 
   // execute repl fns next

@@ -34,23 +34,29 @@ export class Workspace {
       delete options.pollMs
     })
 
-    if (!this.prevFocus) this.prevFocus = options
+    // TODO cant have nice things. i have to find a way to prevent the repl
+    // from getting double focused when components refresh. Im not doing much
+    // to control repl input focus since the component seems to want to manage
+    // that itself, and any setting other than `inputFocusTrue` has not worked
+    // for me. The bug is inconsistent and persistent.
+    //
+    // if (!this.prevFocus) this.prevFocus = options
 
-    options.box.on('focus', () => {
-      options.box.setFront()
-      if (!options.pollMs) options.box.style.border = { fg: '#fc5' }
-    })
+    // options.box.on('focus', () => {
+    //   options.box.setFront()
+    //   if (!options.pollMs) options.box.style.border = { fg: '#fc5' }
+    // })
 
-    options.box.on('blur', () => {
-      if (this.input.focused) {
-        this.prevFocus.box.style.border = { fg: '#6ff' }
-        options.box.style.border = { fg: '#fc5' }
-      } else if (!options.pollMs) {
-        this.prevFocus.box.style.border = { fg: '#6ff' }
-      }
-      this.prevFocus = options
-      screen.render()
-    })
+    // options.box.on('blur', () => {
+    //   if (this.input.focused) {
+    //     this.prevFocus.box.style.border = { fg: '#6ff' }
+    //     options.box.style.border = { fg: '#fc5' }
+    //   } else if (!options.pollMs) {
+    //     this.prevFocus.box.style.border = { fg: '#6ff' }
+    //   }
+    //   this.prevFocus = options
+    //   screen.render()
+    // })
 
     options.box.on('destroy', () => {
       clearInterval(options.interval)
@@ -58,8 +64,9 @@ export class Workspace {
       delete options.pollMs
     })
 
-    if (!options.interval) {
-      screen.focusPush(options.box)
-    }
+    // TODO fix
+    // if (!options.interval) {
+    //  screen.focusPush(options.box)
+    // }
   }
 }

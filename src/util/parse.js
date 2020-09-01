@@ -8,56 +8,62 @@ import { handleErr } from './error.js'
 
 export function setTargets(ws, words, command) {
   // find target component
-  let target
+  let targets
   const _new = words.find((w) => w == '[new')
   const _all = words.find((w) => w == '[all')
   if (!_new && !_all) {
-    let tId = words.find((w) => w[0] == '[')
-    tId = tId ? +tId.substring(1) : null
-    target = ws.options.components.find((c) => c.id == tId)
-    if (tId && !target) {
-      ws.printLines(`{red-fg}err:{/} no such component id ${tId}`)
-      return []
+    let tIds = words.filter((w) => w[0] == '[').map((w) => +w.substring(1))
+    tIds = tIds.length ? tIds : null
+    if (tIds) {
+      targets = ws.options.components.filter((c) => tIds.includes(c.id))
+      if (tIds && !targets.length) {
+        ws.printLines(
+          `{red-fg}err:{/} no such component id ${tIds.filter(
+            (tId) => !targets.includes(tId),
+          )}`,
+        )
+        return []
+      }
     }
 
-    target = target ? target : ws.prevFocus
-    if (target.interval) {
-      clearInterval(target.interval)
-    }
+    targets = targets ? targets : [ws.prevFocus]
 
     // handle close component window
     const x = words.find((w) => w == 'x')
     if (x) {
-      clear(ws, target)
+      clear(ws, targets)
       ws.options.components.splice(
-        ws.options.components.findIndex((c) => c.id == target.id),
+        ws.options.components.findIndex((c) => c.id == targets.id),
         1,
       )
       ws.options.screen.render()
       return []
     }
 
-    if (command && target.type != command) {
-      target = { ...defaults[command], ...target }
-      ws.options.components.splice(
-        ws.options.components.findIndex((c) => c.id == target.id),
-        1,
-        target,
-      )
-    }
+    targets.forEach((target) => {
+      if (command && target.type != command) {
+        target = { ...defaults[command], ...target }
+        ws.options.components.splice(
+          ws.options.components.findIndex((c) => c.id == target.id),
+          1,
+          target,
+        )
+      }
+    })
   } else if (_new) {
-    target = defaults[command]
-    initComponent(ws, target)
-    setSymbol(target, words)
-    ws.options.components.push(target)
+    targets = defaults[command]
+    initComponent(ws, targets)
+    setSymbol(targets, words)
+    ws.options.components.push(targets)
+    targets = [targets]
   } else {
     // [all targets all targetable components
-    target = ws.options.components.filter(
+    targets = ws.options.components.filter(
       (c) => c.id && !['bots'].includes(c.type),
     )
   }
 
-  return Array.isArray(target) ? target : [target]
+  return targets
 }
 
 export function setComponentOptions(ws, target, words, command) {
