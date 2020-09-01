@@ -42,7 +42,14 @@ export function shapePrices(options, data) {
       y: priceData.y,
       style: { line: options.color },
     },
-    vol: { x: priceData.x, y: priceData.vol, style: { line: [200, 250, 30] } },
+    vol: [
+      {
+        title: 'vol',
+        x: priceData.x,
+        y: priceData.vol,
+        style: { line: [200, 250, 30] },
+      },
+    ],
   }
 
   if (indicatorData) {
