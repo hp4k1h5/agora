@@ -1,3 +1,4 @@
+import { config } from './config.js'
 import { carousel } from '../index.js'
 import { defaults } from './defaults.js'
 import { validUnits, validIndicators } from './config.js'
@@ -51,17 +52,20 @@ export function setTargets(ws, words, command) {
     // handle close component window
     const x = words.find((w) => w == 'x')
     if (x) {
-      clear(ws, targets)
-      ws.options.components.splice(
-        ws.options.components.findIndex((c) => c.id == targets.id),
-        1,
-      )
+      targets.forEach((target) => {
+        clear(ws, target)
+        ws.options.components.splice(
+          ws.options.components.findIndex((c) => c.id == target.id),
+          1,
+        )
+      })
       ws.options.screen.render()
       return []
     }
 
-    targets.forEach((target) => {
+    targets = targets.map((target) => {
       if (command && target.type != command) {
+        delete target.type
         target = { ...defaults[command], ...target }
         ws.options.components.splice(
           ws.options.components.findIndex((c) => c.id == target.id),
@@ -69,6 +73,7 @@ export function setTargets(ws, words, command) {
           target,
         )
       }
+      return target
     })
   } else if (_new) {
     targets = defaults[command]
@@ -86,9 +91,7 @@ export function setTargets(ws, words, command) {
   return targets
 }
 
-export function setComponentOptions(ws, target, words, command) {
-  target.type = command || target.type
-
+export function setComponentOptions(ws, target, words) {
   if (target.type == 'chart') {
     // set technical indicator
     const indicator = words.find((w) => w[0] == '%')
@@ -110,7 +113,9 @@ export function setComponentOptions(ws, target, words, command) {
       }
     }
   } else if (target.type == 'watchlist') {
-    target.watchlist = target.watchlist || ws.options.watchlist || ['goog']
+    target.watchlist = target.watchlist ||
+      ws.options.watchlist ||
+      config.watchlist || ['goog']
     if (target.watchlist == 'alpaca') {
       target.type = 'watchlistAlpaca'
     }

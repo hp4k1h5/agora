@@ -59,6 +59,7 @@ export async function evaluate(ws, input) {
   // handle orders separately
   const order = await setOrder(ws, { wsId: ws.id, q: {} }, words)
   if (order) return
+
   const command = commands[words.find((w) => commands[w])]
 
   // execute repl fns next
@@ -67,8 +68,9 @@ export async function evaluate(ws, input) {
   // parse inputs
   const targets = setTargets(ws, words, command)
   if (!targets.length) return
+
   targets.forEach((target) => {
-    setComponentOptions(ws, target, words, command)
+    setComponentOptions(ws, target, words)
 
     setSymbol(target, words)
     setTime(ws, target, words)

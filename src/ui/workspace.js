@@ -58,6 +58,9 @@ export class Workspace {
     //   screen.render()
     // })
 
+    // TODO leave in blur once repl focus is stable
+    this.prevFocus = options
+
     options.box.on('destroy', () => {
       clearInterval(options.interval)
       delete options.interval
