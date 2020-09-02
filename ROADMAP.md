@@ -25,10 +25,8 @@ develop on the forked versions.
 
 ## alpha release
 
-v0.0.17
-- bug fixes
-
 v0.0.18
+- better manual trade options
 - charts
   - more types
   - bot charts
