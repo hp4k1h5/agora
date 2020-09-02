@@ -69,7 +69,11 @@ export async function update(ws, options) {
   }
 
   async function up() {
+    let scroll
     try {
+      if (options.pollMs) {
+        scroll = options.box.getScrollPerc()
+      }
       // make request(s)
       data = await updateMap[options.type].apiFn(options)
     } catch (e) {
@@ -81,9 +85,9 @@ export async function update(ws, options) {
       handleErr(ws, e)
     }
 
-    // update ui if workspace hasnt changed
-    delete options.d
+    // update ui
     updateMap[options.type].uiFn(ws, options, data)
+    if (scroll) options.box.setScroll(scroll)
 
     ws.options.screen.render()
   }
