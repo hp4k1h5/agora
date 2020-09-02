@@ -32,8 +32,13 @@ export function setTargets(ws, words, command) {
   let targets
   const _new = words.find((w) => w == '[new')
   const _all = words.find((w) => w == '[all')
-  if (!_new && !_all) {
-    let tIds = words.filter((w) => w[0] == '[').map((w) => +w.substring(1))
+  if (!_new) {
+    let tIds
+    if (_all) {
+      tIds = ws.options.components.filter((c) => c.id).map((c) => c.id)
+    } else {
+      tIds = words.filter((w) => w[0] == '[').map((w) => +w.substring(1))
+    }
     tIds = tIds.length ? tIds : null
     if (tIds) {
       targets = ws.options.components.filter((c) => tIds.includes(c.id))
@@ -48,20 +53,6 @@ export function setTargets(ws, words, command) {
     }
 
     targets = targets ? targets : [ws.prevFocus]
-
-    // handle close component window
-    const x = words.find((w) => w == 'x')
-    if (x) {
-      targets.forEach((target) => {
-        clear(ws, target)
-        ws.options.components.splice(
-          ws.options.components.findIndex((c) => c.id == target.id),
-          1,
-        )
-      })
-      ws.options.screen.render()
-      return []
-    }
 
     targets = targets.map((target) => {
       if (command && target.type != command) {
@@ -81,11 +72,6 @@ export function setTargets(ws, words, command) {
     setSymbol(targets, words)
     ws.options.components.push(targets)
     targets = [targets]
-  } else {
-    // [all targets all targetable components
-    targets = ws.options.components.filter(
-      (c) => c.id && !['bots'].includes(c.type),
-    )
   }
 
   return targets
@@ -124,8 +110,6 @@ export function setComponentOptions(ws, target, words) {
 
 // only set if component has symbol & user entered symbol
 export function setSymbol(options, words) {
-  if (!options.symbol) return
-  if (options.symbol === true) options.symbol = ''
   const symbol = words.find((w) => /(?<=^\$)[\w.]+/.test(w))
   if (symbol) options.symbol = symbol.slice(1)
 }

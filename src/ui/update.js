@@ -16,6 +16,7 @@ import {
   getPositions,
 } from '../api/alpaca.js'
 
+import { buildBlank } from './blank.js'
 import { buildRepl } from './repl.js'
 import { buildPriceVolCharts } from './graph.js'
 import { buildQuoteList } from './quote.js'
@@ -33,6 +34,8 @@ import { buildBots } from './bots.js'
 import { handleErr } from '../util/error.js'
 
 const updateMap = {
+  blank: { apiFn: () => {}, uiFn: buildBlank },
+  repl: { apiFn: () => {}, uiFn: buildRepl },
   quote: { apiFn: getQuote, uiFn: buildQuoteList },
   chart: { apiFn: getPrices, uiFn: buildPriceVolCharts },
   news: { apiFn: getNews, uiFn: buildNewsList },
@@ -42,7 +45,6 @@ const updateMap = {
   list: { apiFn: getLists, uiFn: buildLists },
   sectors: { apiFn: getSectors, uiFn: buildSectors },
   book: { apiFn: getBook, uiFn: buildBook },
-  repl: { apiFn: () => {}, uiFn: buildRepl },
   orders: { apiFn: getOrders, uiFn: buildOrders },
   positions: { apiFn: getPositions, uiFn: buildPositions },
   account: {
