@@ -91,7 +91,7 @@ export function shapeQuote(data) {
       `{#${d[1] >= 0 ? '4fb' : 'a25'}-fg}${(d[1] * 100).toFixed(2)}%{/}`,
     ],
     peRatio: (d) => d,
-    marketCap: (d) => [d[0], ('' + d[1]).toLocaleString()],
+    marketCap: (d) => [d[0], d[1].toLocaleString()],
   }
   return data
     .filter((d) => m[d[0]])

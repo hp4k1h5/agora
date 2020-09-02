@@ -1,3 +1,8 @@
+const blank = {
+  type: 'blank',
+  yxhw: [3, 3, 6, 6],
+}
+
 const repl = {
   type: 'repl',
   yxhw: [6, 9, 6, 3],
@@ -79,6 +84,7 @@ const help = {
 }
 
 export const defaults = {
+  blank,
   repl,
   chart,
   quote,

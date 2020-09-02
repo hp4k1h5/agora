@@ -22,6 +22,8 @@ export async function evaluate(ws, input) {
     search,
     bots,
     b0ts: 'bots',
+    blank: 'blank',
+    x: 'blank',
     chart: 'chart',
     '#': 'chart',
     book: 'book',
