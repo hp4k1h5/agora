@@ -198,19 +198,42 @@ export async function setOrder(ws, options, words) {
     return true
   }
   order.side = orderCmd[0] == '+' ? 'buy' : 'sell'
+
   order.type =
     words.find((w) => ['market', 'limit', 'stop', 'stop_limit'].includes(w)) ||
     'market'
-  order.limit_price = words.find((w) => /^[<>][\d.]+$/.test(w))
-  if (order.type == 'limit' && !order.limit_price) {
+
+  order.limit_price = words.find((w) => /^<[\d.]+$/.test(w))
+  order.stop_price = words.find((w) => /^>[\d.]+$/.test(w))
+
+  if (order.type == 'stop_limit' && !(order.limit_price && order.stop_price)) {
     handleErr(
       ws,
-      'limit order must include limit_price, e.g. {yellow-fg}<3.16{/}',
+      'stop_limit order must include limit_price and stop_price, e.g. {#eb5-fg}<{yellow-fg}3.16{/} {#eb5-fg}>{yellow-fg}3.26 {/}',
+    )
+    return true
+  } else if (order.limit_price && order.stop_price) {
+    order.type = 'stop_limit'
+    order.limit_price = +order.limit_price.replace(/[,\-+_<]/g, '')
+    order.stop_price = +order.stop_price.replace(/[,\-+_>]/g, '')
+  } else if (order.type == 'limit' && !order.limit_price) {
+    handleErr(
+      ws,
+      'limit order must include limit_price, e.g. {#eb5-fg}<{yellow-fg}3.16{/}',
     )
     return true
   } else if (order.limit_price) {
     order.type = 'limit'
     order.limit_price = +order.limit_price.replace(/[,\-+_<]/g, '')
+  } else if (order.type == 'stop' && !order.stop_price) {
+    handleErr(
+      ws,
+      'stop order must include stop_price, e.g. {#eb5-fg}>{yellow-fg}3.16{/}',
+    )
+    return true
+  } else if (order.stop_price) {
+    order.type = 'stop'
+    order.stop_price = +order.stop_price.replace(/[,\-+_>]/g, '')
   }
   order.time_in_force =
     words.find((w) => ['day', 'gtc', 'opg', 'cls', 'ioc', 'fok'].includes(w)) ||
