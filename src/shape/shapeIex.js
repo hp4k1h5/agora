@@ -16,10 +16,11 @@ export function shapePrices(options, data) {
   }
 
   // keep track of last price, which fills in for null price points
-  // let last = priceData.find((price) => price.close) || 0
-  let last = 0
+  let last = priceData.find((price) => price.close) || 0
+
   // intraday vs daily keys
   const xKey = options.series == 'intra' ? 'minute' : 'date'
+
   priceData = priceData.reduce(
     (a, v) => {
       if (!v.close) {
