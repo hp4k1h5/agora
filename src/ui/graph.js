@@ -7,8 +7,6 @@ export function buildPriceVolCharts(ws, options, data) {
   clear(ws, options)
 
   // graph price
-  let [y, x, h, w] = options.yxhw
-
   let priceData
   if (data) {
     if (data.indicators) {
@@ -45,7 +43,7 @@ export function buildPriceVolCharts(ws, options, data) {
   if (!options.vol) return
 
   //  put vol beneath price
-  graph(ws, options.box, data.vol, bH, options.box.height - bH)
+  graph(ws, options.box, data?.vol, bH, options.box.height - bH)
 }
 
 export function graph(ws, parent, data, row, height) {

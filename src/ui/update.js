@@ -76,6 +76,7 @@ export async function update(ws, options) {
       if (options.pollMs && options.box.getScrollPerc) {
         scroll = options.box.getScrollPerc()
       }
+
       // make request(s)
       data = await updateMap[options.type].apiFn(options)
     } catch (e) {
@@ -87,10 +88,15 @@ export async function update(ws, options) {
       handleErr(ws, e)
     }
 
-    // update ui
-    updateMap[options.type].uiFn(ws, options, data)
-    if (scroll) options.box.setScroll(scroll)
+    try {
+      // update ui
+      ws.printLines && ws.printLines(options.type)
+      updateMap[options.type].uiFn(ws, options, data)
+      if (scroll) options.box.setScroll(scroll)
 
-    ws.options.screen.render()
+      ws.options.screen.render()
+    } catch (e) {
+      ws.printLines(e)
+    }
   }
 }

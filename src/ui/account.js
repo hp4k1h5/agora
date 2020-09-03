@@ -6,11 +6,11 @@ import { clear } from '../util/clear.js'
 import { spin } from '../util/spin.js'
 
 export function buildAccount(ws, options, data) {
+  return
   clear(ws, options)
-  ws.options.screen.log(JSON.stringify(data, null, 2))
 
   const empty = [
-    '{red-fg}no iex account data, enter config val or env var IEX_SECRET_KEY{/}',
+    '{red-fg}no iex account data{/}',
     '{red-fg}no alapaca account data{/}',
   ]
 
@@ -146,7 +146,7 @@ export function buildAccount(ws, options, data) {
   })
 
   const keyUsage = contrib.gauge({
-    parent: iexBox,
+    // parent: iexBox,
     label: 'key usage',
     inputs: false,
     // styles

@@ -163,7 +163,7 @@ export function shapeWatchlist(data) {
 
 /** data is an array of json responses from a series of profile related calls */
 export function shapeProfile(data) {
-  if (!data || !data.length) return 'no data for symbol'
+  if (!data) throw 'no data for symbol'
 
   let [company, keyStats, earnings, financials] = data
 
@@ -194,9 +194,10 @@ export function shapeProfile(data) {
   }
 
   keyStats = shape(keyStats)
-  earnings = shape(earnings.earnings[0])
-  financials = shape(financials.financials[0])
-
+  if (earnings.earnings) earnings = shape(earnings.earnings[0])
+  else earnings = '{#eb5-fg}no data{/}'
+  if (financials.financials) financials = shape(financials.financials[0])
+  else financials = '{#eb5-fg}no data{/}'
   return { company, keyStats, earnings, financials }
 }
 
