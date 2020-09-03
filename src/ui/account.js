@@ -6,7 +6,6 @@ import { clear } from '../util/clear.js'
 import { spin } from '../util/spin.js'
 
 export function buildAccount(ws, options, data) {
-  return
   clear(ws, options)
 
   const empty = [
