@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v0.0.20
+- 🦙 `cancel` orders, `close` positions commands available. See [trading](./README.md#trading)
+
 ## v0.0.19
 - `&` profile fixes. should work with etfs and other non-company symbols again
 

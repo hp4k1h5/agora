@@ -41,6 +41,9 @@ gainers/losers, and stock related news](img/iexcli.png)
 
 ## CHANGELOG
 
+### v0.0.20
+- 🦙 `cancel` orders, `close` positions commands available. See [trading](./README.md#trading)
+
 ### v0.0.19
 - `&` profile fixes. should work with etfs and other non-company symbols again
 
@@ -505,6 +508,31 @@ such.
 -50 $qqq <297 >296   -> sell (short) 50 shares of $qqq stop at 296 limit price
                         297 or better
 $gm gtc +1_000       -> buy 1,000 shares of $GM good-to-cancel
+```
+
+#### `cancel` orders
+
+Use command `cancel` plus one of `all`, `$symbol`, `order_id` or
+`client_order_id` to cancel all orders, all orders for a given symbol, or a
+single order.
+
+**examples**
+```bash
+cancel all          -> cancel all open orders
+cancel $tm          -> cancel all open orders for $TM
+cancel 4f447        -> cancel the order starting with id or client id 4f447,
+                        must be length 5
+```
+
+#### `close` orders
+
+Use command `close` plus one of `all` or `$symbol` to close all positions, or the
+position for a given symbol.
+
+**examples**
+```bash
+close all          -> cancel all positions
+close $tm          -> close position in $TM
 ```
 
 ---

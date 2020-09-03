@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 
-export async function qFetch(options, url, httpOptions) {
+export async function qFetch(options, url, httpOptions, noJSON) {
   const d = new Date().getTime()
 
   if (!options.q[url]) {
@@ -18,6 +18,8 @@ export async function qFetch(options, url, httpOptions) {
   }
 
   options.q[url] = d
+
+  if (noJSON) return response
 
   return await response.json()
 }

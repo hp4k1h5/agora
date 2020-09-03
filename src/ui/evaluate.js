@@ -1,11 +1,11 @@
 import { update } from './update.js'
 import {
-  setOrder,
   setTargets,
   setComponentOptions,
   setTime,
   setSymbol,
 } from '../util/parse.js'
+import { setOrder } from '../util/orders.js'
 import { search as fuzzySearch } from './search.js'
 import { bots } from '../bots/bots.js'
 import { help } from './help.js'

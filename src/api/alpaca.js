@@ -1,6 +1,4 @@
 import qs from 'querystring'
-import fs from 'fs'
-
 import { config } from '../util/config.js'
 import { qFetch } from './qFetch.js'
 import { getWatchlistIex } from './iex.js'
@@ -93,8 +91,54 @@ export async function submitOrder(ws, options, order) {
 
   let data = await qFetch(options, url, httpOptions)
 
+  // TODO shape better
   ws.printLines(JSON.stringify(data, null, 2))
-  return data
+  return
+}
+
+export async function submitCloseAll(ws, options) {
+  const { url, httpOptions } = buildAlpacaURL('DELETE', 'positions')
+
+  let data = await qFetch(options, url, httpOptions)
+
+  ws.printLines(JSON.stringify(data, null, 2))
+  return
+}
+
+export async function submitClose(ws, options, symbol) {
+  const { url, httpOptions } = buildAlpacaURL('DELETE', `positions/${symbol}`)
+
+  let data = await qFetch(options, url, httpOptions)
+  ws.printLines(JSON.stringify(data, null, 2))
+}
+
+export async function submitCancelAll(ws, options) {
+  const { url, httpOptions } = buildAlpacaURL('DELETE', 'orders')
+
+  let data = await qFetch(options, url, httpOptions)
+
+  ws.printLines(JSON.stringify(data, null, 2))
+  return
+}
+
+export async function submitCancel(ws, options, symbol, orderIds) {
+  const orders = await getOrders(options, true)
+
+  const urls = orders
+    .filter((order) =>
+      symbol
+        ? order.symbol == symbol
+        : orderIds.includes(order.id.substring(0, 5)) ||
+          orderIds.includes(order.client_order_id.substring(0, 5)),
+    )
+    .map((order) => buildAlpacaURL('DELETE', `orders/${order.id}`))
+
+  await Promise.all(
+    urls.map(async (url) => {
+      return await qFetch(options, url.url, url.httpOptions, true)
+    }),
+  )
+  ws.printLines('orders cancelled')
 }
 
 export async function getWatchlistAlpaca(options) {
@@ -129,16 +173,20 @@ export async function getWatchlistAlpaca(options) {
   }, [])
 }
 
-export async function getOrders(options) {
+export async function getOrders(options, raw) {
   const url = buildAlpacaURL('GET', 'orders')
   const data = await qFetch(options, url.url, url.httpOptions)
+
+  if (raw) return data
 
   return shapeOrders(data)
 }
 
-export async function getPositions(options) {
-  const url = buildAlpacaURL('GET', 'positions')
-  const data = await qFetch(options, url.url, url.httpOptions)
+export async function getPositions(options, raw) {
+  const { url, httpOptions } = buildAlpacaURL('GET', 'positions')
+  const data = await qFetch(options, url, httpOptions)
+
+  if (raw) return data
 
   return shapePositions(data)
 }
