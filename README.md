@@ -41,7 +41,15 @@ gainers/losers, and stock related news](img/iexcli.png)
 
 ## CHANGELOG
 
-## v0.0.17
+### v0.0.19
+- `&` profile fixes. should work with etfs and other non-company symbols again
+
+### v0.0.18
+- 🦙 `limit`, `stop` and `stop_limit` order types now accepted. Use
+    limit-prefix `<` and stop-prefix `>`. See [trading](./README.md#trading)
+- 🐛 bugfixes for several components
+
+### v0.0.17
 - 💹 chart improvements, larger, more adherent
 - `>` repl fixes/changes. components can no longer be focused at all while
     input fixes are afoot.
@@ -469,15 +477,34 @@ components:
 1) order **side** buy or sell
     - use the `+` buy-prefix to buy. use the `-` sell-prefix to sell.
     - selling when you own no shares will be considered a short sale.
+    - underscores and commas are allowed in quantities, i.e. 1_000 = 1,000 =
+        1000
 2) **quantity**
     - affix the quantity directly to the order side
 3) stock **symbol**
-    - use the stock symbol prefix `$` to designate the instrument  
+    - use the stock symbol prefix `$` to designate the instrument
+
+Optionally users can set the order type and time-in-force.
+
+Orders that include a `<` limit-prefix, a `>` stop-prefix or both, will be
+submitted as, `limit`, `stop`, or `stop_limit` respectively. If you include
+the order type with the order, your order will be loosely validated for
+correctness before going out. This means that if you submit a stop_limit order
+that has incorrect limit vs stop prices, alpaca will reject your order, and
+not this app, however if you explicitly submit a stop_limit without both a
+stop price and a limit price, iexcli will reject your order before it goes
+out. Including the prefixes, without explicitly stating what the order type is
+will automatically decide what order type you are submitting.
+
+Orders that include one of `day, gtc, opg, cls, ioc, fok` will be counted as
+such.
 
 **examples**
 ```bash
-+100 $tm     -> buy 100 shares of $tm
--50 $qqq     -> sell (short or close) 50 shares of $qqq
++100 $tm <130.23     -> buy 100 shares of $tm with a limit price of 130.23
+-50 $qqq <297 >296   -> sell (short) 50 shares of $qqq at 297 or
+                        better and stop at 296 or better
+$gm gtc +1_000       -> buy 1,000 shares of $GM good-to-close
 ```
 
 ---

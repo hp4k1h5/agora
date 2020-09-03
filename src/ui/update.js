@@ -88,15 +88,10 @@ export async function update(ws, options) {
       handleErr(ws, e)
     }
 
-    try {
-      // update ui
-      ws.printLines && ws.printLines(options.type)
-      updateMap[options.type].uiFn(ws, options, data)
-      if (scroll) options.box.setScroll(scroll)
+    // update ui
+    updateMap[options.type].uiFn(ws, options, data)
+    if (scroll) options.box.setScroll(scroll)
 
-      ws.options.screen.render()
-    } catch (e) {
-      ws.printLines(e)
-    }
+    ws.options.screen.render()
   }
 }

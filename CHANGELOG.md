@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v0.0.19
+- `&` profile fixes. should work with etfs and other non-company symbols again
+
+## v0.0.18
+- 🦙 `limit`, `stop` and `stop_limit` order types now accepted. Use
+    limit-prefix `<` and stop-prefix `>`. See [trading](./README.md#trading)
+
 ## v0.0.17
 - 💹 chart improvements, larger, more adherent
 - `>` repl fixes/changes. components can no longer be focused at all while

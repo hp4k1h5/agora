@@ -3,7 +3,6 @@ import { carousel } from '../index.js'
 import { defaults } from './defaults.js'
 import { validUnits, validIndicators } from './config.js'
 import { submitOrder } from '../api/alpaca.js'
-import { clear } from './clear.js'
 import { help } from '../ui/help.js'
 import { handleErr } from './error.js'
 
