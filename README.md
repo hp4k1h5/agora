@@ -502,9 +502,9 @@ such.
 **examples**
 ```bash
 +100 $tm <130.23     -> buy 100 shares of $tm with a limit price of 130.23
--50 $qqq <297 >296   -> sell (short) 50 shares of $qqq at 297 or
-                        better and stop at 296 or better
-$gm gtc +1_000       -> buy 1,000 shares of $GM good-to-close
+-50 $qqq <297 >296   -> sell (short) 50 shares of $qqq stop at 296 limit price
+                        297 or better
+$gm gtc +1_000       -> buy 1,000 shares of $GM good-to-cancel
 ```
 
 ---
