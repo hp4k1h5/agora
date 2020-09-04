@@ -44,7 +44,7 @@ export async function setOrder(ws, options, words) {
         handleErr(ws, e)
       }
     }
-    return
+    return true
   } else if (cancelCmd) {
     if (words.find((w) => w == 'all')) {
       ws.printLines('{bold}{#fd8-fg}canceling all orders...{/}')
@@ -69,7 +69,7 @@ export async function setOrder(ws, options, words) {
         handleErr(ws, e)
       }
     }
-    return
+    return true
   }
 
   order.qty = +orderCmd.replace(/[,\-+_]/g, '')
@@ -115,6 +115,7 @@ export async function setOrder(ws, options, words) {
     order.type = 'stop'
     order.stop_price = +order.stop_price.replace(/[,\-+_>]/g, '')
   }
+
   order.time_in_force =
     words.find((w) => ['day', 'gtc', 'opg', 'cls', 'ioc', 'fok'].includes(w)) ||
     'day'

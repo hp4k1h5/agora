@@ -1,5 +1,6 @@
 import blessed from '@hp4k1h5/blessed'
 
+import { shapePositions } from '../shape/shapeAlpaca.js'
 import { clear } from '../util/clear.js'
 import { spin } from '../util/spin.js'
 
@@ -29,6 +30,7 @@ export function buildPositions(ws, options, data) {
 
   // set data
   if (!data) return
+  data = shapePositions(data)
   // shape data again for narrow box
   data = data
     .map((d) => {

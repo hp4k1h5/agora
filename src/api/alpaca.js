@@ -2,11 +2,6 @@ import qs from 'querystring'
 import { config } from '../util/config.js'
 import { qFetch } from './qFetch.js'
 import { getWatchlistIex } from './iex.js'
-import {
-  shapeAccountAlpaca,
-  shapeOrders,
-  shapePositions,
-} from '../shape/shapeAlpaca.js'
 import { shapeWatchlist } from '../shape/shapeIex.js'
 
 let alpacaTokens
@@ -121,7 +116,7 @@ export async function submitCancelAll(ws, options) {
 }
 
 export async function submitCancel(ws, options, symbol, orderIds) {
-  const orders = await getOrders(options, true)
+  const orders = await getOrders(options)
 
   const urls = orders
     .filter((order) =>
@@ -179,20 +174,12 @@ export async function getWatchlistAlpaca(options) {
   return response
 }
 
-export async function getOrders(options, raw) {
+export async function getOrders(options) {
   const url = buildAlpacaURL('GET', 'orders')
-  const data = await qFetch(options, url.url, url.httpOptions)
-
-  if (raw) return data
-
-  return shapeOrders(data)
+  return await qFetch(options, url.url, url.httpOptions)
 }
 
-export async function getPositions(options, raw) {
+export async function getPositions(options) {
   const { url, httpOptions } = buildAlpacaURL('GET', 'positions')
-  const data = await qFetch(options, url, httpOptions)
-
-  if (raw) return data
-
-  return shapePositions(data)
+  return await qFetch(options, url, httpOptions)
 }
