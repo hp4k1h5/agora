@@ -1,7 +1,8 @@
 import blessed from '@hp4k1h5/blessed'
 
+import { shapeWatchlist } from '../shape/shapeIex.js'
 import { clear } from '../util/clear.js'
-import { spin } from '../util/spin.js'
+// import { spin } from '../util/spin.js'
 
 export function buildWatchlist(ws, options, data) {
   clear(ws, options)
@@ -36,6 +37,8 @@ export function buildWatchlist(ws, options, data) {
 
   // set data
   if (!data) return
+  // alpaca shapes its own data
+  if (!data.shaped) data = shapeWatchlist(data)
   data[0][0] = `[${options.id} watch]`
   options.box.setData(data)
 }

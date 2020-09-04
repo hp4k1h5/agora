@@ -1,6 +1,8 @@
 import blessed from '@hp4k1h5/blessed'
 import contrib from '@hp4k1h5/blessed-contrib'
 
+import { shapeAccountIex } from '../shape/shapeIex.js'
+import { shapeAccountAlpaca } from '../shape/shapeAlpaca.js'
 import { graph } from '../ui/graph.js'
 import { clear } from '../util/clear.js'
 import { spin } from '../util/spin.js'
@@ -18,6 +20,8 @@ export function buildAccount(ws, options, data) {
     ;[iex, alpaca] = empty
   } else {
     ;[iex, alpaca] = data
+    iex = shapeAccountIex(iex)
+    alpaca = shapeAccountAlpaca(alpaca)
     if (!iex) iex = empty[0]
     if (!alpaca) alpaca = { account: empty[1], positions: empty[1] }
   }

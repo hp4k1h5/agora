@@ -1,7 +1,13 @@
-//// beta is not a real trading bot, but an example demo of how to use iexcli
-// with your bots. See docs/bots/README.md for more information.
+// alpha is a very basic mean-reversion trading algorithm. it will determine a
+// valid trading range, and execute buy/sell orders when the stock is within
+// that range. This bot has not been backtested or tested at all, and is
+// probably not a suitable investment vehicle for you. It is meant as a
+// demonstration and learning tool for users who wish to create their own
+// trading algorithms.
 export async function alpha(ws, options) {
   ws.printLines('{#afa-fg}alpha{/} bot, go')
+
+  // get stocks daily bars
 
   const up = Math.floor(Math.random() * 2) ? -1 : 1
   const pFunc = () =>

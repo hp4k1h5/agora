@@ -1,17 +1,6 @@
 import qs from 'querystring'
 import { qFetch } from './qFetch.js'
 
-import {
-  shapePrices,
-  shapeQuote,
-  shapeNews,
-  shapeWatchlist,
-  shapeProfile,
-  shapeLists,
-  shapeSectors,
-  shapeBook,
-  shapeAccountIex,
-} from '../shape/shapeIex.js'
 import { config } from '../util/config.js'
 
 const iexToken = config.IEX_PUB_KEY
@@ -59,23 +48,19 @@ export async function getPrices(options) {
     url = buildIexURL(`stock/${options.symbol}/chart/${options._time}`)
   }
 
-  const data = await qFetch(options, url)
-
-  return shapePrices(options, data)
+  return await qFetch(options, url)
 }
 
 export async function getQuote(options) {
   const url = buildIexURL(`stock/${options.symbol}/quote`)
-  const data = await qFetch(options, url)
 
-  return shapeQuote(data)
+  return await qFetch(options, url)
 }
 
 export async function getNews(options) {
   const url = buildIexURL(`stock/${options.symbol}/news/last/10`)
-  const data = await qFetch(options, url)
 
-  return shapeNews(data)
+  return await qFetch(options, url)
 }
 
 export async function getWatchlistIex(options) {
@@ -84,9 +69,7 @@ export async function getWatchlistIex(options) {
     types: 'quote',
   })
 
-  const data = await qFetch(options, url)
-
-  return shapeWatchlist(data)
+  return await qFetch(options, url)
 }
 
 export async function getProfile(options) {
@@ -97,13 +80,11 @@ export async function getProfile(options) {
     buildIexURL(`stock/${options.symbol}/financials`),
   ]
 
-  const data = await Promise.all(
+  return await Promise.all(
     urls.map(async (url) => {
       return await qFetch(options, url)
     }),
   )
-
-  return shapeProfile(data)
 }
 
 export async function getLists(options) {
@@ -111,29 +92,23 @@ export async function getLists(options) {
     buildIexURL(`stock/market/list/${t}`, { displayPercent: true }),
   )
 
-  const data = await Promise.all(
+  return await Promise.all(
     urls.map(async (url) => {
       return await qFetch(options, url)
     }),
   )
-
-  return shapeLists(data, options.listTypes)
 }
 
 export async function getSectors(options) {
   const url = buildIexURL('stock/market/sector-performance')
 
-  const data = await qFetch(options, url)
-
-  return shapeSectors(data)
+  return await qFetch(options, url)
 }
 
 export async function getBook(options) {
   const url = buildIexURL(`stock/${options.symbol}/book`)
 
-  const data = await qFetch(options, url)
-
-  return shapeBook(data)
+  return await qFetch(options, url)
 }
 
 export async function getAccountIex(options) {
@@ -143,7 +118,5 @@ export async function getAccountIex(options) {
 
   const url = buildIexURL('account/usage', {}, iexTokenSecret)
 
-  const data = await qFetch(options, url)
-
-  return shapeAccountIex(data)
+  return await qFetch(options, url)
 }

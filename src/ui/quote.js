@@ -1,5 +1,6 @@
 import blessed from '@hp4k1h5/blessed'
 
+import { shapeQuote } from '../shape/shapeIex.js'
 import { clear } from '../util/clear.js'
 import { spin } from '../util/spin.js'
 
@@ -28,6 +29,7 @@ export function buildQuoteList(ws, options, data) {
   ws.setListeners(options)
 
   // set data
+  data = shapeQuote(data)
   if (!data) return
   options.box.setContent(data)
 }

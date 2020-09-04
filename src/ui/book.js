@@ -1,5 +1,6 @@
 import blessed from '@hp4k1h5/blessed'
 
+import { shapeBook } from '../shape/shapeIex.js'
 import { clear } from '../util/clear.js'
 import { spin } from '../util/spin.js'
 
@@ -92,6 +93,7 @@ export function buildBook(ws, options, data) {
   ws.setListeners(options)
 
   // set data
+  data = shapeBook(data)
   if (!data) return
   bids.setContent(data.bids)
   asks.setContent(data.asks)

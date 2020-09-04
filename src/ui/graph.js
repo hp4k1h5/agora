@@ -1,12 +1,16 @@
 import blessed from '@hp4k1h5/blessed'
 import contrib from '@hp4k1h5/blessed-contrib'
-import { spin } from '../util/spin.js'
 
+import { shapePrices } from '../shape/shapeIex.js'
+import { spin } from '../util/spin.js'
 import { clear } from '../util/clear.js'
+
 export function buildPriceVolCharts(ws, options, data) {
   clear(ws, options)
 
   // graph price
+  data = shapePrices(options, data)
+
   let priceData
   if (data) {
     if (data.indicators) {

@@ -7,6 +7,7 @@ import {
   shapeOrders,
   shapePositions,
 } from '../shape/shapeAlpaca.js'
+import { shapeWatchlist } from '../shape/shapeIex.js'
 
 let alpacaTokens
 if (config['APCA_API_KEY_ID'] && config['APCA_API_KEY_ID'].length) {
@@ -77,13 +78,11 @@ export async function getAccountAlpaca(options, which) {
     )
   }
 
-  const data = await Promise.all(
+  return await Promise.all(
     urls.map(async (url) => {
       return await qFetch(options, url.url, url.httpOptions)
     }),
   )
-
-  return shapeAccountAlpaca(data)
 }
 
 export async function submitOrder(ws, options, order) {
@@ -165,12 +164,19 @@ export async function getWatchlistAlpaca(options) {
     }),
   )
 
-  return response.reduce((a, v, i) => {
+  response = response.map((r) => {
+    return shapeWatchlist(r)
+  })
+
+  response = response.reduce((a, v, i) => {
     let line = v[0].map(() => '--')
     line[1] = wlNames[i]
     v.unshift(line)
     return [...a, ...v]
   }, [])
+
+  response.shaped = true
+  return response
 }
 
 export async function getOrders(options, raw) {
