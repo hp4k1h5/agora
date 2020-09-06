@@ -183,3 +183,11 @@ export async function getPositions(options) {
   const { url, httpOptions } = buildAlpacaURL('GET', 'positions')
   return await qFetch(options, url, httpOptions)
 }
+
+export async function getPosition(options) {
+  const { url, httpOptions } = buildAlpacaURL(
+    'GET',
+    `positions/${options.symbol.toUpperCase()}`,
+  )
+  return await qFetch(options, url, httpOptions)
+}

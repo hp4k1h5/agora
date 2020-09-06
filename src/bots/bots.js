@@ -53,12 +53,12 @@ export async function bots(ws, words) {
   }
 
   let botOptions = ws.options.components.find((c) => c.type == 'bots')
-  if (!botOptions) {
-    botOptions = {
+  botOptions = {
+    ...botOptions,
+    ...{
       type: 'bots',
-      symbol: true,
-      time: '',
-    }
+      time: '1d',
+    },
   }
   setSymbol(botOptions, words)
   setTime(ws, botOptions, words)

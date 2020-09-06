@@ -93,9 +93,9 @@ gainers/losers, and stock related news](img/iexcli.png)
     config location, on a mac, this will be `~/.config/iexcli/config.json`.
     *You will have to create the directory with e.g.* `mkdir
     ~/.config/iexcli`, and then copy over your config with e.g. on a mac
-    ```bash
-    cp  ~/.config/yarn/global/node_modules/@hp4k1h5/iexcli/config.json ~/.config/iexcli
-    ```
+```bash
+cp  ~/.config/yarn/global/node_modules/@hp4k1h5/iexcli/config.json ~/.config/iexcli
+```
     See **[config.json](#config\.json)** for configuration tips and example configs.
 
 #### register

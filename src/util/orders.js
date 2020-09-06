@@ -6,7 +6,7 @@ import {
   submitCancelAll,
   submitCancel,
 } from '../api/alpaca.js'
-import { setSymbol } from './parse.js'
+import { setSymbol, setTime } from './parse.js'
 
 export async function setOrder(ws, options, words) {
   // execute orders first cannot be combined with other commands
@@ -20,7 +20,7 @@ export async function setOrder(ws, options, words) {
     return
   }
 
-  let order = {}
+  let order = { time: options.time || '1d' }
 
   setSymbol(order, words)
   if (!order.symbol && orderCmd) {
