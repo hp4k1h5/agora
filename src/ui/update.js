@@ -63,6 +63,7 @@ export async function update(ws, options) {
   let data
 
   if (options.pollMs) {
+    clearInterval(options.interval)
     await up()
     options.interval = setInterval(up, options.pollMs)
   } else {

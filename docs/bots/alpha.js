@@ -2,8 +2,8 @@ import { getPrices, getBook, getQuote } from '../../src/api/iex.js'
 import { getPosition, submitClose, submitOrder } from '../../src/api/alpaca.js'
 
 // alpha is a very basic mean-reversion trading algorithm. it will determine a
-// valid trading range, and execute buy/sell orders when the stock is within
-// that range. This bot has not been backtested or tested at all, and is
+// valid trading ranges, and execute buy/sell orders when the stock is within
+// those ranges. This bot has not been backtested or tested at all, and is
 // probably not a suitable investment vehicle for you. It is meant as a
 // demonstration and learning tool for users who wish to create their own
 // trading algorithms.
@@ -31,13 +31,13 @@ export async function alpha(ws, options) {
 
   ws.printLines('{#afa-fg}alpha{/} bot, go')
 
-  // set up some local vars for the function passed to interval
-  let order = {}
-  let position
-
-  async function meanRevOrDiv() {
-    // first the bot checks whether or not bot is invested in the stock
+  // this bot only trades one lot at a time. if it is invested it will try to
+  // exit the position once it has gained or lost 1%.
+  async function meanReversion() {
+    let position
+    // first check whether or not bot is invested in the stock
     ws.printLines(`{#afa-fg}alpha{/} bot, checking ${options.symbol} position`)
+
     try {
       position = await getPosition(options)
     } catch (e) {
@@ -45,7 +45,7 @@ export async function alpha(ws, options) {
     }
 
     if (position) {
-      // if the bot is up or down more than a percent, close the position
+      // if the bot is up or down more than a percent in profit, close the position
       if (Math.abs(position.unrealized_intraday_plpc) > 0.01) {
         ws.printLines(
           `{#afa-fg}alpha{/} bot, pl% ${position.unrealized_intraday_plpc}. closing position`,
@@ -62,20 +62,26 @@ export async function alpha(ws, options) {
         }
       }
 
+      // else print bot info and return
       botOptions.side = position.side
       botOptions.pl = position.unrealized_intraday_pl
       botOptions.percent = position.unrealized_intraday_plpc
       botOptions.qty = position.qty
       options.print(botOptions)
+
       return
     }
 
-    // get stocks daily bars
+    // otherwise if the bot is not invested, it will query market data and look
+    // for opportunities to invest when the stock price has deviated more than
+    // 1% from the daily mean
     ws.printLines(
       `{#afa-fg}alpha{/} bot, getting ${options.time} price/vol data for ${options.symbol}`,
     )
+    // get stocks daily bars
     let _prices = await getPrices(options)
 
+    // accumulate stock data
     let { prices, avg, tot, hi, lo, vol } = _prices.reduce(
       (a, v) => {
         // strip nulls
@@ -92,9 +98,12 @@ export async function alpha(ws, options) {
       { prices: [], avg: 0, tot: 0, hi: -Infinity, lo: Infinity, vol: 0 },
     )
 
-    const last = prices[prices.length - 1].close
+    const quote = await getQuote(options)
+    const last = quote.close
 
+    // find average
     avg = avg / tot
+    // find mean
     let mean = [...prices].sort((l, r) => {
       return l.close - r.close
     })
@@ -111,7 +120,6 @@ last: ${last} lo: ${lo} / hi: ${hi} |  hiLoDiff: ${hiLoDiff.toFixed(
 vol: ${vol.toLocaleString()}`
 
     // const book = await getBook(options)
-    const quote = await getQuote(options)
     const meanDiff = quote.close - mean
     const meanDiffPer = meanDiff / mean
     let side = ''
@@ -130,7 +138,7 @@ vol: ${vol.toLocaleString()}`
       }
       ws.printLines(`${side}ing ${qty} shr of ${options.symbol}`)
 
-      order = {
+      let order = {
         symbol: options.symbol.toUpperCase(),
         side,
         qty,
@@ -148,11 +156,11 @@ vol: ${vol.toLocaleString()}`
     options.print(botOptions)
   }
 
-  await meanRevOrDiv('reversion')
+  await meanReversion()
   // set interval
   const interval = setInterval(
     // wrapper function
-    meanRevOrDiv,
+    meanReversion,
     // 15 seconds
     15000,
   )
