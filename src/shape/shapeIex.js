@@ -81,7 +81,7 @@ export function shapeQuote(data) {
       `{#${d[1] >= 0 ? '4fb' : 'a25'}-fg}${(d[1] * 100).toFixed(2)}%{/}`,
     ],
     open: (d) => d,
-    close: (d) => d,
+    close: (d) => ['close', `{#dc5-fg}${d[1]}{/}`],
     high: (d) => [d[0], `{#2fe-fg}${d[1]}{/}`],
     low: (d) => [d[0], `{#a25-fg}${d[1]}{/}`],
     previousClose: (d) => ['prev', '' + d[1]],

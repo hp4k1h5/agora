@@ -1,5 +1,6 @@
 import blessed from '@hp4k1h5/blessed'
 
+import { carousel } from '../index.js'
 import { evaluate } from './evaluate.js'
 import { intro } from './help.js'
 import { handleErr } from '../util/error.js'

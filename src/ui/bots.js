@@ -1,5 +1,6 @@
 import blessed from '@hp4k1h5/blessed'
 
+import { shapeBots } from '../shape/shapeBots.js'
 import { clear } from '../util/clear.js'
 import { spin } from '../util/spin.js'
 
@@ -25,7 +26,10 @@ export function buildBots(ws, options, data) {
   })
 
   // set data
-  if (!data) return
+  if (!data) {
+    data = shapeBots()
+  }
+
   options.box.setContent(data)
   ws.options.screen.render()
 }

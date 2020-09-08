@@ -64,26 +64,17 @@ export async function bots(ws, words) {
   setTime(ws, botOptions, words)
 
   botOptions.print = (botInfo) => {
-    // if component has changed, delete options.id
-    let cBySameId = ws.options.components.filter((c) => c.id == botOptions.id)
-    cBySameId = cBySameId.find((c) => c.type != 'bots')
-    if (cBySameId) {
-      delete botOptions.id
-    }
-    let botComponent = ws.options.components.find((c) => c.type == 'bots')
-    if (botComponent) {
-      botOptions.id = botComponent.id
-    }
-    if (!botOptions.id) {
-      ws.printLines(JSON.stringify(botInfo, null, 2))
+    if (carousel.currPage != botOptions.wsId) {
       return
     }
 
+    let botComponent = ws.options.components.find((c) => c.type == 'bots')
+    if (!botComponent) return
+
+    botOptions.id = botComponent.id
     botInfo = shapeBots(botInfo)
 
-    if (carousel.currPage == botOptions.wsId) {
-      buildBots(ws, botOptions, botInfo)
-    }
+    buildBots(ws, botOptions, botInfo)
   }
 
   if (!robots[bot]) {

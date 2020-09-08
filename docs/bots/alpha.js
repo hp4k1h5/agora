@@ -31,10 +31,10 @@ export async function alpha(ws, options) {
 
   ws.printLines('{#afa-fg}alpha{/} bot, go')
 
-  // this bot only trades one lot at a time. if it is invested it will try to
-  // exit the position once it has gained or lost 1%.
+  // this bot only trades one lot of shares at a time. if it is invested it
+  // will try to exit the position once it has gained or lost 1%.
+  let position
   async function meanReversion() {
-    let position
     // first check whether or not bot is invested in the stock
     ws.printLines(`{#afa-fg}alpha{/} bot, checking ${options.symbol} position`)
 
@@ -55,6 +55,7 @@ export async function alpha(ws, options) {
           ws.printLines(
             `{#afa-fg}alpha{/} bot, closed ${options.symbol} position`,
           )
+          position = null
         } catch (e) {
           ws.printLines(
             `{#afa-fg}alpha{/} bot, {red-fg}ERR{/} could not close ${options.symbol} position`,
@@ -64,9 +65,9 @@ export async function alpha(ws, options) {
 
       // else print bot info and return
       botOptions.side = position.side
-      botOptions.pl = position.unrealized_intraday_pl
-      botOptions.percent = position.unrealized_intraday_plpc
-      botOptions.qty = position.qty
+      botOptions.pl = +position.unrealized_intraday_pl
+      botOptions.plpc = +position.unrealized_intraday_plpc * 100
+      botOptions.qty = +position.qty
       options.print(botOptions)
 
       return
@@ -75,14 +76,21 @@ export async function alpha(ws, options) {
     // otherwise if the bot is not invested, it will query market data and look
     // for opportunities to invest when the stock price has deviated more than
     // 1% from the daily mean
+
+    // get stocks daily bars
     ws.printLines(
       `{#afa-fg}alpha{/} bot, getting ${options.time} price/vol data for ${options.symbol}`,
     )
-    // get stocks daily bars
-    let _prices = await getPrices(options)
+    let data
+    try {
+      data = await getPrices(options)
+    } catch (e) {
+      ws.printLines(e)
+      return
+    }
 
     // accumulate stock data
-    let { prices, avg, tot, hi, lo, vol } = _prices.reduce(
+    let { prices, avg, tot, hi, lo, vol } = data.reduce(
       (a, v) => {
         // strip nulls
         if (!v.close) return a
@@ -98,8 +106,15 @@ export async function alpha(ws, options) {
       { prices: [], avg: 0, tot: 0, hi: -Infinity, lo: Infinity, vol: 0 },
     )
 
-    const quote = await getQuote(options)
-    const last = quote.close
+    // get realtime quote for last trade info
+    let quote
+    try {
+      quote = await getQuote(options)
+    } catch (e) {
+      ws.printLines(e)
+      return
+    }
+    const last = quote.latestPrice
 
     // find average
     avg = avg / tot
@@ -108,36 +123,56 @@ export async function alpha(ws, options) {
       return l.close - r.close
     })
     mean = mean[Math.floor(mean.length / 2)].close
-    const hiLoDiff = hi - lo
-    const hiLoPer = ((hiLoDiff / last.close) * 100).toFixed(2)
 
-    botOptions.msg = `over ${options.time}: mean: ${mean} avg: ${avg.toFixed(
+    // calculate percentage delta from mean
+    const meanDiff = last - mean
+    const meanDiffPer = meanDiff / mean
+
+    // calc some other data for display
+    const hiLoDiff = hi - lo
+    const hiLoPer = ((hiLoDiff / last) * 100).toFixed(2)
+
+    // build msg
+    botOptions.msg = `over ${options.time}: avg: ${avg.toFixed(
       2,
-    )} 
-last: ${last} lo: ${lo} / hi: ${hi} |  hiLoDiff: ${hiLoDiff.toFixed(
+    )} last: {#cf9-fg}${last}{/} 
+{bold}mean: ${mean} | {#cff-fg}${(meanDiffPer * 100).toFixed(2)}{/}%
+hi: {#afa-fg}${hi}{/} - lo: {#faa-fg}${lo}{/} = ${hiLoDiff.toFixed(
       2,
-    )} ${hiLoPer}% 
+    )} ~${hiLoPer}% 
 vol: ${vol.toLocaleString()}`
 
-    // const book = await getBook(options)
-    const meanDiff = quote.close - mean
-    const meanDiffPer = meanDiff / mean
-    let side = ''
-    let qty = 1
     ws.printLines(
-      `${options.symbol} @ ${quote.close} off ${(meanDiffPer * 100).toFixed(
+      `${options.symbol} @ ${last} off ${(meanDiffPer * 100).toFixed(
         2,
       )}% from day mean`,
     )
 
-    if (meanDiffPer > 0.01) {
+    // this is where the bot decides what to do. given that this is a mean
+    // reversion "algorithm", it will decide at what threshold to buy/sell to
+    // revert back to a mean, and execute accordingly. This bot will always try
+    // to revert back to the _daily_ mean, regardless of time of day.  Simple
+    // tweaks to this algorithm would include shortening/lengthening the number
+    // of minutes of data the bot is looking at, and widening or narrowing its
+    // trading range.
+    //
+    // This example shows a 1% mean reversion algorithm, which will execute in
+    // the opposite direction of the deviation when a stock is 1% above or
+    // below its _daily_ mean. It's exits again when the profit/loss has
+    // exceeeded 1%, as defined above at the top of the function.
+
+    if (Math.abs(meanDiffPer) > 0.01) {
+      let side = ''
       if (meanDiff > 0) {
         side = 'sell'
       } else {
         side = 'buy'
       }
-      ws.printLines(`${side}ing ${qty} shr of ${options.symbol}`)
 
+      // without bringing in book data, it's safest to submit market orders,
+      // but a typical bot would probably query book data before executing a
+      // trade
+      let qty = 1
       let order = {
         symbol: options.symbol.toUpperCase(),
         side,
@@ -146,6 +181,7 @@ vol: ${vol.toLocaleString()}`
         type: 'market',
       }
 
+      ws.printLines(`${side}ing ${qty} shr of ${options.symbol}`)
       await submitOrder(ws, options, order)
 
       botOptions.msg += JSON.stringify(order, null, 2)
@@ -162,7 +198,7 @@ vol: ${vol.toLocaleString()}`
     // wrapper function
     meanReversion,
     // 15 seconds
-    15000,
+    1000,
   )
 
   // return interval back to iexcli

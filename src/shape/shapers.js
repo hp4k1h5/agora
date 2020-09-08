@@ -16,10 +16,16 @@ export function table(arr, widths, j = ': ') {
     .filter((el) => el)
     .map((el, i) => {
       const noTags = blessed.stripTags('' + el)
+      let rgx
+      if (noTags.length < el.length) {
+        rgx = new RegExp('(?<=})' + noTags)
+      } else {
+        rgx = new RegExp(el)
+      }
       if (noTags.length > widths[i]) {
-        return ('' + el).replace(noTags, noTags.substring(0, widths[i]))
+        return ('' + el).replace(rgx, noTags.substring(0, widths[i]))
       } else if (widths[i]) {
-        return el.replace(noTags, noTags.padEnd(widths[i]))
+        return el.replace(rgx, noTags.padEnd(widths[i]))
       } else return '' + el
     })
     .join(j)
