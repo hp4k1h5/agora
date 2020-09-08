@@ -20,7 +20,7 @@ export async function alpha(ws, options) {
 
   // set up the print object
   const botOptions = {
-    bot: 'alpha',
+    bot: 'alpha ' + options.symbol,
     symbol: options.symbol,
     side: '',
     pl: 0,
@@ -46,7 +46,7 @@ export async function alpha(ws, options) {
 
     if (position) {
       // if the bot is up or down more than a percent in profit, close the position
-      if (Math.abs(position.unrealized_intraday_plpc) > 0.01) {
+      if (Math.abs(position.unrealized_intraday_plpc) > 0.002) {
         ws.printLines(
           `{#afa-fg}alpha{/} bot, pl% ${position.unrealized_intraday_plpc}. closing position`,
         )
@@ -56,6 +56,7 @@ export async function alpha(ws, options) {
             `{#afa-fg}alpha{/} bot, closed ${options.symbol} position`,
           )
           position = null
+          return
         } catch (e) {
           ws.printLines(
             `{#afa-fg}alpha{/} bot, {red-fg}ERR{/} could not close ${options.symbol} position`,
@@ -161,7 +162,7 @@ vol: ${vol.toLocaleString()}`
     // below its _daily_ mean. It's exits again when the profit/loss has
     // exceeeded 1%, as defined above at the top of the function.
 
-    if (Math.abs(meanDiffPer) > 0.01) {
+    if (Math.abs(meanDiffPer) > 0.002) {
       let side = ''
       if (meanDiff > 0) {
         side = 'sell'
