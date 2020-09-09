@@ -27,10 +27,10 @@ on the forked versions.
 
 v0.0.21
 - alpaca
-  - streaming data
   - an actual demo bot
 
 v0.0.22
+- streaming data
 - charts
   - more types
   - bot charts

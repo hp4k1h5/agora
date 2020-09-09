@@ -1,6 +1,11 @@
 # CHANGELOG
 
 ## v0.0.21
+- 🖨  printer improvements. repl history preserved, bot printers now carousel
+  switch aware
+- 🤖 alpha bot is now an actual trading bot
+- ❌ breaking api changes for those using `build...()` functions, please see
+  commit history
 
 ## v0.0.20
 - 🦙 `cancel` orders, `close` positions commands available. See [trading](./README.md#trading)

@@ -28,7 +28,7 @@ gainers/losers, and stock related news](img/iexcli.png)
 ##### table of contents
 
 
-- [changelog](#changelog)
+- [CHANGELOG](#CHANGELOG)
 - **[installation](#installation)**
 - **[usage](#usage)**
   - [getting started](#getting-started)
@@ -41,36 +41,18 @@ gainers/losers, and stock related news](img/iexcli.png)
 
 ## CHANGELOG
 
+### v0.0.21
+- 🖨  printer improvements. repl history preserved, bot printers now carousel
+  switch aware
+- 🤖 alpha bot is now an actual trading bot
+- ❌ breaking api changes for those using `get...()` and `build...()` functions, please see
+  commit history
+
 ### v0.0.20
 - 🦙 `cancel` orders, `close` positions commands available. See [trading](./README.md#trading)
 
 ### v0.0.19
-- `&` profile fixes. should work with etfs and other non-company symbols again
-
-### v0.0.18
-- 🦙 `limit`, `stop` and `stop_limit` order types now accepted. Use
-    limit-prefix `<` and stop-prefix `>`. See [trading](./README.md#trading)
-- 🐛 bugfixes for several components
-
-### v0.0.17
-- 💹 chart improvements, larger, more adherent
-- `>` repl fixes/changes. components can no longer be focused at all while
-    input fixes are afoot.
-
-### v0.0.15
-- 🐴 alpaca bot integration. Type `bots ls` to see active bots. See [bots
-    README](docs/bots/README.md) for more information
-- limit orders. Use `<` limit price prefix to set floor on limit orders
-
-### v0.0.13
-- 🐴 alpaca watchlist integration. set config.json key "watchlist" to
-    "alpaca". for now all watchlists are displayed together
-- 🏦 more iex/alpaca account information. alpaca daily/weekly/monthly/yearly
-    profit loss charts, orders, iex message use and more. Set env var or
-    config val `IEX_SECRET_KEY` to obtain iex account information in the
-    account component.
-- ℹ updated `help`
-- 🐛 bugfixes for sectors, polling, and workspace switch
+- `&` profile fixes. should work with etf's and other non-company symbols again
 
 ---
 
@@ -411,16 +393,16 @@ and message use](img/account.png)
 
 ---
 
-## trading
+## 🦙 alpaca trading
 
 **⚠ disclaimer: iexcli's trading integration is in early _alpha_ and it is not
-recommended to use for real money accounts.** Per the [LICENSE](./LICENSE),
-neither hp4k1h5, nor iexcli makes any guarantees or claims regarding the
-status of trades executed via iexcli. Please consult a financial professional
-before deciding whether to use iexcli for live, real-money trading. While
-trading integration is in development, it is recommended to only use "paper"
-accounts with no real-money value, although the user is free to make their own
-judgement.
+recommended for use with real money accounts.** Per the [LICENSE](./LICENSE),
+neither hp4k1h5 nor any contributors to this repository, nor iexcli make any
+guarantees or claims regarding the status of trades executed via iexcli.
+Please consult a financial professional before deciding whether to use iexcli
+for live, real-money trading. While trading integration is in development, it
+  is recommended to only use "paper" accounts with no real-money value,
+  although the user is free to make their own judgement.
 
 ### setup
 
@@ -443,14 +425,14 @@ or
 }
 ```
 
-Also see [alpaca config](docs/example-configs/alpaca.json) for a sample
-trading work station.
-
 Though it is not recommended, you can set `config.json` value
 `"alpacaAccountType"` to "live" if you wish to trade real-money with iexcli.
 The default value is "paper". If you have entered "live" account keys, you
 will need to see the value of `"alpacaAccountType"` to "live" in order for
 them to work.
+
+Also see [alpaca config](docs/example-configs/alpaca.json) for a sample
+trading work station.
 
 ## account
 
@@ -487,7 +469,7 @@ components:
 3) stock **symbol**
     - use the stock symbol prefix `$` to designate the instrument
 
-Optionally users can set the order type and time-in-force.
+#### optionally users can set the order type and time-in-force.
 
 Orders that include a `<` limit-prefix, a `>` stop-prefix or both, will be
 submitted as, `limit`, `stop`, or `stop_limit` respectively. If you include
@@ -496,8 +478,8 @@ correctness before going out. This means that if you submit a stop_limit order
 that has incorrect limit vs stop prices, alpaca will reject your order, and
 not this app, however if you explicitly submit a stop_limit without both a
 stop price and a limit price, iexcli will reject your order before it goes
-out. Including the prefixes, without explicitly stating what the order type is
-will automatically decide what order type you are submitting.
+out. Including the prefixes `< >`, without explicitly stating what the order
+type is will automatically decide what order type you are submitting.
 
 Orders that include one of `day, gtc, opg, cls, ioc, fok` will be counted as
 such.
@@ -524,7 +506,7 @@ cancel 4f447        -> cancel the order starting with id or client id 4f447,
                         must be length 5
 ```
 
-#### `close` orders
+#### `close` positions
 
 Use command `close` plus one of `all` or `$symbol` to close all positions, or the
 position for a given symbol.
