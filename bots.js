@@ -22,7 +22,8 @@ async function beta(ws, options) {
   // start this bot with `bots start beta` or `bots stop beta`
 
   const up = Math.floor(Math.random() * 2) ? -1 : 1
-  const pFunc = () =>
+  const pFunc = () => {
+    ws.printLines('{bold}{blue-fg}beta{/} bot, print')
     options.print({
       bot: 'beta',
       symbol: options.symbol || 'demo',
@@ -32,6 +33,7 @@ async function beta(ws, options) {
       msg: `{green-fg}order filled{/} + ${Math.floor(Math.random() * 10000)}
   ! {red-fg}low volume!{/}`,
     })
+  }
 
   // call first in case the interval is long
   pFunc()

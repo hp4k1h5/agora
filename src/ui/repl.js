@@ -1,17 +1,33 @@
 import blessed from '@hp4k1h5/blessed'
 
-import { carousel } from '../index.js'
 import { evaluate } from './evaluate.js'
 import { intro } from './help.js'
 import { handleErr } from '../util/error.js'
 import { exit } from './evaluate.js'
+
+const history = []
+
+let outputs = {}
+
+function setPrinter(ws) {
+  return function (text) {
+    // add all text to repl history
+    if (typeof text == 'string') history.push(text)
+    else history.push(...text)
+
+    // accepts a array or string
+    outputs[ws.options.id].pushLine(text)
+    outputs[ws.options.id].setScrollPerc(100)
+    ws.options.screen.render()
+  }
+}
 
 export function buildRepl(ws, options) {
   const [y, x, h, w] = options.yxhw
 
   // console display (optional), otherwise commands just have effects and don't
   // report
-  const output = ws.grid.set(y, x, h - 1, w, blessed.text, {
+  outputs[ws.options.id] = ws.grid.set(y, x, h - 1, w, blessed.text, {
     name: 'output',
     // inputs
     keys: false,
@@ -23,16 +39,11 @@ export function buildRepl(ws, options) {
   })
 
   // add printLines to ws
-  ws.printLines = function (text) {
-    // accepts a array or string
-    output.pushLine(text)
-    output.setScrollPerc(100)
-    // TODO: find less intensive way of rendering terminal output
-    ws.options.screen.render()
-  }
+  ws.printLines = setPrinter(ws)
 
-  // init welcome text
-  ws.printLines(intro)
+  // init welcome text or history if returning to workspace
+  if (history.length) ws.printLines(history.join('\n'))
+  else ws.printLines(intro)
 
   // all repl function & interaction is handled here and in evaluate()
   ws.input = ws.grid.set(y + (h - 1), x, 1, w, blessed.textbox, {
@@ -82,7 +93,7 @@ export function buildRepl(ws, options) {
   })
 
   ws.input.on('focus', function () {
-    output.setFront()
+    outputs[ws.options.id].setFront()
     ws.input.setFront()
   })
 }

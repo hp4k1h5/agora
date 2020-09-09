@@ -63,7 +63,7 @@ export async function bots(ws, words) {
   setSymbol(botOptions, words)
   setTime(ws, botOptions, words)
 
-  botOptions.print = (botInfo) => {
+  botOptions.print = function (botInfo) {
     if (carousel.currPage != botOptions.wsId) {
       return
     }

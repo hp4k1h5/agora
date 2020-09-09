@@ -198,8 +198,8 @@ vol: ${vol.toLocaleString()}`
   const interval = setInterval(
     // wrapper function
     meanReversion,
-    // 15 seconds
-    1000,
+    // 10 seconds
+    10000,
   )
 
   // return interval back to iexcli
