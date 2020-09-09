@@ -10,7 +10,7 @@ function buildScreen() {
   const screen = blessed.screen({
     title: 'iexcli',
     smartCSR: true,
-    log: 'data/log.txt',
+    // log: 'data/log.txt',
   })
 
   // set app-wide screen keys
