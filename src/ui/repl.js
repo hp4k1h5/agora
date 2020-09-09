@@ -12,8 +12,13 @@ let outputs = {}
 function setPrinter(ws) {
   return function (text) {
     // add all text to repl history
-    if (typeof text == 'string') history.push(text)
-    else history.push(...text)
+    if (Array.isArray(text)) history.push(...text)
+    else if (typeof text == 'string') history.push(text.toString())
+    else
+      return handleErr(
+        ws,
+        'text passed to printLines() must be a string or an array of strings',
+      )
 
     // accepts a array or string
     outputs[ws.options.id].pushLine(text)

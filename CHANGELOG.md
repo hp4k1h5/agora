@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## v0.0.21
+
 ## v0.0.20
 - 🦙 `cancel` orders, `close` positions commands available. See [trading](./README.md#trading)
 
