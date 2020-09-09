@@ -1,15 +1,17 @@
 import { getPrices, getBook, getQuote } from '../../src/api/iex.js'
-import { getPosition, submitClose, submitOrder } from '../../src/api/alpaca.js'
+import {
+  getPosition,
+  getOrders,
+  submitClose,
+  submitOrder,
+} from '../../src/api/alpaca.js'
 
-// alpha is a very basic mean-reversion trading algorithm. it will determine a
+// alpha is a very basic mean-reversion trading algorithm. it will determine
 // valid trading ranges, and execute buy/sell orders when the stock is within
-// those ranges. This bot has not been backtested or tested at all, and is
+// those ranges. This bot has not been backtested or tested much at all, and is
 // probably not a suitable investment vehicle for you. It is meant as a
 // demonstration and learning tool for users who wish to create their own
 // trading algorithms.
-//
-// This bot is intended to be started and stopped from an iexcli repl, and does
-// not do any checks to ensure the market is open and trading.
 export async function alpha(ws, options) {
   if (!options.symbol) {
     ws.printLines(
@@ -29,24 +31,29 @@ export async function alpha(ws, options) {
     msg: '',
   }
 
+  // This bot is intended to be started and stopped from an iexcli repl, and does
+  // not do any checks to ensure the market is open and trading.
+
   ws.printLines('{#afa-fg}alpha{/} bot, go')
 
-  // this bot only trades one lot of shares at a time. if it is invested it
-  // will try to exit the position once it has gained or lost 1%.
+  // This bot tries to trade only one lot of shares at a time.
   let position
   async function meanReversion() {
-    // first check whether or not bot is invested in the stock
+    // First check whether or not bot is invested in the stock. If it is
+    // invested it will try to exit the entire position once it has gained or
+    // lost 1%.
     ws.printLines(`{#afa-fg}alpha{/} bot, checking ${options.symbol} position`)
 
     try {
       position = await getPosition(options)
     } catch (e) {
+      position = null
       ws.printLines(`{#afa-fg}alpha{/} bot, no ${options.symbol} position`)
     }
 
     if (position) {
       // if the bot is up or down more than a percent in profit, close the position
-      if (Math.abs(position.unrealized_intraday_plpc) > 0.002) {
+      if (Math.abs(position.unrealized_intraday_plpc) > 0.01) {
         ws.printLines(
           `{#afa-fg}alpha{/} bot, pl% ${position.unrealized_intraday_plpc}. closing position`,
         )
@@ -56,6 +63,14 @@ export async function alpha(ws, options) {
             `{#afa-fg}alpha{/} bot, closed ${options.symbol} position`,
           )
           position = null
+          botOptions.side = 'n/a'
+          botOptions.pl = 0
+          botOptions.plpc = 0
+          botOptions.qty = 0
+          botOptions.msg = `{#ec0-fg}closed position{/} with ${+position.unrealized_intraday_pl} p/l = ${
+            +position.unrealized_intraday_plpc * 100
+          }`
+          options.print(botOptions)
           return
         } catch (e) {
           ws.printLines(
@@ -74,14 +89,42 @@ export async function alpha(ws, options) {
       return
     }
 
-    // otherwise if the bot is not invested, it will query market data and look
-    // for opportunities to invest when the stock price has deviated more than
-    // 1% from the daily mean
+    // check open orders in case there are unfilled orders for the stock,
+    // depending on the types of orders your bot is submitting, you should
+    // check to make sure that subsequent orders do not conflict with open
+    // orders, as you may not be able to enter/exit positions you otherwise
+    // would be able to
+
+    ws.printLines(`{#afa-fg}alpha{/} bot, checking ${options.symbol} orders`)
+
+    try {
+      const orders = await getOrders({ q: {} })
+      if (
+        orders.length &&
+        !!orders.find((o) => o.symbol == botOptions.symbol.toUpperCase())
+      ) {
+        ws.printLines(
+          `{#afa-fg}alpha{/} bot, open ${options.symbol} orders, waiting till they are cleared...`,
+        )
+        return
+      }
+    } catch (e) {
+      ws.printLines(
+        `{#afa-fg}alpha{/} bot, {red-fg}ERR{/} could not get ${options.symbol} orders
+        ${e}`,
+      )
+      return
+    }
+
+    // otherwise if the bot is not invested and has no open orders, it will
+    // query market data and look for opportunities to invest when the stock
+    // price has deviated more than 1% from the daily mean
 
     // get stocks daily bars
     ws.printLines(
       `{#afa-fg}alpha{/} bot, getting ${options.time} price/vol data for ${options.symbol}`,
     )
+
     let data
     try {
       data = await getPrices(options)
@@ -154,15 +197,15 @@ vol: ${vol.toLocaleString()}`
     // revert back to a mean, and execute accordingly. This bot will always try
     // to revert back to the _daily_ mean, regardless of time of day.  Simple
     // tweaks to this algorithm would include shortening/lengthening the number
-    // of minutes of data the bot is looking at, and widening or narrowing its
+    // of minutes of data the bot is evaluating, and widening or narrowing its
     // trading range.
     //
-    // This example shows a 1% mean reversion algorithm, which will execute in
-    // the opposite direction of the deviation when a stock is 1% above or
-    // below its _daily_ mean. It's exits again when the profit/loss has
-    // exceeeded 1%, as defined above at the top of the function.
+    // This example shows a 1% mean reversion algorithm, which will execute
+    // trades in the opposite direction of the deviation when a stock is 1%
+    // above or below its _daily_ mean. It's exits again when the profit/loss
+    // has exceeeded 1%
 
-    if (Math.abs(meanDiffPer) > 0.002) {
+    if (Math.abs(meanDiffPer) > 0.01) {
       let side = ''
       if (meanDiff > 0) {
         side = 'sell'
@@ -185,7 +228,8 @@ vol: ${vol.toLocaleString()}`
       ws.printLines(`${side}ing ${qty} shr of ${options.symbol}`)
       await submitOrder(ws, options, order)
 
-      botOptions.msg += JSON.stringify(order, null, 2)
+      botOptions.msg += `
+order confirmed: {yellow-fg}${order.side} ${order.filled_qty}/${order.qty} ${order.symbol} @ ${order.filled_avg_price}{/}`
     } else {
       ws.printLines(`${options.symbol} is too close to mean to trade`)
     }

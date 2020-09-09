@@ -85,34 +85,38 @@ export async function submitOrder(ws, options, order) {
 
   let data = await qFetch(options, url, httpOptions)
 
-  // TODO shape better
-  ws.printLines(JSON.stringify(data, null, 2))
-  return
+  ws.printLines(
+    `order ${data.status}: {yellow-fg}${data.side} ${data.filled_qty}/${
+      data.qty
+    } ${data.symbol} @ ${data.filled_avg_price || 'unfilled'}{/}`,
+  )
 }
 
 export async function submitCloseAll(ws, options) {
   const { url, httpOptions } = buildAlpacaURL('DELETE', 'positions')
 
-  let data = await qFetch(options, url, httpOptions)
+  await qFetch(options, url, httpOptions)
 
-  ws.printLines(JSON.stringify(data, null, 2))
-  return
+  ws.printLines('all positions closed')
 }
 
 export async function submitClose(ws, options, symbol) {
   const { url, httpOptions } = buildAlpacaURL('DELETE', `positions/${symbol}`)
 
   let data = await qFetch(options, url, httpOptions)
-  ws.printLines(JSON.stringify(data, null, 2))
+  ws.printLines(
+    `order ${data.status}: {yellow-fg}${data.side} ${data.filled_qty}/${
+      data.qty
+    } ${data.symbol} @ ${data.filled_avg_price || 'unfilled'}{/}`,
+  )
 }
 
 export async function submitCancelAll(ws, options) {
   const { url, httpOptions } = buildAlpacaURL('DELETE', 'orders')
 
-  let data = await qFetch(options, url, httpOptions)
+  await qFetch(options, url, httpOptions)
 
-  ws.printLines(JSON.stringify(data, null, 2))
-  return
+  ws.printLines('all orders cancelled')
 }
 
 export async function submitCancel(ws, options, symbol, orderIds) {
@@ -132,7 +136,8 @@ export async function submitCancel(ws, options, symbol, orderIds) {
       return await qFetch(options, url.url, url.httpOptions, true)
     }),
   )
-  ws.printLines('orders cancelled')
+
+  ws.printLines(`${symbol} orders cancelled`)
 }
 
 export async function getWatchlistAlpaca(options) {
