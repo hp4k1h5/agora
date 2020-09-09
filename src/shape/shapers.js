@@ -18,7 +18,9 @@ export function table(arr, widths, j = ': ') {
       const noTags = blessed.stripTags('' + el)
       let rgx
       if (noTags.length < el.length) {
-        rgx = new RegExp('(?<=})' + noTags)
+        rgx = new RegExp(
+          '(?<=})' + noTags.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
+        )
       } else {
         rgx = new RegExp(el)
       }

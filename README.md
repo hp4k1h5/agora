@@ -27,14 +27,13 @@ gainers/losers, and stock related news](img/iexcli.png)
 
 ##### table of contents
 
-
 - [CHANGELOG](#CHANGELOG)
 - **[installation](#installation)**
 - **[usage](#usage)**
   - [getting started](#getting-started)
   - [**workspaces**, focus and windows](#workspaces,-focus-and-windows)
   - [**commands**](#commands)
-- [trading](#trading)
+- [🦙 trading](#🦙-alpaca-trading)
   - [**bots**](#bots)
 - [**config.json**](#config\.json)
 - [thanks!](#thanks)
@@ -52,7 +51,7 @@ gainers/losers, and stock related news](img/iexcli.png)
 - 🦙 `cancel` orders, `close` positions commands available. See [trading](./README.md#trading)
 
 ### v0.0.19
-- `&` profile fixes. should work with etf's and other non-company symbols again
+- `&` profile fixes. should work with elf's and other non-company symbols again
 
 ---
 
@@ -63,88 +62,84 @@ gainers/losers, and stock related news](img/iexcli.png)
 - [nodeJs](https://nodeJs.org) ✅ tested with `v14.8.0`
 
 1) download or clone this repo
-    1) either `git clone https://github.com/HP4k1h5/iexcli.git` and get
+    1) either run `yarn global add @hp4k1h5/iexcli`  OR  `npm i -g @hp4k1h5/iexcli`.
+    2) or run `git clone https://github.com/HP4k1h5/iexcli.git` and get
       dependencies by running `yarn` in this directory, or `npm i`.
-    2) or run `yarn global add @hp4k1h5/iexcli`  OR  `npm i -g @hp4k1h5/iexcli`.
 
 2) add a **publishable** iex api key
     1) either export an ENV var named [IEX_PUB_KEY](#register)  
     ex. `export IEX_PUB_KEY=pk_Y0urIeXaPipUbl15h4bLeKEY` locally or in your
     `.bashrc` equivalent.
     2) or set the `IEX_PUB_KEY` in `config.json` in this repo, or the default
-    config location, on a mac, this will be `~/.config/iexcli/config.json`.
+    config location; on a mac, this will be `~/.config/iexcli/config.json`.
     *You will have to create the directory with e.g.* `mkdir
     ~/.config/iexcli`, and then copy over your config with e.g. on a mac
-```bash
-cp  ~/.config/yarn/global/node_modules/@hp4k1h5/iexcli/config.json ~/.config/iexcli
-```
+    ```bash
+    cp  ~/.config/yarn/global/node_modules/@hp4k1h5/iexcli/config.json ~/.config/iexcli
+    ```
+
+    **examples**
+
+    in `.bashrc` equivalent or from the command line
+
+    ```bash
+    export IEX_PUB_KEY="yourIEXpublishablekey"
+    export IEX_SECRET_KEY="yourIEXsecretkey" # optional
+    ```
+
+    or in config.json
+
+    ```json
+    {
+      "IEX_PUB_KEY": "yourIEXpublishablekey",
+      "IEX_SECRET_KEY": "yourIEXsecretkey     # optional"
+    }
+    ```
+
     See **[config.json](#config\.json)** for configuration tips and example configs.
+
+3) If you installed globally, you should be able to use the shell alias
+   `iexcli` from anywhere. If you encounter problems are want a more
+   comprehensive tutorial, please see [tutorial](docs/TUTORIAL.md).
+
+#### optional
+
+- iex account info  
+    In order to see iex account information also set the `IEX_SECRET_KEY` in the
+    same manner as above. See [account](#@-account).
+
+- <span style="background:#222; color:#ece">🦙 alpaca account integration.</span>  
+    See [🦙 trading](#🦙-alpaca-trading).
 
 #### register
 
 **for a free [iex account](https://iexcloud.io/cloud-login#/register)** and
 copy the **publishable** api key. These typically start with `pk`
 
+#### note about iex message usage
+
+> if you receive <span style="color:red">"Payment required"</span> error
+> messages, this is iexcloud telling you that your remaining message allotment
+is insufficient for the data request you are making. You can visit your
+[iexcloud console](https://iexcloud.io/console/usage) or type `@` from the repl
+for more information. If you wish to make the most use of your 500,000 free
+monthly iex messages, avoid longer time-range graph queries. For example,
+a 1-year chart costs roughly 12,590 messages (~252 trading days * 50
+messages/day). Intraday time ranges such as `:1d` or `:100min` are free, i.e.
+incur no message cost. See [iex api
+documentation](https://alpaca.markets/docs/api-documentation/) to learn more
+about endpoint pricing.
+
 ## usage
 
 ### getting started
 
-If you installed globally, you should be able to use the shell alias `iexcli`
-from anywhere. If `which iexcli` does not return a path, refresh your
-terminal, e.g. `exec zsh` or start a new terminal window after installing so
-that the alias can be found. If you still cannot find an alias, try running
-`yarn link` from this project directory root. Otherwise, if you downloaded
-with git or to a local directory, RUN `node src/index.js` from the root of
-this directory, or `yarn run run`.
+Please consult the [tutorial](docs/TUTORIAL.md#getting-started).
 
-Most interaction is through the repl emulator input field. It accepts commands
-and updates the charts and data windows. If a component has more data than
-fits on the screen, try scrolling it with the mouse. Arrow keys
-<kbd>left</kbd> and <kbd>right</kbd> can be used to switch workspaces. See
-[configuring workspaces](#configuring-workspaces)
+### workspaces and components
 
-Type `help` or `h` for general information. Type e.g. `h $` or `h :` for
-command-specific help. If your terminal allows it, you can scroll through the
-help.
-
-#### note about iex message usage
-
-> if you receive <span style="color:red">"Payment required"</span> error
-> messages, this is iexcloud telling
-you that your remaining message allotment is insufficient for the data request
-you are making. You can visit your [iexcloud
-console](https://iexcloud.io/console/usage) for more information. If you wish
-to make the most use of your 500,000 free monthly iex messages, avoid longer
-time-range graph queries. For example a 1-year chart costs roughly 12,590
-messages (~252 trading days * 50 messages/day). Intraday time ranges such as
-`:1d` or `:100min` are free. Profile (`&`) data is also relatively expensive.
-
-### workspaces, focus and windows
-
-By default, iexcli comes with several workspaces that you can cycle through
-with left and right arrow keys. If a component is acting up or the workspace
-is erroring, try switching to another workspace and then back.
-
-If the input field is not focused, you can use `tab` and `Shift-tab` to
-rotate through components. To return directly to repl hit `>`, the
-"greater-than" sign. To leave the repl input and return to focus rotation hit
-`esc`.
-
-Unless a window prefix-command, `[`, has been entered, the last focused
-component will be the one targeted by commands entered into the repl. When you
-return to the repl, the last focused component should be highlighted with a
-yellow border.
-
-Type `esc` from the repl to re-enter the focus-rotation. It can be confusing
-and if you return directly to the repl when you expected to rotate, try going
-in the other direction, i.e. `Shift-tab` instead of `tab` or vice-versa.
-
-Every targetable window in iexcli should have a number in the top-left corner
-of the window. From the repl you can type a `[` window prefix to target a
-specific window with a command. If a window is not visible, try rotating
-through components with e.g. `esc tab` or `esc Shift-tab`, until the desired
-component is at the front. Use `>` to return directly to repl, and target that
-component.
+Please consult the
+[tutorial](docs/TUTORIAL.md#workspaces-and-components).
 
 ### commands
 
@@ -441,45 +436,67 @@ your account and positions info by typing `@`.
 
 ## watchlist
 
-Setting config.json key "watchlist" to "alpaca" will query your set of alpaca
-watchlists. This can be set at the config level, the workspace level, or on
-the watchlist component itself.
+Setting config.json key "watchlist" to string value "alpaca" will query your
+set of alpaca watchlists. This can be set at the config level, the workspace
+level, or on the watchlist component itself.
 
 ### bots
 
-Algo-trading support is under active development. As a first step, there is a
-new `bots` component that can display relevant information to your trading
+Algo-trading support is under active development. As a first step, there is
+a new `bots` component that can display relevant information to your trading
 bots. There is a [bots README](docs/bots/README.md) available in the bots
-folder, as well as some example bots.
+folder, as well as some example bots, like [alpha bot](docs/bots/alpha.js),
+a simple mean reversion algorithm.
 
-Also see [alpaca config](docs/example-configs/alpaca.json) for a sample
-trading work station.
+Export your bots to iexcli from [bots.js](bot.js).
+
+If you are using paper keys or are comfortable with this bot trading with your
+money, try typing `bots` and then `bots ls` to list bots and then, *if you are
+ok with the bot trading on your alpaca account* type `bots start alpha $spy`
+in the repl. The first command displays the bots component. The second lists
+the available bots and the third starts alpha bot which is based on a
+mean-reversion algorithm, targeting `$SPY`. You'll see that the bot can print
+to the repl output window, and the bot component, which offers some default
+text formatting, as well as a place to dump more persistent messages.
+
+![iexcli workspace with bots window and other data components](img/bots.png)
+> The above image was generated using the config found at
+[docs/example-configs/alpaca.json](docs/example-configs/alpaca.json) 
+
+In the above image, there is a bots component in the upper-right hand corner of
+the screen. The bots are also able to dump text to the repl output.
+
+Also see [alpaca config](docs/example-configs/alpaca.json) for a sample trading
+work station.
 
 ### placing orders
 
 Users can execute manual trades as follows. All orders must have three
 components:
+
 1) order **side** buy or sell
     - use the `+` buy-prefix to buy. use the `-` sell-prefix to sell.
     - selling when you own no shares will be considered a short sale.
     - underscores and commas are allowed in quantities, i.e. 1_000 = 1,000 =
         1000
+    - also see `close` and `cancel` commands below
 2) **quantity**
     - affix the quantity directly to the order side
 3) stock **symbol**
     - use the stock symbol prefix `$` to designate the instrument
 
-#### optionally users can set the order type and time-in-force.
+#### order type and time-in-force
 
-Orders that include a `<` limit-prefix, a `>` stop-prefix or both, will be
-submitted as, `limit`, `stop`, or `stop_limit` respectively. If you include
-the order type with the order, your order will be loosely validated for
-correctness before going out. This means that if you submit a stop_limit order
-that has incorrect limit vs stop prices, alpaca will reject your order, and
-not this app, however if you explicitly submit a stop_limit without both a
-stop price and a limit price, iexcli will reject your order before it goes
-out. Including the prefixes `< >`, without explicitly stating what the order
-type is will automatically decide what order type you are submitting.
+Optionally users can set the order type and time-in-force. Orders that include
+a `<` limit-prefix, a `>` stop-prefix or both, will be submitted as, `limit`,
+`stop`, or `stop_limit` respectively. If you include the order type with the
+order, your order will be loosely validated for correctness before going out.
+This means that if you submit a stop_limit order that has incorrect limit vs
+stop prices, alpaca will reject your order, and not this app. However if you
+explicitly submit a stop_limit without both a stop price and a limit price,
+iexcli will reject your order before it goes out. Including the prefixes `<
+>`, without explicitly stating what the order type is will automatically
+decide what order type you are submitting.
 
 Orders that include one of `day, gtc, opg, cls, ioc, fok` will be counted as
 such.
@@ -528,61 +545,17 @@ system. If the path `~/.config/iexcli/` does not exist, you will have to
 create it yourself. You can copy this config and adapt for your own purposes.
 Please feel free to share handy configurations by submitting an issue or pr.
 
-## configuring workspaces
+### configuring workspaces
 
-See [example configurations](./docs/example-configs)
-
-Eventually, i will create a more comprehensive tutorial to configure your
-`config.json` workspaces, but the main idea is that each component needs a
-`"yxhw"` key representing the starting position of the top-left corner (y,x),
-and the height (h) and width (w) of the component. All workspaces are
-currently aligned on a 12x12 grid, so components should not be wider or taller
-than 12. If you add components that overlap, you can rotate through the
-focus-cycle to bring your desired component to the front, and return to repl
-directly using `>`, the "greater-than sign". Additionally, targeting your
-desired component window with the window-prefix `[`, will bring it the front.
-
-As an example, a workspace with 4 evenly spaced windows like
-```boxcar
-                    ┏[1━━━━━┓┏[2━━━━━┓
-                    ┃    /- ┃┃---    ┃
-                    ┃_/\/   ┃┃ ----  ┃
-                    ┗━━━━━━━┛┗━━━━━━━┛
-                    ┏[3━━━━━┓┏[4━━━━━┓
-                    ┃ /--\  ┃┃-: --  ┃
-                    ┃ \__/  ┃┃-: ----┃
-                    ┗━━━━━━━┛┗━━━━━━━┛
-```
-
-would have a `config.json` like the following:
-
-```json
-{
-  "workspaces": [
-    {
-      "name": "4 windows",
-      "components":[
-      {"type": "chart", "yxhw":[0, 0, 6, 6]},
-      {"name": "news", "yxhw":[0, 6, 6, 6]},
-      {"name": "profile", "yxhw":[6, 0, 6, 6]},
-      {"name": "quote", "yxhw":[6, 6, 6, 6]}
-      ]
-    }
-  ]
-}
-```
-
-Note that not including a repl in a workspace is not ideal at the moment. If
-you have "read-only" workspaces, try to avoid using keys other than
-<kbd>left</kbd>  <kbd>right</kbd>, as there is a ghost-repl that can catch
-focus and disrupt functionality.
-
-I appreciate your patience as the behavior of the app settles and as i work up
-some more thorough explanations of the app's behavior.
+Please consult the
+[tutorial](docs/TUTORIAL.md#configuring-workspaces).
 
 ---
 
 ## thanks
+
+I appreciate your patience as the behavior of the app settles and as i work up
+some more thorough explanations of the app's behavior.
 
 - this project would not have been possible were it not for the incredible
 efforts of [blessed](https://github.com/chjj/blessed) and
