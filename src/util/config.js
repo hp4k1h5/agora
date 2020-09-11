@@ -154,6 +154,7 @@ ${errors.join('\n')}`)
 function loadConfig(location) {
   let config
   let possibleLocations = [
+    path.resolve(os.homedir(), '.config/agora/config.json'),
     path.resolve(os.homedir(), '.config/iexcli/config.json'),
     path.resolve(path.join(__dirname, '../../config.json')),
   ]
