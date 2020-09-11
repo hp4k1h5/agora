@@ -40,6 +40,12 @@ gainers/losers, and stock related news](img/agora.png)
 
 ## CHANGELOG
 
+### v0.1.0
+- beta release, more stability and reliability
+- 🧮 name change! app was formerly called iexcli, please update your globals
+  accordingly. e.g. `yarn global remove @hp4k1h5/iexcli && yarn global add @hp4k1h5/agora` 
+- more documentation
+
 ### v0.0.21
 - 🖨  printer improvements. repl history preserved, bot printers now carousel
   switch aware

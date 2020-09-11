@@ -1,7 +1,9 @@
 # CHANGELOG
 
 ## v0.1.0
-- name change
+- beta release, more stability and reliability
+- 🧮 name change! app was formerly called iexcli, please update your globals
+  accordingly. e.g. `yarn global remove @hp4k1h5/iexcli && yarn global add @hp4k1h5/agora` 
 - more documentation
 
 ## v0.0.21
