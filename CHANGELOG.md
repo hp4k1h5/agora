@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.1.0
+- name change
+- more documentation
+
 ## v0.0.21
 - 🖨  printer improvements. repl history preserved, bot printers now carousel
   switch aware

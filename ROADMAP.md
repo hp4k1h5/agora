@@ -42,7 +42,7 @@ v0.0.22
 ## beta release
 
 ### v0.1.0
-- set config options from iexcli repl
+- set config options from agora repl
 
 ---
 

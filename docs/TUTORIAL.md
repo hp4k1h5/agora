@@ -1,23 +1,63 @@
-# iexcli tutorial
+# agora tutorial
 
 ## intro
 
-Welcome to iexcli! This tutorial will take you through a few basic workflows
-that you might find helpful when using the app. It may assume a basic
-knowledge of financial market terminology. It will frequently reference the
+Welcome to agora! This tutorial will take you through a few basic workflows
+that you might find helpful when using the app. It may assume a basic knowledge
+of financial market terminology. It will reference the
 [iex](https://iexcloud.io/docs/api/) and
 [alpaca](https://alpaca.markets/docs/api-documentation) api documentations. If
-you have any questions, be sure to submit an
-[issue](https://github.com/HP4k1h5/iexcli/issues) on github.
+you have any questions, please submit an
+[issue](https://github.com/HP4k1h5/agora/issues) on github.
 
 ## download and install
 
-Please consult the [install section](../README.md#installation) of the README.
+### requirements
+
+- [nodeJs](https://nodeJs.org) ✅ tested with `v14.8.0`
+
+1) download or clone this repo
+    1) either run `yarn global add @hp4k1h5/agora`  OR  `npm i -g @hp4k1h5/agora`.
+    2) or run `git clone https://github.com/HP4k1h5/agora.git` and get
+      dependencies by running `yarn` in this directory, or `npm i`.
+
+2) add a **publishable** iex api key
+    1) either export an ENV var named [IEX_PUB_KEY](#register)  
+    ex. `export IEX_PUB_KEY=pk_Y0urIeXaPipUbl15h4bLeKEY` locally or in your
+    `.bashrc` equivalent.
+    2) or set the `IEX_PUB_KEY` in `config.json` in this repo, or the default
+    config location; on a mac, this will be `~/.config/agora/config.json`.
+    *You will have to create the directory with e.g.* `mkdir
+    ~/.config/agora`, and then copy over your config with e.g. on a mac
+    ```bash
+    cp  ~/.config/yarn/global/node_modules/@hp4k1h5/agora/config.json ~/.config/agora
+    ```
+
+    **examples**
+
+    in `.bashrc` equivalent or from the command line
+
+    ```bash
+    export IEX_PUB_KEY="yourIEXpublishablekey"
+    export IEX_SECRET_KEY="yourIEXsecretkey" # optional
+    ```
+
+    or in config.json
+
+    ```json
+    {
+      "IEX_PUB_KEY": "yourIEXpublishablekey",
+      "IEX_SECRET_KEY": "yourIEXsecretkey     # optional"
+    }
+    ```
+
+    See **[config.json](README.md#config.json)** for configuration tips and
+    example configs.
 
 ## getting started
 
-If you installed globally, you should be able to use the shell alias `iexcli`
-from anywhere. If `which iexcli` does not return a path, refresh your
+If you installed globally, you should be able to use the shell alias `agora`
+from anywhere. If `which agora` does not return a path, refresh your
 terminal, e.g. `exec zsh` or start a new terminal window after installing so
 that the alias can be found. If you still cannot find an alias, try running
 `yarn link` from this project directory root. Otherwise, if you downloaded
@@ -40,7 +80,7 @@ help. Type `x` from the repl to close the help window.
 ## workspaces and components
 
 By default, if you haven't changed the config or added a new one to the
-`$HOME/.config/iexcli` dir, iexcli comes with several workspaces that you can
+`$HOME/.config/agora` dir, agora comes with several workspaces that you can
 cycle through with <kbd>left</kbd> and <kbd>right</kbd> arrow keys. If a
 component is acting up or the workspace is erroring, try switching to another
 workspace and then back.
@@ -50,17 +90,17 @@ how to configure your `config.json`
 
 ## commands
 
-Most interaction in iexcli is through the repl, where the user can enter
+Most interaction in agora is through the repl, where the user can enter
 command strings and update the components or manage bots or trade. Typically
 command words are order-agnostic, though there are some exceptions. This means
-that the following two commands are interpreted identically by iexcli.
+that the following two commands are interpreted identically by agora.
 
 ```bash
 $TM quote [1
 [1 $tm quote 
 ```
 
-This command tell iexcli to update the 1st window with a quote component of
+This command tell agora to update the 1st window with a quote component of
 \$TM. Try it out. If you are not in the repl and have no cursor, type `>` to
 focus the repl. Then type one of the above commands and hit <kbd>enter</kbd>
 
@@ -78,13 +118,13 @@ command. This will update the component from quote to news but the stock will
 remain the same, and you should have a news view of the stock symbol you
 entered.
 
-Most commands in iexcli have a long and short form. See
+Most commands in agora have a long and short form. See
 [commands](../README.md#commands).
 
 Unless a window prefix-command, `[`, has been entered, the last focused
 component will be the one targeted by commands entered into the repl. 
 
-Every targetable window in iexcli should have a number in the top-left corner
+Every targetable window in agora should have a number in the top-left corner
 of the window. From the repl you can type a `[` window prefix to target a
 specific window with a command.
 
@@ -96,7 +136,7 @@ that is not available in your workspace, or is not the right target for the
 component you wish to query, change the window-prefix `[`.
 
 Enter any of the following commands to get an overview of the features
-available in iexcli.
+available in agora.
 
 ### market data commands
 
@@ -127,7 +167,7 @@ settings. See [configuring workspaces](#configuring-workspaces) below.
 
 ### trading commands 
 
-Currently all trading functionality in iexcli is done through the [alpaca
+Currently all trading functionality in agora is done through the [alpaca
 trading api](https://alpaca.markets/). If you do not have an alpaca account
 none of these commands will work for you. Please see information about getting
 a free [alpaca account](../README.md#🦙-alpaca-trading) and setting your api
@@ -150,10 +190,10 @@ close $Z              --> close out the $Z position
 ```
 
 These commands demonstrate most of the manual trading functionality currently
-available in iexcli. I encourage you to read the [alpaca
+available in agora. I encourage you to read the [alpaca
 account](../README.md#🦙-alpaca-trading) section of the README to learn more.
 
-The other way to trade in iexcli is to build a bot. While a bot tutorial is in
+The other way to trade in agora is to build a bot. While a bot tutorial is in
 progress, there is a well documented demo bot example available at
 [docs/bots/alpha.js](bots/alpha.js), as well as some additional helpful
 information in the README.

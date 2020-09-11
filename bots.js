@@ -43,7 +43,7 @@ async function beta(ws, options) {
     5000,
   )
 
-  // in order for iexcli to be able to start and stop your bot, you must return
+  // in order for agora to be able to start and stop your bot, you must return
   // the interval it runs with
   //
   // see a real example bot at docs/bots/alpha.js

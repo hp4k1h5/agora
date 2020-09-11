@@ -1,21 +1,21 @@
 {
-  "name": "@hp4k1h5/iexcli",
+  "name": "@hp4k1h5/agora",
   "version": "0.1.0",
   "license": "MIT",
   "main": "src/index.js",
   "bin": {
-    "iexcli": "src/bin/cli.js"
+    "agora": "src/bin/cli.js"
   },
   "scripts": {
     "run": "node src/index.js"
   },
-  "homepage": "https://github.com/HP4k1h5/iexcli",
+  "homepage": "https://github.com/HP4k1h5/agora",
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/HP4k1h5/iexcli.git"
+    "url": "git+ssh://git@github.com/HP4k1h5/agora.git"
   },
-  "description": "stock charts in the terminal, and algo trading api",
+  "description": "a command-line ui for market data and algo management",
   "keywords": [
     "blessed",
     "blessed-contrib",
@@ -40,7 +40,7 @@
   "author": "hp4k1h5",
   "email": "robertwalks@gmail.com",
   "bugs": {
-    "url": "https://github.com/HP4k1h5/iexcli/issues"
+    "url": "https://github.com/HP4k1h5/agora/issues"
   },
   "devDependencies": {}
 }

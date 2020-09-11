@@ -36,7 +36,8 @@
           "type": "chart",
           "yxhw": [6, 7, 6, 5],
           "symbol": "spy",
-          "time": "1h"
+          "time": "1h",
+          "vol": true
         }
       ]
     },

@@ -1,4 +1,4 @@
-# iexcli
+# agora
 
 <span style="display:inline-block; width:50% ">
 
@@ -14,14 +14,14 @@
 
 </span>
 
-##### !!warning iexcli is in _alpha_ and subject to change ⚠
+##### !!warning agora is in _alpha_ and subject to change ⚠
 
 [contributions](./.github/CONTRIBUTING.md) and [bug
-reports](https://github.com/HP4k1h5/iexcli/issues/new?assignees=HP4k1h5&labels=bug&template=bug_report.md&title=basic)
+reports](https://github.com/HP4k1h5/agora/issues/new?assignees=HP4k1h5&labels=bug&template=bug_report.md&title=basic)
 are _welcome_
 
 ![screenshot of a terminal window displaying a stock chart, active
-gainers/losers, and stock related news](img/iexcli.png)
+gainers/losers, and stock related news](img/agora.png)
 > the workspace used to generate this image is defined in
 > [docs/example-configs/dense.json](./docs/example-configs/dense.json)
 
@@ -62,8 +62,8 @@ gainers/losers, and stock related news](img/iexcli.png)
 - [nodeJs](https://nodeJs.org) ✅ tested with `v14.8.0`
 
 1) download or clone this repo
-    1) either run `yarn global add @hp4k1h5/iexcli`  OR  `npm i -g @hp4k1h5/iexcli`.
-    2) or run `git clone https://github.com/HP4k1h5/iexcli.git` and get
+    1) either run `yarn global add @hp4k1h5/agora`  OR  `npm i -g @hp4k1h5/agora`.
+    2) or run `git clone https://github.com/HP4k1h5/agora.git` and get
       dependencies by running `yarn` in this directory, or `npm i`.
 
 2) add a **publishable** iex api key
@@ -71,11 +71,11 @@ gainers/losers, and stock related news](img/iexcli.png)
     ex. `export IEX_PUB_KEY=pk_Y0urIeXaPipUbl15h4bLeKEY` locally or in your
     `.bashrc` equivalent.
     2) or set the `IEX_PUB_KEY` in `config.json` in this repo, or the default
-    config location; on a mac, this will be `~/.config/iexcli/config.json`.
+    config location; on a mac, this will be `~/.config/agora/config.json`.
     *You will have to create the directory with e.g.* `mkdir
-    ~/.config/iexcli`, and then copy over your config with e.g. on a mac
+    ~/.config/agora`, and then copy over your config with e.g. on a mac
     ```bash
-    cp  ~/.config/yarn/global/node_modules/@hp4k1h5/iexcli/config.json ~/.config/iexcli
+    cp  ~/.config/yarn/global/node_modules/@hp4k1h5/agora/config.json ~/.config/agora
     ```
 
     **examples**
@@ -99,7 +99,7 @@ gainers/losers, and stock related news](img/iexcli.png)
     See **[config.json](#config\.json)** for configuration tips and example configs.
 
 3) If you installed globally, you should be able to use the shell alias
-   `iexcli` from anywhere. If you encounter problems are want a more
+   `agora` from anywhere. If you encounter problems are want a more
    comprehensive tutorial, please see [tutorial](docs/TUTORIAL.md).
 
 #### optional
@@ -163,7 +163,7 @@ Typing `quit`, `exit` or `Ctrl-c` will exit the app
 #### <kbd>left</kbd>  <kbd>right</kbd> switch workspaces
 
 Use left and right arrow-keys to switch between workspaces. By default,
-iexcli comes with several workspaces. Depending on you terminal and trading
+agora comes with several workspaces. Depending on you terminal and trading
 preferences, these can be configured in `config.json`. See [configuring
 workspaces](#configuring-workspaces)
 
@@ -284,7 +284,7 @@ $de !          # show news and update active stock to DE
 
 Typing `=` brings up the watchlist display. Use mouse to scroll the table. Use
 `tab` or `esc` to return to repl.  ![watchlist display for
-iexcli](img/multi-chart.png). Watchlist is in the top-left corner. Use mouse
+agora](img/multi-chart.png). Watchlist is in the top-left corner. Use mouse
 to scroll. This workspace is defined in
 [dense.json](./docs/example-configs/dense.json)
 > note: Key values `open high low close` are only available to iex premium
@@ -390,11 +390,11 @@ and message use](img/account.png)
 
 ## 🦙 alpaca trading
 
-**⚠ disclaimer: iexcli's trading integration is in early _alpha_ and it is not
+**⚠ disclaimer: agora's trading integration is in early _alpha_ and it is not
 recommended for use with real money accounts.** Per the [LICENSE](./LICENSE),
-neither hp4k1h5 nor any contributors to this repository, nor iexcli make any
-guarantees or claims regarding the status of trades executed via iexcli.
-Please consult a financial professional before deciding whether to use iexcli
+neither hp4k1h5 nor any contributors to this repository, nor agora make any
+guarantees or claims regarding the status of trades executed via agora.
+Please consult a financial professional before deciding whether to use agora
 for live, real-money trading. While trading integration is in development, it
   is recommended to only use "paper" accounts with no real-money value,
   although the user is free to make their own judgement.
@@ -421,7 +421,7 @@ or
 ```
 
 Though it is not recommended, you can set `config.json` value
-`"alpacaAccountType"` to "live" if you wish to trade real-money with iexcli.
+`"alpacaAccountType"` to "live" if you wish to trade real-money with agora.
 The default value is "paper". If you have entered "live" account keys, you
 will need to see the value of `"alpacaAccountType"` to "live" in order for
 them to work.
@@ -448,7 +448,7 @@ bots. There is a [bots README](docs/bots/README.md) available in the bots
 folder, as well as some example bots, like [alpha bot](docs/bots/alpha.js),
 a simple mean reversion algorithm.
 
-Export your bots to iexcli from [bots.js](bot.js).
+Export your bots to agora from [bots.js](bot.js).
 
 If you are using paper keys or are comfortable with this bot trading with your
 money, try typing `bots` and then `bots ls` to list bots and then, *if you are
@@ -459,7 +459,7 @@ mean-reversion algorithm, targeting `$SPY`. You'll see that the bot can print
 to the repl output window, and the bot component, which offers some default
 text formatting, as well as a place to dump more persistent messages.
 
-![iexcli workspace with bots window and other data components](img/bots.png)
+![agora workspace with bots window and other data components](img/bots.png)
 > The above image was generated using the config found at
 [docs/example-configs/alpaca.json](docs/example-configs/alpaca.json) 
 
@@ -494,7 +494,7 @@ order, your order will be loosely validated for correctness before going out.
 This means that if you submit a stop_limit order that has incorrect limit vs
 stop prices, alpaca will reject your order, and not this app. However if you
 explicitly submit a stop_limit without both a stop price and a limit price,
-iexcli will reject your order before it goes out. Including the prefixes `<
+agora will reject your order before it goes out. Including the prefixes `<
 >`, without explicitly stating what the order type is will automatically
 decide what order type you are submitting.
 
@@ -538,10 +538,10 @@ close $tm          -> close position in $TM
 
 ## config.json
 
-By default iexcli will look for a config in two places on unix/free-bsd
-systems. First it will check `~/.config/iexcli/config.json`, and then it will
+By default agora will look for a config in two places on unix/free-bsd
+systems. First it will check `~/.config/agora/config.json`, and then it will
 look in the root directory of this repo, wherever that is installed on your
-system. If the path `~/.config/iexcli/` does not exist, you will have to
+system. If the path `~/.config/agora/` does not exist, you will have to
 create it yourself. You can copy this config and adapt for your own purposes.
 Please feel free to share handy configurations by submitting an issue or pr.
 
@@ -560,7 +560,7 @@ some more thorough explanations of the app's behavior.
 - this project would not have been possible were it not for the incredible
 efforts of [blessed](https://github.com/chjj/blessed) and
 [blessed-contrib](https://github.com/yaronn/blessed-contrib) authors and
-contributors. Though these repos are somewhat dormant and iexcli is using
+contributors. Though these repos are somewhat dormant and agora is using
 forked versions, my heartfelt thanks go to these teams.
 
 - stock search is brought to you by
