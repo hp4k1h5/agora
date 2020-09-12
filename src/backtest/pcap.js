@@ -1,12 +1,19 @@
 import pcap from 'pcap'
 const session = pcap.createOfflineSession(
-  '../../data/data_feeds_20200819_20200819_IEXTP1_DEEP1.0.pcap',
+  '../../data/data_feeds_20200819_20200819_IEXTP1_TOPS1.6.pcap',
+  // '../../data/data_feeds_20200819_20200819_IEXTP1_DEEP1.0.pcap',
   '',
 )
 
-/** file can read pcap files from iex historical data feeds. the file above
- * was downloaded from
- * https://iextrading.com/trading/market-data/#hist-download */
+/** This file can read pcap files from iex historical data feeds. The files
+ * above were downloaded for free and without api key on (2020/09/12) from
+ * https://iextrading.com/trading/market-data/#hist-download , and are not
+ * included in this repo.
+ *
+ * Use `node pcap.js` from this directory to dump iex message data to term, or
+ * adapt for your own purposes, and be sure to update the filepath according to
+ * your file location. Eventualy agora will include a backtesting mechanism and
+ * this is a possible source of free data for doing such */
 
 session.on('packet', (rawPacket) => {
   let packet = pcap.decode.packet(rawPacket)
