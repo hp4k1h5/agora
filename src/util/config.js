@@ -2,7 +2,9 @@ import os from 'os'
 import fs from 'fs'
 import path from 'path'
 
-import { defaults } from './defaults.js'
+import { fp } from '../util/fs.js'
+
+// import { defaults } from './defaults.js'
 
 export const validComponentTypes = [
   'repl',
@@ -34,9 +36,8 @@ export const validUnits = [
   'max',
 ]
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname)
 export const validIndicators = JSON.parse(
-  fs.readFileSync(path.join(__dirname, './technicals.json'), 'utf8'),
+  fs.readFileSync(fp('./technicals.json'), 'utf8'),
 )
 
 export const config = parseConfig()
@@ -156,9 +157,10 @@ function loadConfig(location) {
   let possibleLocations = [
     path.resolve(os.homedir(), '.config/agora/config.json'),
     path.resolve(os.homedir(), '.config/iexcli/config.json'),
-    path.resolve(path.join(__dirname, '../../config.json')),
+    path.resolve(fp('../../config.json')),
   ]
-  if (location) possibleLocations = [path.resolve(location)]
+  // handle arg for testing
+  if (location) possibleLocations = [fp(location)]
 
   let configLocation
   possibleLocations.forEach((loc) => {
