@@ -16,6 +16,12 @@ import {
   submitOrder,
 } from '../../src/api/alpaca.js'
 
+// instantiate logger to keep track of trading activity
+import { Log } from '../../src/log/log.js'
+
+//                   filepath       overwrite
+const log = new Log('./log_alpha.js', true)
+
 // the main function that gets exported by bots.js
 export async function alpha(ws, options) {
   // perform checks to ensure bot will work
@@ -25,6 +31,9 @@ export async function alpha(ws, options) {
     )
     return
   }
+
+  // log new function start
+  log.log({ type: 'start', timestamp: new Date() })
 
   // set up the print object
   const botOptions = {
@@ -64,6 +73,7 @@ export async function alpha(ws, options) {
 
     if (position) {
       let plAllowance = 0.01 // = 1% profit/loss margin on the currently held position
+
       // if the bot is up or down more than a percent in profit, close the position
       if (Math.abs(position.unrealized_intraday_plpc) > plAllowance) {
         ws.printLines(
@@ -73,21 +83,32 @@ export async function alpha(ws, options) {
         try {
           await submitClose(ws, options, position.symbol)
 
+          // this bot being a demo shows a lot of different printing and
+          // logging styles use whichever is most convenient or make a function
+          // that does all three
+
+          // log first, since its probably the most important
+          log.log({ type: 'position', position, timestamp: new Date() })
+
+          // add a message to the repl output
           ws.printLines(
             `{#afa-fg}alpha{/} bot, closed ${options.symbol} position`,
           )
 
-          // clear position this bot relies on the local position var to make
-          // subsequent decisions
-          position = null
+          // amend bot message
+          botOptions.msg = `{#ec0-fg}closed position{/} with ${+position.unrealized_intraday_pl} p/l = ${
+            +position.unrealized_intraday_plpc * 100
+          }`
+
           botOptions.side = 'n/a'
           botOptions.pl = 0
           botOptions.plpc = 0
           botOptions.qty = 0
-          botOptions.msg = `{#ec0-fg}closed position{/} with ${+position.unrealized_intraday_pl} p/l = ${
-            +position.unrealized_intraday_plpc * 100
-          }`
           options.print(botOptions)
+
+          // clear position this bot relies on the local position var to make
+          // subsequent decisions
+          position = null
 
           return
         } catch (e) {
@@ -100,7 +121,13 @@ export async function alpha(ws, options) {
 
       if (position === null) return
 
-      // else print bot info and return
+      // else bot is invested but pl% is below threshold. bot will continue
+      // checking the market while that threshold is unmet
+
+      // log
+      log.log({ type: 'position', position, timestamp: new Date() })
+
+      // print bot position info and return
       botOptions.side = position.side
       botOptions.pl = +position.unrealized_intraday_pl
       botOptions.plpc = +position.unrealized_intraday_plpc * 100
@@ -111,7 +138,7 @@ export async function alpha(ws, options) {
     }
 
     // if there is no position, check open orders in case there are unfilled
-    // orders for the stock, depending on the types of orders your bot is
+    // orders for the stock. depending on the types of orders your bot is
     // submitting, you should check to make sure that subsequent orders do not
     // conflict with open orders, as you may not be able to enter/exit
     // positions you otherwise would be able to. This bot is not set up to
@@ -218,6 +245,7 @@ vol: ${vol.toLocaleString()}`
     )
 
     let deviation = 0.01 // = 1% deviation last price from mean price
+
     // this is where the bot decides what to do. given that this is a mean
     // reversion "algorithm", it will evaluate a stock based on how far the
     // last price is from the _daily_ mean and decide to trade based on the
@@ -266,7 +294,11 @@ vol: ${vol.toLocaleString()}`
         await submitOrder(ws, options, order)
       } catch (e) {
         ws.printLines('alpha bot err: could not submit order: ' + e.toString())
+        return
       }
+
+      // log
+      log.log({ type: 'order', order, timestamp: new Date() })
 
       // print trade message
       botOptions.msg += `
