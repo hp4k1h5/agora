@@ -44,16 +44,18 @@ halt the bot.
 ## running a real trading algo
 
 If you are using paper keys or are comfortable with this bot trading with your
-money, try typing `bots` and then `bots ls` to list bots and then, *if you are
-ok with the bot trading on your alpaca account* type `bots start alpha $spy`
-in the repl. The first command displays the bots component. The second lists
-the available bots and the third starts [alpha bot](alpha.js) which is based
-on a mean-reversion algorithm, targeting `$SPY`. 
+money, try typing `[3 bots` to display the bots component. Type `bots ls` to
+list bots and then, *if you are ok with the bot trading on your alpaca account*
+type `bots start alpha $spy`. This starts [alpha bot](alpha.js), targeting
+`$SPY`. alpha bot is very simple and is based on a mean-reversion algorithm. 
 
 [alpha bot](alpha.js) contains many comments and serves as documentation for
 building algo bots in iexcli. You'll see that the bot can print to the repl
 output window and to the bot component, which offers some default text
-formatting, as well as a place to dump more persistent messages.
+formatting, as well as a place to dump more persistent messages. 
+
+You can also import the `Log` class, which can help you keep track of
+positions. See [Log](../../src/log/log.js) and its usage in alpha bot.
 
 ## developer info
 
@@ -106,19 +108,21 @@ one parameter, `botInfo`, that has the following shape:
 
 ```javascript
 const botInfo ={
-  bot: '(string) the name of the bot. Must match the function name!',
+  bot: '(string) the name of the bot, should be unique',
   symbol: '(string) the stock your bot is trading',
   pl: '(number) profit/loss',
   plpc: '(number) percent profit/loss',
   // percent DEPRECATED use plpc instead
   qty: '(number) size of position',
   msg: `(string) the message you wish to be displayed
-  below the bots\' listing`
+  below the bot's listing`
 }
 ```
 
 The function will format this in a convenient way for the bot component and
-print it there with along with all the other bot info.
+print it there with along with all the other bots' info.
+
+You can import a convenient logging class from [log.js](../../src/log/log.js).
 
 Feel free to import any functions that might be of use such as `qFetch()` which
 will discard old messages (useful if you are polling frequently and want only

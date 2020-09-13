@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v0.1.1
+- 🗄 logger for bot; read/write bot data. See [bot README](docs/bots/README.md)
+
 ## v0.1.0
 - beta release, more stability and reliability
 - 🧮 name change! app was formerly called iexcli, please update your globals
