@@ -11,8 +11,8 @@
 ## current state
 
 Currently the app allows iex api subscribers to query and view a range of
-financial information. Also, limited beta testing of trading is enabled
-through alpaca.
+financial information. Also, limited beta testing of trading is enabled through
+alpaca.
 
 There are numerous known bugs and undesirable behaviors, see
 [BUGS](.github/ISSUE_TEMPLATES/bug_reports.md). Many are only fixable through
@@ -21,33 +21,29 @@ that mainly address bugs encountered and missing functionalities. These bugs
 require a bit more investment in time since it's not a project I am familiar
 with outside of this endeavor. Nevertheless I am very happy with the tools
 available through the blessed & co. libs and will continue to use and develop
-on the forked versions.
+on the locally forked versions.
 
-## alpha release
+## beta release
 
-v0.0.21
-- alpaca
-  - an actual demo bot
+v0.1.1
+- 📜 bot logger
+- 🦙 alpaca account activities tracker
+- 🏫 tutorial, better docs
 
-v0.0.22
+v0.1.2
 - streaming data
 - charts
   - more types
   - bot charts
     - profit/loss
     - the currently trading stock
-
----
-
-## beta release
-
-### v0.1.0
-- set config options from agora repl
+- pcap reader
 
 ---
 
 ## backlog
 
+- set config options from agora repl
 - portfolio management
 - stock screener
 - markdown analyst reports/news reader
