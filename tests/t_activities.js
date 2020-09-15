@@ -1,7 +1,7 @@
 import fs from 'fs'
 
 import { getActivities } from '../src/api/alpaca.js'
-import { shapeActivities } from '../src/shape/shapeAlpaca.js'
+import { shapeActivities } from '../src/shape/alpaca/activities.js'
 import { activitiesData } from '../data/activities_alpaca.js'
 ;(async function () {
   let data

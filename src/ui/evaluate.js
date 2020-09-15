@@ -42,6 +42,7 @@ export async function evaluate(ws, input) {
     orders: 'orders',
     positions: 'positions',
     account: 'account',
+    activities: 'activities',
     '@': 'account',
     undefined,
     // prefix commands are not included here and are treated separately

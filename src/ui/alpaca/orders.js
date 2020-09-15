@@ -1,8 +1,8 @@
 import blessed from '@hp4k1h5/blessed'
 
-import { shapeOrders } from '../shape/shapeAlpaca.js'
-import { clear } from '../util/clear.js'
-import { spin } from '../util/spin.js'
+import { shapeOrders } from '../../shape/shapeAlpaca.js'
+import { clear } from '../../util/clear.js'
+import { spin } from '../../util/spin.js'
 
 export function buildOrders(ws, options, data) {
   clear(ws, options)

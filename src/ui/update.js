@@ -14,6 +14,7 @@ import {
   getWatchlistAlpaca,
   getOrders,
   getPositions,
+  getActivities,
 } from '../api/alpaca.js'
 
 import { buildBlank } from './blank.js'
@@ -26,9 +27,10 @@ import { buildLists } from './list.js'
 import { buildProfile } from './profile.js'
 import { buildSectors } from './sectors.js'
 import { buildBook } from './book.js'
-import { buildOrders } from './orders.js'
-import { buildPositions } from './positions.js'
+import { buildOrders } from './alpaca/orders.js'
 import { buildAccount } from './account.js'
+import { buildPositions } from './alpaca/positions.js'
+import { buildActivities } from './alpaca/activities.js'
 import { buildBots } from './bots.js'
 
 import { handleErr } from '../util/error.js'
@@ -47,6 +49,7 @@ const updateMap = {
   book: { apiFn: getBook, uiFn: buildBook },
   orders: { apiFn: getOrders, uiFn: buildOrders },
   positions: { apiFn: getPositions, uiFn: buildPositions },
+  activities: { apiFn: getActivities, uiFn: buildActivities },
   account: {
     apiFn: async (options) => {
       return await Promise.all([

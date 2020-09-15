@@ -73,6 +73,12 @@ const positions = {
   yxhw: [0, 3, 6, 3],
 }
 
+const activities = {
+  type: 'activities',
+  yxhw: [0, 2, 6, 6],
+  activityTypes: ['FILL'],
+}
+
 const bots = {
   type: 'bots',
   yxhw: [0, 6, 6, 6],
@@ -97,6 +103,7 @@ export const defaults = {
   account,
   orders,
   positions,
+  activities,
   bots,
   help,
 }

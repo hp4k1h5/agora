@@ -20,6 +20,7 @@ export const validComponentTypes = [
   'account',
   'orders',
   'positions',
+  'activities',
   'bots',
 ]
 

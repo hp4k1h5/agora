@@ -32,3 +32,9 @@ export function table(arr, widths, j = ': ') {
     })
     .join(j)
 }
+
+export function colorVal(val) {
+  if (+val >= 0) return `{#4ea-fg}${(+val).toFixed(2)}{/}`
+  else if (+val < 0) return `{#e4a-fg}${(+val).toFixed(2)}{/}`
+  return `{#ee4-fg}${val}{/}`
+}
