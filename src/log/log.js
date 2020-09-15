@@ -56,7 +56,7 @@ export class Log {
 
 // EXAMPLE
 
-callMe()
+// callMe()
 function callMe() {
   // instantiate a new log write stream
   const log = new Log('../../data/log/test_log.jsonl', true)

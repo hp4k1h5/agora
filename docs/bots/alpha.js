@@ -20,7 +20,12 @@ import {
 import { Log } from '../../src/log/log.js'
 
 //                   filepath       overwrite
-const log = new Log('./log_alpha.js', true)
+const log = new Log(
+  `../../data/log/log_alpha-${new Date()
+    .toLocaleDateString()
+    .replace(/\//g, '')}.js`,
+  true,
+)
 
 // the main function that gets exported by bots.js
 export async function alpha(ws, options) {

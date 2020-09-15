@@ -7,6 +7,7 @@ import { fp } from '../util/fs.js'
 // import { defaults } from './defaults.js'
 
 export const validComponentTypes = [
+  'blank',
   'repl',
   'quote',
   'book',

@@ -196,3 +196,18 @@ export async function getPosition(options) {
   )
   return await qFetch(options, url, httpOptions)
 }
+
+export async function getActivities(options) {
+  const params = {
+    date: new Date().toISOString().slice(0, 10),
+    direction: 'asc',
+  }
+
+  const { url, httpOptions } = buildAlpacaURL(
+    'GET',
+    `account/activities/FILL`,
+    params,
+  )
+
+  return await qFetch(options, url, httpOptions)
+}
