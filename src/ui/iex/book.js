@@ -1,8 +1,8 @@
 import blessed from '@hp4k1h5/blessed'
 
-import { shapeBook } from '../shape/shapeIex.js'
-import { clear } from '../util/clear.js'
-import { spin } from '../util/spin.js'
+import { shapeBook } from '../../shape/shapeIex.js'
+import { clear } from '../../util/clear.js'
+import { spin } from '../../util/spin.js'
 
 /** if no symbol is provided, it should stay in sync with a chart */
 export function buildBook(ws, options, data) {

@@ -1,7 +1,10 @@
 # CHANGELOG
 
 ## v0.1.1
-- 🗄 logger for bot; read/write bot data. See [bot README](docs/bots/README.md)
+- 🗄  logger for bot; read/write bot data. See [bot
+  README](docs/bots/README.md)
+- 🦙 alpaca account activities tracker. type `activities`
+- 🏫 tutorial, better docs
 
 ## v0.1.0
 - beta release, more stability and reliability

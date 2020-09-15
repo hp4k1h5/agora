@@ -14,21 +14,12 @@ Currently the app allows iex api subscribers to query and view a range of
 financial information. Also, limited beta testing of trading is enabled through
 alpaca.
 
-There are numerous known bugs and undesirable behaviors, see
+There are some known bugs and undesirable behaviors, see
 [BUGS](.github/ISSUE_TEMPLATES/bug_reports.md). Many are only fixable through
 blessed and/or blessed-contrib fixes. This project is using forked versions
-that mainly address bugs encountered and missing functionalities. These bugs
-require a bit more investment in time since it's not a project I am familiar
-with outside of this endeavor. Nevertheless I am very happy with the tools
-available through the blessed & co. libs and will continue to use and develop
-on the locally forked versions.
+that mainly address bugs encountered and missing functionalities.
 
 ## beta release
-
-v0.1.1
-- 📜 bot logger
-- 🦙 alpaca account activities tracker
-- 🏫 tutorial, better docs
 
 v0.1.2
 - streaming data

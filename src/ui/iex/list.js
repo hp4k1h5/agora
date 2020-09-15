@@ -1,8 +1,8 @@
 import blessed from '@hp4k1h5/blessed'
 
-import { shapeLists } from '../shape/shapeIex.js'
-import { clear } from '../util/clear.js'
-import { spin } from '../util/spin.js'
+import { shapeLists } from '../../shape/shapeIex.js'
+import { clear } from '../../util/clear.js'
+import { spin } from '../../util/spin.js'
 
 export function buildLists(ws, options, data) {
   clear(ws, options)

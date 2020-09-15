@@ -1,8 +1,8 @@
 import blessed from '@hp4k1h5/blessed'
 
-import { shapeProfile } from '../shape/shapeIex.js'
-import { clear } from '../util/clear.js'
-import { spin } from '../util/spin.js'
+import { shapeProfile } from '../../shape/shapeIex.js'
+import { clear } from '../../util/clear.js'
+import { spin } from '../../util/spin.js'
 
 export function buildProfile(ws, options, data) {
   clear(ws, options)

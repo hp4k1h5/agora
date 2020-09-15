@@ -1,15 +1,15 @@
 import blessed from '@hp4k1h5/blessed'
 
-import { shapeNews } from '../shape/shapeIex.js'
-import { clear } from '../util/clear.js'
-import { spin } from '../util/spin.js'
+import { shapeQuote } from '../../shape/shapeIex.js'
+import { clear } from '../../util/clear.js'
+import { spin } from '../../util/spin.js'
 
-export function buildNewsList(ws, options, data) {
+export function buildQuoteList(ws, options, data) {
   clear(ws, options)
 
   options.box = ws.grid.set(...options.yxhw, blessed.text, {
-    name: 'news',
-    label: `[${options.id}  news ${
+    name: 'quote',
+    label: `[${options.id}  quote ${
       options.pollMs ? ' .. polling ' + spin() : ''
     }]`,
     // inputs
@@ -21,7 +21,6 @@ export function buildNewsList(ws, options, data) {
     // styles
     tags: true,
     style: {
-      fg: [60, 200, 250],
       focus: { border: { fg: '#fc5' } },
     },
   })
@@ -30,7 +29,7 @@ export function buildNewsList(ws, options, data) {
   ws.setListeners(options)
 
   // set data
-  data = shapeNews(data)
+  data = shapeQuote(data)
   if (!data) return
-  options.box.setContent([`{#bf6-fg}${options.symbol}{/}`, data].join('\n'))
+  options.box.setContent(data)
 }
