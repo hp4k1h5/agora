@@ -19,11 +19,20 @@ import {
 // instantiate logger to keep track of trading activity
 import { Log } from '../../src/log/log.js'
 
-//                   filepath       overwrite
+// i create a new log file every time the bot is started to keep track of each
+// run
+let d = new Date()
+d =
+  d.toLocaleDateString().replace(/\//g, '') +
+  d.getHours() +
+  d.getMinutes() +
+  d.getSeconds()
+const filepath = `../../data/log/log_alpha-${d}.js`
+
 const log = new Log(
-  `../../data/log/log_alpha-${new Date()
-    .toLocaleDateString()
-    .replace(/\//g, '')}.js`,
+  filepath,
+  // overwrite, overwrite instead of append. here all files should be new
+  // by naming convention
   true,
 )
 
@@ -89,8 +98,8 @@ export async function alpha(ws, options) {
           await submitClose(ws, options, position.symbol)
 
           // this bot being a demo shows a lot of different printing and
-          // logging styles use whichever is most convenient or make a function
-          // that does all three
+          // logging styles. use whichever is most convenient or make a
+          // function that does all three
 
           // log first, since its probably the most important
           log.log({ type: 'position', position, timestamp: new Date() })
@@ -127,7 +136,7 @@ export async function alpha(ws, options) {
       if (position === null) return
 
       // else bot is invested but pl% is below threshold. bot will continue
-      // checking the market while that threshold is unmet
+      // checking the market while threshold is unmet
 
       // log
       log.log({ type: 'position', position, timestamp: new Date() })
@@ -141,6 +150,8 @@ export async function alpha(ws, options) {
 
       return
     }
+
+    // TODO, get all orders instead of default open
 
     // if there is no position, check open orders in case there are unfilled
     // orders for the stock. depending on the types of orders your bot is

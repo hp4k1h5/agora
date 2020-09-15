@@ -1,4 +1,5 @@
 import fs from 'fs'
+import path from 'path'
 import readline from 'readline'
 
 import { fp } from '../util/fs.js'
@@ -25,6 +26,10 @@ export class Log {
     this.filepath = fp(relPath)
     this.logger = (function (_this) {
       if (!fs.existsSync(_this.filepath) || overwrite) {
+        const dirname = path.dirname(_this.filepath)
+        if (!fs.existsSync(dirname)) {
+          fs.mkdirSync(dirname)
+        }
         fs.openSync(_this.filepath, 'w')
         fs.writeFileSync(_this.filepath, '')
       }
