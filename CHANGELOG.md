@@ -5,6 +5,9 @@
   README](docs/bots/README.md)
 - 🦙 alpaca account activities tracker. type `activities`
 - 🏫 tutorial, better docs
+- 💹 small chart improvements (see @hp4k1h5/blessed-contrib changes)
+ - charts should no longer wrap horizontally with large datasets
+ - charts should occupy vertical space better
 
 ## v0.1.0
 - beta release, more stability and reliability
