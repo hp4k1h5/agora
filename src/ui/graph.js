@@ -41,16 +41,19 @@ export function buildPriceVolCharts(ws, options, data) {
   ws.setListeners(options)
 
   // set price chart
-  const bH = options.box.height - Math.floor(options.box.height / 3)
-  graph(ws, options.box, priceData, 0, bH)
+  const bH =
+    options.box.height - (options.vol ? Math.floor(options.box.height / 3) : 0)
+
+  const bW = options.box.width - 2
+  graph(ws, options.box, priceData, 0, 0, bH - 1, bW)
 
   if (!options.vol) return
 
   //  put vol beneath price
-  graph(ws, options.box, data?.vol, bH, options.box.height - bH)
+  graph(ws, options.box, data?.vol, bH - 1, 0, options.box.height - bH - 1, bW)
 }
 
-export function graph(ws, parent, data, row, height) {
+export function graph(ws, parent, data, row, col, height, width) {
   if (!data) {
     data = [{ title: 'no data', x: [0], y: [0] }]
   }
@@ -65,12 +68,14 @@ export function graph(ws, parent, data, row, height) {
     xPadding: 0,
     yPadding: 0,
     wholeNumbersOnly: false,
+    abbreviate: true,
     showLegend: true,
     // inputs
     input: false,
     // styles
     top: row,
     height,
+    width,
     style: {
       line: [100, 100, 100],
       text: [180, 220, 180],
