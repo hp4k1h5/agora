@@ -33,7 +33,7 @@
   ],
   "dependencies": {
     "@hp4k1h5/blessed": "^0.0.2",
-    "@hp4k1h5/blessed-contrib": "^0.0.5",
+    "@hp4k1h5/blessed-contrib": "^0.0.6",
     "fuzzysort": "^1.1.4",
     "node-fetch": "^2.6.0",
     "pcap": "^3.1.0"
