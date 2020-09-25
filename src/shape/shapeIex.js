@@ -103,12 +103,16 @@ export function shapeQuote(data) {
 
 export function shapeNews(data) {
   const m = {
-    datetime: (d) => [d[0], new Date(d[1]).toLocaleTimeString()],
+    datetime: (d) => {
+      const date = new Date(d[1])
+      return [d[0], `${date.toLocaleTimeString()} ${date.toLocaleDateString()}`]
+    },
     headline: (d) => [d[0], `{#ee7-fg}${d[1]}{/}`],
     source: (d) => [d[0], `{#fff-fg}${d[1]}{/}`],
     summary: (d) => [d[0], `{#bfc-fg}${d[1]}{/}`],
   }
-  let items = []
+
+  let items = [`{#bf6-fg}\$${data[0].related}{/}`]
   data.forEach((i) => {
     items.push(
       ...Object.entries(i)
@@ -116,7 +120,9 @@ export function shapeNews(data) {
         .map((d) => table(m[d[0]](d), [10])),
     )
     items[items.length - 2] += ' {#abf-fg}< ' + i.url + ' >{/}'
-    items.push('{#ccc-fg}------------{/}    {#ccc-fg}----------------{/}')
+    items.push(
+      '{#db7-fg}========={/}    {#db7-fg}=============================={/}',
+    )
   })
   return items.join('\n')
 }

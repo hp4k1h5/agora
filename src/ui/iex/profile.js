@@ -4,7 +4,7 @@ import { shapeProfile } from '../../shape/shapeIex.js'
 import { clear } from '../../util/clear.js'
 import { spin } from '../../util/spin.js'
 
-export function buildProfile(ws, options, data) {
+export function buildProfile(ws, options, data = {}) {
   clear(ws, options)
 
   options.box = ws.grid.set(...options.yxhw, blessed.box, {
@@ -102,8 +102,8 @@ export function buildProfile(ws, options, data) {
   })
 
   // set data
+  if (!data || !data.length) return
   data = shapeProfile(data)
-  if (!data) return
   company.setContent(data.company)
   earnings.setContent(data.earnings)
   keyStats.setContent(data.keyStats)

@@ -20,10 +20,12 @@ export function buildAccount(ws, options, data) {
     ;[iex, alpaca] = empty
   } else {
     ;[iex, alpaca] = data
-    iex = shapeAccountIex(iex)
-    alpaca = shapeAccountAlpaca(alpaca)
+
     if (!iex) iex = empty[0]
+    else iex = shapeAccountIex(iex)
+
     if (!alpaca) alpaca = { account: empty[1], positions: empty[1] }
+    else alpaca = shapeAccountAlpaca(alpaca)
   }
 
   options.box = ws.grid.set(...options.yxhw, blessed.box, {

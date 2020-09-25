@@ -5,24 +5,45 @@ import { intro } from './help.js'
 import { handleErr } from '../util/error.js'
 import { exit } from './evaluate.js'
 
-const history = []
+let history = []
+let cmdHistory = []
+
+// accepts a array or string
+function write(ws, text) {
+  if (Array.isArray(text)) history.push(...text)
+  else if (typeof text == 'string') history.push(text)
+  else {
+    handleErr(
+      ws,
+      'text passed to printLines() must be a string or an array of strings',
+    )
+    return false
+  }
+
+  const histLen = 100
+
+  if (history.length > histLen) {
+    const start = history.length - histLen
+    history = history.slice(start, start + histLen)
+  }
+
+  return true
+}
 
 let outputs = {}
 
 function setPrinter(ws) {
   return function (text) {
     // add all text to repl history
-    if (Array.isArray(text)) history.push(...text)
-    else if (typeof text == 'string') history.push(text.toString())
-    else
-      return handleErr(
-        ws,
-        'text passed to printLines() must be a string or an array of strings',
-      )
+    const written = write(ws, text)
+    if (!written) return
 
-    // accepts a array or string
-    outputs[ws.options.id].pushLine(text)
-    outputs[ws.options.id].setScrollPerc(100)
+    const output = outputs[ws.options.id]
+    if (!output) return
+
+    // reset scroll and render
+    output.setContent(history.join('\n'))
+    output.setScrollPerc(100)
     ws.options.screen.render()
   }
 }
@@ -47,7 +68,7 @@ export function buildRepl(ws, options) {
   ws.printLines = setPrinter(ws)
 
   // init welcome text or history if returning to workspace
-  if (history.length) ws.printLines(history.join('\n'))
+  if (history.length) ws.printLines('')
   else ws.printLines(intro)
 
   // all repl function & interaction is handled here and in evaluate()
@@ -75,6 +96,17 @@ export function buildRepl(ws, options) {
   ws.input.key('esc', function () {
     screen.focusNext()
   })
+
+  // scroll back through commands
+  ws.input.key('up', function () {
+    ws.input.clearValue()
+    if (!cmdHistory.length) return
+    const last = cmdHistory.pop()
+    ws.input.setValue(last)
+    cmdHistory.unshift(last)
+    ws.options.screen.render()
+  })
+
   // handle submit
   ws.input.key('enter', function () {
     ws.input.submit()
@@ -92,6 +124,9 @@ export function buildRepl(ws, options) {
     } catch (e) {
       handleErr(ws, e)
     }
+
+    // push successful cmds to history
+    cmdHistory.push(data)
 
     // wait to focus until evaluation completes
     !ws.input.focused && ws.input.focus()

@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## v0.1.1
+- 📜 scroll back through past commands with <kbd>up</kbd>, up arrow.
 - 🗄  logger for bot; read/write bot data. See [bot
   README](docs/bots/README.md)
 - 🦙 alpaca account activities tracker. type `activities`

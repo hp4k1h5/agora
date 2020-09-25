@@ -32,5 +32,5 @@ export function buildNewsList(ws, options, data) {
   // set data
   data = shapeNews(data)
   if (!data) return
-  options.box.setContent([`{#bf6-fg}${options.symbol}{/}`, data].join('\n'))
+  options.box.setContent(data)
 }
