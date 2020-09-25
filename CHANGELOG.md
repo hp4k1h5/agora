@@ -5,7 +5,7 @@
 - 🗄  logger for bot; read/write bot data. See [bot
   README](docs/bots/README.md)
 - 🦙 alpaca account activities tracker. type `activities`
-- 🏫 tutorial, better docs
+- 🏫 [tutorial](docs/TUTORIAL.md), better docs
 - 💹 small chart improvements (see @hp4k1h5/blessed-contrib changes)
  - charts should no longer wrap horizontally with large datasets
  - charts should occupy vertical space better

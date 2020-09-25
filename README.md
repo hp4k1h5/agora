@@ -40,24 +40,21 @@ gainers/losers, and stock related news](img/agora.png)
 
 ## CHANGELOG
 
+### v0.1.1
+- 📜 scroll back through past commands with <kbd>up</kbd>, up arrow.
+- 🗄  logger for bot; read/write bot data. See [bot
+  README](docs/bots/README.md)
+- 🦙 alpaca account activities tracker. type `activities`
+- 🏫 [tutorial](docs/TUTORIAL.md), better docs
+- 💹 small chart improvements (see @hp4k1h5/blessed-contrib changes)
+ - charts should no longer wrap horizontally with large datasets
+ - charts should occupy vertical space better
+
 ### v0.1.0
 - beta release, more stability and reliability
 - 🧮 name change! app was formerly called iexcli, please update your globals
   accordingly. e.g. `yarn global remove @hp4k1h5/iexcli && yarn global add @hp4k1h5/agora` 
 - more documentation
-
-### v0.0.21
-- 🖨  printer improvements. repl history preserved, bot printers now carousel
-  switch aware
-- 🤖 alpha bot is now an actual trading bot
-- ❌ breaking api changes for those using `get...()` and `build...()` functions, please see
-  commit history
-
-### v0.0.20
-- 🦙 `cancel` orders, `close` positions commands available. See [trading](./README.md#trading)
-
-### v0.0.19
-- `&` profile fixes. should work with elf's and other non-company symbols again
 
 ---
 
