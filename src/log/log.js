@@ -28,7 +28,8 @@ export class Log {
       if (!fs.existsSync(_this.filepath) || overwrite) {
         const dirname = path.dirname(_this.filepath)
         if (!fs.existsSync(dirname)) {
-          fs.mkdirSync(dirname)
+          // fs.mkdirSync(dirname)
+          fs.mkdirSync(dirname, { recursive: true })
         }
         fs.openSync(_this.filepath, 'w')
         fs.writeFileSync(_this.filepath, '')

@@ -40,6 +40,13 @@ gainers/losers, and stock related news](img/agora.png)
 
 ## CHANGELOG
 
+### v0.1.2
+- 🐛 bugfixes for install.
+  - apologies for the breaking log update. in v0.1.1
+  - `pcap` dependency removed, you can optionally resolve xcode gyp errors by
+    following a guide such as [this blog
+    post](https://medium.com/@mrjohnkilonzi/how-to-resolve-no-xcode-or-clt-version-detected-d0cf2b10a750)
+
 ### v0.1.1
 - 📜 scroll back through past commands with <kbd>up</kbd>, up arrow.
 - 🗄  logger for bot; read/write bot data. See [bot
