@@ -93,8 +93,8 @@ export function buildBook(ws, options, data) {
   ws.setListeners(options)
 
   // set data
-  data = shapeBook(data)
   if (!data) return
+  data = shapeBook(data)
   bids.setContent(data.bids)
   asks.setContent(data.asks)
   trades.setContent(data.trades)

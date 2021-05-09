@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.1.3
+- [crypto book and quote](README.md/#crypto), use prefix `¢`
+- help menu bugfix
+
 ## v0.1.2
 - 🐛 bugfixes for install.
   - apologies for the breaking log update. in v0.1.1

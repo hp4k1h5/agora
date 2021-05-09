@@ -6,6 +6,15 @@ import { spin } from '../util/spin.js'
 /** if no symbol is provided, it should stay in sync with a chart */
 export function buildBlank(ws, options) {
   clear(ws, options)
+  if (options.id == 'help') {
+    ws.options.components.splice(
+      ws.options.components.findIndex((o) => o.id == 'help'),
+      1,
+    )
+    ws.prevFocus = ws.options.components[1]
+    options.box.destroy()
+    return
+  }
 
   options.box = ws.grid.set(...options.yxhw, blessed.box, {
     name: 'blank',

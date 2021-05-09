@@ -108,8 +108,11 @@ export function setComponentOptions(ws, target, words) {
 
 // only set if component has symbol & user entered symbol
 export function setSymbol(options, words) {
-  const symbol = words.find((w) => /(?<=^\$)[\w.]+/.test(w))
-  if (symbol) options.symbol = symbol.slice(1)
+  const symbol = words.find((w) => /(?<=^\$|¢)[\w.]+/.test(w))
+  if (!symbol) return
+
+  options.symbol = symbol.slice(1)
+  if (symbol[0] == 'c') options.crypto = true
 }
 
 // only set if component has time & user entered time

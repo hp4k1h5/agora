@@ -52,7 +52,8 @@ export async function getPrices(options) {
 }
 
 export async function getQuote(options) {
-  const url = buildIexURL(`stock/${options.symbol}/quote`)
+  const type = options.crypto ? 'crypto' : 'stock'
+  const url = buildIexURL(`${type}/${options.symbol}/quote`)
 
   return await qFetch(options, url)
 }
@@ -106,9 +107,10 @@ export async function getSectors(options) {
 }
 
 export async function getBook(options) {
-  const url = buildIexURL(`stock/${options.symbol}/book`)
+  const type = options.crypto ? 'crypto' : 'stock'
+  const url = buildIexURL(`${type}/${options.symbol}/book`)
 
-  return await qFetch(options, url)
+  const r = await qFetch(options, url)
 }
 
 export async function getAccountIex(options) {

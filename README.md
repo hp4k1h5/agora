@@ -38,30 +38,11 @@ gainers/losers, and stock related news](img/agora.png)
 - [**config.json**](#config\.json)
 - [thanks!](#thanks)
 
-## CHANGELOG
+## CHANGELOG latest
 
-### v0.1.2
-- 🐛 bugfixes for install.
-  - apologies for the breaking log update. in v0.1.1
-  - `pcap` dependency removed, you can optionally resolve xcode gyp errors by
-    following a guide such as [this blog
-    post](https://medium.com/@mrjohnkilonzi/how-to-resolve-no-xcode-or-clt-version-detected-d0cf2b10a750)
-
-### v0.1.1
-- 📜 scroll back through past commands with <kbd>up</kbd>, up arrow.
-- 🗄  logger for bot; read/write bot data. See [bot
-  README](docs/bots/README.md)
-- 🦙 alpaca account activities tracker. type `activities`
-- 🏫 [tutorial](docs/TUTORIAL.md), better docs
-- 💹 small chart improvements (see @hp4k1h5/blessed-contrib changes)
- - charts should no longer wrap horizontally with large datasets
- - charts should occupy vertical space better
-
-### v0.1.0
-- beta release, more stability and reliability
-- 🧮 name change! app was formerly called iexcli, please update your globals
-  accordingly. e.g. `yarn global remove @hp4k1h5/iexcli && yarn global add @hp4k1h5/agora` 
-- more documentation
+## v0.1.3
+- [crypto book and quote](README.md/#crypto), use prefix `¢`
+- help menu bugfix
 
 ---
 
@@ -234,6 +215,19 @@ prefixes to update multiple values at the same time
 $TM              --> update symbol in active component to TSLA
 [2 $BRK.B :1.5h   --> update active symbol to BRK.B and update time to last 90 minutes
 ```
+
+#### `¢` crypto symbol prefix
+
+Typing `¢` followed immediately by a valid crypto/currency pair changes the
+instrument in the active window. Can be combined with window,
+technical-indicator and time prefixes to update multiple values at the same
+time 
+
+**examples** 
+```
+¢BTCUSD ^   --> update active window to a book of BTC/USD
+" ¢ethusd   --> update active window to a quote of ETH/USD
+``` 
 
 #### `:` time range prefix
 

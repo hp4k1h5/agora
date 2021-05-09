@@ -52,6 +52,7 @@ export async function evaluate(ws, input) {
     // $         symbol
     // [         window
     // %         technical-indicator
+    // c         crypto
     // // word prefixes
     // poll      poll
   }

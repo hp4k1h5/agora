@@ -103,7 +103,7 @@ ex. {#cd2-fg}[all $tm{/}  -> update all targetable components with ticker
 
 export function halp(ws) {
   const options = defaults.help
-  options.id = ws.id()
+  options.id = 'help'
   ws.options.components.push(options)
 
   clear(ws, options)
