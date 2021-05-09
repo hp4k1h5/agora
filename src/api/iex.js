@@ -110,7 +110,7 @@ export async function getBook(options) {
   const type = options.crypto ? 'crypto' : 'stock'
   const url = buildIexURL(`${type}/${options.symbol}/book`)
 
-  const r = await qFetch(options, url)
+  return await qFetch(options, url)
 }
 
 export async function getAccountIex(options) {
