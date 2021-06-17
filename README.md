@@ -90,7 +90,7 @@ gainers/losers, and stock related news](img/agora.png)
     See **[config.json](#config\.json)** for configuration tips and example configs.
 
 3) If you installed globally, you should be able to use the shell alias
-   `agora` from anywhere. If you encounter problems are want a more
+   `agora` from anywhere. If you encounter problems or want a more
    comprehensive tutorial, please see [tutorial](docs/TUTORIAL.md).
 
 #### optional

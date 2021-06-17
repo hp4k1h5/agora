@@ -24,6 +24,7 @@ import { fp } from '../util/fs.js'
 export class Log {
   constructor(relPath, overwrite) {
     this.filepath = fp(relPath)
+
     this.logger = (function (_this) {
       if (!fs.existsSync(_this.filepath) || overwrite) {
         const dirname = path.dirname(_this.filepath)
@@ -39,6 +40,7 @@ export class Log {
         flags: overwrite ? 'r+' : 'a+',
       })
     })(this)
+
     this.reader = readline.createInterface({
       input: fs.createReadStream(this.filepath, {}),
       console: false,
