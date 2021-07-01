@@ -68,7 +68,7 @@ export function shapePrices(options, data) {
 }
 
 export function shapeQuote(data) {
-  data = Object.entries(data)
+  data = Object.entries(data || {})
   const m = {
     symbol: (d) => d,
     companyName: (d) => ['name', d[1].substring(0, 20)],
