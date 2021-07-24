@@ -23,7 +23,7 @@ are _welcome_
 ![screenshot of a terminal window displaying a stock chart, active
 gainers/losers, and stock related news](img/agora.png)
 > the workspace used to generate this image is defined in
-> [docs/example-configs/dense.json](./docs/example-configs/dense.json)
+> [docs/example-configs/dense.json](docs/example-configs/dense.json)
 
 ##### table of contents
 
@@ -290,7 +290,7 @@ Typing `=` brings up the watchlist display. Use mouse to scroll the table. Use
 `tab` or `esc` to return to repl.  ![watchlist display for
 agora](img/multi-chart.png). Watchlist is in the top-left corner. Use mouse
 to scroll. This workspace is defined in
-[dense.json](./docs/example-configs/dense.json)
+[dense.json](docs/example-configs/dense.json)
 > note: Key values `open high low close` are only available to iex premium
 > data subscribers and during non-market hours to other api consumers  
 
@@ -427,7 +427,7 @@ or
 Though it is not recommended, you can set `config.json` value
 `"alpacaAccountType"` to "live" if you wish to trade real-money with agora.
 The default value is "paper". If you have entered "live" account keys, you
-will need to see the value of `"alpacaAccountType"` to "live" in order for
+will need to set the value of `"alpacaAccountType"` to "live" in order for
 them to work.
 
 Also see [alpaca config](docs/example-configs/alpaca.json) for a sample
