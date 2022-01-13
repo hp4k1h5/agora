@@ -1,5 +1,14 @@
 # agora
 
+## Deprecation Warning
+
+This package is now deprecated.
+
+The main goal of this project was to provide a full trading and algo management application in the terminal. When this app was fully functioning, it was able to provide a range of interesting functionalities. Unfortunately I have not been able to maintain the app, and it has fallen into a semi-broken state of disrepair. 
+
+Thanks for the support and good luck to all. 
+
+
 <span style="display:inline-block; width:50% ">
 
 > view market info and charts and trade stocks in the terminal
